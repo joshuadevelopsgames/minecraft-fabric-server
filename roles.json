@@ -1,0 +1,44 @@
+{
+  "admin": {
+    "level": 100,
+    "overrides": {
+      "name_decoration": {
+        "prefix": {"text": "[ADMIN] ", "color": "dark_red"},
+        "style": ["bold"]
+      },
+      "permission_level": 4,
+      "commands": {
+        ".*": "allow"
+      }
+    }
+  },
+  "vip": {
+    "level": 50,
+    "overrides": {
+      "name_decoration": {
+        "prefix": {"text": "[VIP] ", "color": "gold"},
+        "style": ["italic"]
+      },
+      "permission_level": 2,
+      "commands": {
+        "warp .*": "allow",
+        "help": "allow"
+      }
+    }
+  },
+  "mute": {
+    "level": 1,
+    "overrides": {
+      "mute": true
+    }
+  },
+  "everyone": {
+    "overrides": {
+      "commands": {
+        "help": "allow",
+        "msg .*": "allow",
+        ".*": "deny"
+      }
+    }
+  }
+}

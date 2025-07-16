@@ -1,0 +1,14 @@
+[
+  {
+    "uuid": "b065a268-01e0-458f-8f93-82bb8d82d4b2",
+    "name": "Kangarude",
+    "level": 4,
+    "bypassesPlayerLimit": false
+  },
+  {
+    "uuid": "5c2d149d-9d0f-4eb9-9daa-8c2d849dcabc",
+    "name": "EnterFruit",
+    "level": 4,
+    "bypassesPlayerLimit": false
+  }
+]

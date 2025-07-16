@@ -1,0 +1,19 @@
+# Ignore mod jars and server outputs
+*.jar
+*.log
+*.zip
+*.gz
+*.tmp
+*.bak
+
+# Ignore game data
+world/
+world_nether/
+world_the_end/
+logs/
+crash-reports/
+cache/
+.DS_Store
+
+# Optional: ignore packwiz generated cache if you have it
+.packwizcache/
