@@ -25,3 +25,13 @@ jobs:
           echo "Server updated successfully!"
           # Optional: restart server if needed
           # sudo systemctl restart minecraft 
+
+              - name: Restart server
+      uses: appleboy/ssh-action@v0.1.5
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          chmod +x ~/minecraft/scripts/restart.sh
+          ~/minecraft/scripts/restart.sh
