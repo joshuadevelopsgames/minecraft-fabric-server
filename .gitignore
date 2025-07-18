@@ -15,5 +15,23 @@ crash-reports/
 cache/
 .DS_Store
 
+# Server-specific files
+usercache.json
+whitelist.json
+banned-ips.json
+banned-players.json
+ops.json
+server.properties
+eula.txt
+
 # Optional: ignore packwiz generated cache if you have it
 .packwizcache/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+Thumbs.db
