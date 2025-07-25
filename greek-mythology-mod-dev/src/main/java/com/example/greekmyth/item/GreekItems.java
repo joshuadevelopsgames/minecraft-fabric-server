@@ -2,6 +2,7 @@ package com.example.greekmyth.item;
 
 import com.example.greekmyth.GreekMythologyMod;
 import net.minecraft.item.Item;
+import net.minecraft.item.ToolMaterial;
 import net.minecraft.util.Rarity;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -21,10 +22,11 @@ public class GreekItems {
             .maxDamage(5)
             .fireproof()
             .rarity(Rarity.EPIC)
+            .pickaxe(ToolMaterial.NETHERITE, 8.0f, -2.4f)  // Netherite sword-level weapon attributes
             .registryKey(RegistryKey.of(RegistryKeys.ITEM, ZEUS_BOLT_ID));
 
         ZEUS_BOLT = Registry.register(Registries.ITEM, ZEUS_BOLT_ID,
             new ZeusBoltItem(settings));
-        GreekMythologyMod.LOGGER.info("Registered Zeus Bolt via factory");
+        GreekMythologyMod.LOGGER.info("Registered Zeus Bolt via factory with weapon attributes");
     }
 } 

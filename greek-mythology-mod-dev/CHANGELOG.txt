@@ -3,6 +3,20 @@
 
 ---
 
+## Version 1.0.56 (2025-01-27)
+### ⚔️ **ZEUS BOLT WEAPON FUNCTIONALITY**
+- **Netherite Sword Attributes**: Zeus Bolt now has the same damage and attack speed as a Netherite sword
+- **Left-Click Combat**: Zeus Bolt functions as a proper melee weapon when left-clicking
+- **Weapon Properties**: Added 8.0 damage and -2.4 attack speed (same as Netherite sword)
+- **Dual Functionality**: Right-click for lightning, left-click for melee combat
+
+### 📝 **TECHNICAL CHANGES**
+- **Weapon Implementation**: Added `.pickaxe(ToolMaterial.NETHERITE, 8.0f, -2.4f)` to item settings
+- **Tool Material**: Uses Netherite tool material for proper weapon attributes
+- **Damage System**: 8.0 base damage matches Netherite sword damage
+- **Attack Speed**: -2.4 attack speed modifier for proper weapon timing
+- **Version**: `greek-mythology-1.0.56.jar` with weapon functionality
+
 ## Version 1.0.55 (2025-01-27)
 ### 🔧 **ZEUS BOLT CHARGE RESET FIX**
 - **Fixed Charge Reset Bug**: Zeus Bolt now properly resets to 5 charges after cooldown expires
