@@ -1,0 +1,5 @@
+name = "Greek Mythology Modpack"
+version = "1.0.57"
+icon = "pack.png"
+[versions]
+acceptable-game-versions = ["1.21.8"] 

@@ -1,0 +1,14 @@
+{
+  "mappings": {
+    "com/example/greekmyth/mixin/ItemEntityMixin": {
+      "tick": "Lnet/minecraft/class_1542;method_5773()V"
+    }
+  },
+  "data": {
+    "named:intermediary": {
+      "com/example/greekmyth/mixin/ItemEntityMixin": {
+        "tick": "Lnet/minecraft/class_1542;method_5773()V"
+      }
+    }
+  }
+}
