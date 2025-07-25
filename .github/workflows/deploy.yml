@@ -23,10 +23,8 @@ jobs:
           cd ~/minecraft
           git pull origin master
           echo "Server updated successfully!"
-          # Optional: restart server if needed
-          # sudo systemctl restart minecraft 
 
-              - name: Restart server
+    - name: Restart server
       uses: appleboy/ssh-action@v0.1.5
       with:
         host: ${{ secrets.HOST }}
