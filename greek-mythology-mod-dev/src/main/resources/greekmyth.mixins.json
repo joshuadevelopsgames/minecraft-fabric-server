@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "com.example.greekmyth.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [],
+  "client": [],
+  "server": [
+    "ItemEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+} 

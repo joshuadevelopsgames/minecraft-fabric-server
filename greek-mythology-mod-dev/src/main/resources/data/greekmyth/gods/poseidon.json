@@ -1,0 +1,95 @@
+{
+  "god": "POSEIDON",
+  "displayName": "Poseidon",
+  "title": "God of the Sea",
+  "domains": ["Water", "Earthquakes", "Horses"],
+  "isBigThree": true,
+  "symbol": "🌊",
+  
+  "favorSettings": {
+    "baseDecayRate": 1,
+    "decayInterval": 24000,
+    "maxFavor": 2000,
+    "minFavor": -1000
+  },
+  
+  "actions": {
+    "positive": {
+      "water_activities": {
+        "favor": 8,
+        "description": "Swimming, boating, or water exploration"
+      },
+      "horse_riding": {
+        "favor": 5,
+        "description": "Riding horses or other mounts"
+      },
+      "ocean_exploration": {
+        "favor": 10,
+        "description": "Exploring ocean biomes and underwater structures"
+      },
+      "fishing": {
+        "favor": 3,
+        "description": "Fishing activities"
+      },
+      "earthquake_survival": {
+        "favor": 15,
+        "description": "Surviving natural disasters"
+      }
+    },
+    "negative": {
+      "water_pollution": {
+        "favor": -20,
+        "description": "Polluting water sources"
+      },
+      "land_dwelling": {
+        "favor": -2,
+        "description": "Spending too much time away from water"
+      },
+      "horse_abuse": {
+        "favor": -15,
+        "description": "Mistreating horses or other animals"
+      }
+    }
+  },
+  
+  "rewards": {
+    "RESPECTED": {
+      "passiveAbilities": [
+        "Water breathing",
+        "Ocean sense"
+      ],
+      "activeAbilities": [
+        "Minor water control"
+      ]
+    },
+    "CHOSEN": {
+      "passiveAbilities": [
+        "Water immunity",
+        "Horse affinity",
+        "Ocean mastery"
+      ],
+      "activeAbilities": [
+        "Water manipulation",
+        "Horse summoning"
+      ]
+    },
+    "CHAMPION": {
+      "passiveAbilities": [
+        "Ocean authority",
+        "Earthquake resistance",
+        "Divine water control"
+      ],
+      "activeAbilities": [
+        "Tsunami summon",
+        "Ocean portal",
+        "Divine horses"
+      ]
+    }
+  },
+  
+  "specialRules": {
+    "bigThreeBonus": true,
+    "waterAffinity": true,
+    "horseMastery": true
+  }
+} 

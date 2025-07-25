@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "greekmyth",
-  "version": "1.0.0",
+  "version": "1.0.54",
   "name": "Greek Mythology",
   "description": "Adds mythological items like Zeus's Lightning Bolt.",
   "authors": ["Joshua"],
@@ -10,12 +10,16 @@
     "sources": ""
   },
   "license": "MIT",
+  "icon": "assets/greekmyth/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
       "com.example.greekmyth.GreekMythologyMod"
     ]
   },
+  "mixins": [
+    "greekmyth.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=0.16.14",
     "fabric": "*",
