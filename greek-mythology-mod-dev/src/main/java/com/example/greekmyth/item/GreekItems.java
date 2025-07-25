@@ -22,7 +22,6 @@ public class GreekItems {
             .maxDamage(5)
             .fireproof()
             .rarity(Rarity.EPIC)
-            .pickaxe(ToolMaterial.NETHERITE, 8.0f, -2.4f)  // Netherite sword-level weapon attributes
             .registryKey(RegistryKey.of(RegistryKeys.ITEM, ZEUS_BOLT_ID));
 
         ZEUS_BOLT = Registry.register(Registries.ITEM, ZEUS_BOLT_ID,
