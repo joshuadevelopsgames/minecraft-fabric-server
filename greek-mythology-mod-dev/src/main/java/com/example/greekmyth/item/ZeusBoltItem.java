@@ -114,6 +114,13 @@ public class ZeusBoltItem extends Item implements FabricItem {
             currentDamage = 0;
         }
         
+        // Check if cooldown has expired and reset charges if needed
+        if (currentDamage >= MAX_CHARGES && !isOnCooldown) {
+            GreekMythologyMod.LOGGER.info("COOLDOWN EXPIRED: Resetting charges from {} to 0", currentDamage);
+            stack.setDamage(0); // Reset to full charges
+            currentDamage = 0;
+        }
+        
         // Calculate charges correctly
         int currentCharges = MAX_CHARGES - currentDamage;
         

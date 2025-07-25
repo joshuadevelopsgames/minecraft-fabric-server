@@ -3,6 +3,19 @@
 
 ---
 
+## Version 1.0.55 (2025-01-27)
+### 🔧 **ZEUS BOLT CHARGE RESET FIX**
+- **Fixed Charge Reset Bug**: Zeus Bolt now properly resets to 5 charges after cooldown expires
+- **Cooldown Logic**: Added proper charge reset logic when 30-second cooldown period ends
+- **Charge System**: Fixed critical bug where charges weren't resetting after cooldown
+- **Debug Logging**: Added logging to track cooldown expiration and charge reset
+
+### 📝 **TECHNICAL CHANGES**
+- **Cooldown Check**: Added logic to detect when cooldown has expired
+- **Charge Reset**: Automatically resets damage to 0 (full charges) when cooldown ends
+- **Charge Calculation**: Fixed charge calculation after cooldown reset
+- **Version**: `greek-mythology-1.0.55.jar` with working charge reset system
+
 ## Version 1.0.54 (2025-01-27)
 ### 🎨 **MOD ICON ADDED**
 - **Custom Icon**: Added your custom image as the mod's icon
