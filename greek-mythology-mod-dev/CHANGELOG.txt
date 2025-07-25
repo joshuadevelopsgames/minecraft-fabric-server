@@ -3,6 +3,19 @@
 
 ---
 
+## Version 1.0.57 (2025-01-27)
+### 🔧 **ZEUS BOLT COOLDOWN FIX**
+- **Fixed Infinite Lightning Bug**: Removed weapon tool functionality that was interfering with cooldown system
+- **Restored Charge System**: Zeus Bolt cooldown and charge reset now work properly again
+- **Weapon Damage**: Added weapon damage through postHit method instead of tool attributes
+- **Dual Functionality**: Right-click for lightning (with cooldown), left-click for melee combat
+
+### 📝 **TECHNICAL CHANGES**
+- **Removed Tool Attributes**: Removed `.pickaxe()` call that was causing cooldown issues
+- **Added Weapon Method**: Implemented `postHit()` method for 8.0 damage on left-click
+- **Fixed Cooldown**: Charge system and cooldown reset now work correctly
+- **Version**: `greek-mythology-1.0.57.jar` with working cooldown and weapon damage
+
 ## Version 1.0.56 (2025-01-27)
 ### ⚔️ **ZEUS BOLT WEAPON FUNCTIONALITY**
 - **Netherite Sword Attributes**: Zeus Bolt now has the same damage and attack speed as a Netherite sword

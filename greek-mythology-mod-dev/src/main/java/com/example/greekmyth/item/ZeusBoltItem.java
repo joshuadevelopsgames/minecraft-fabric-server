@@ -61,8 +61,14 @@ public class ZeusBoltItem extends Item implements FabricItem {
         return false;
     }
 
-    // Note: Weapon attributes will be added in a future version
-    // For now, focus on getting the core lightning functionality working
+    // Add weapon damage functionality
+    @Override
+    public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        // Apply Netherite sword-level damage (8.0 damage)
+        if (attacker.getWorld() instanceof ServerWorld serverWorld) {
+            target.damage(serverWorld, serverWorld.getDamageSources().generic(), 8.0f);
+        }
+    }
     
 
     
