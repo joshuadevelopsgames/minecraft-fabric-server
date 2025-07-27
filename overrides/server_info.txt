@@ -1,0 +1,4 @@
+Server Name: Greek Mythology Server
+Server IP: 178.156.165.14
+Server Port: 25565
+Description: Greek Mythology Mod Server - Join the realm of the gods! 

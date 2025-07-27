@@ -1,0 +1,28 @@
+{
+  "formatVersion": 1,
+  "game": "minecraft",
+  "versionId": "1.0.62",
+  "name": "Greek Mythology Modpack",
+  "summary": "A Minecraft modpack featuring Greek Mythology with legendary weapons and divine favor system",
+  "files": [
+    {
+      "path": "overrides/mods/greek-mythology-1.0.62.jar",
+      "hashes": {
+        "sha1": "0000000000000000000000000000000000000000",
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "env": {
+        "client": "required",
+        "server": "required"
+      },
+      "downloads": [
+        "https://example.com/greek-mythology-1.0.62.jar"
+      ],
+      "fileSize": 1730034
+    }
+  ],
+  "dependencies": {
+    "minecraft": "1.21.8",
+    "fabric-loader": "0.16.14"
+  }
+} 

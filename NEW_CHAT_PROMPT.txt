@@ -1,0 +1,32 @@
+I'm working on a Minecraft Fabric mod called "Greek Mythology" and need help continuing development of the Hades Scythe weapon. 
+
+Here's what you need to know:
+
+**Project Location:** `/Users/joshua/Minecraft Server/minecraft-fabric-server/`
+**Current Version:** 1.0.62
+**Server:** Remote Fabric server at 178.156.165.14:25565
+**Working State:** All 3 legendary weapons functional (Zeus Bolt, Poseidon Trident, Hades Scythe)
+
+**Hades Scythe Current Status:**
+- ✅ Soul Harvest, Death Mist, Underworld Portal abilities implemented
+- ✅ 16.0 damage with Wither effect on melee hits
+- ✅ 4 charges with 25-second cooldown
+- ✅ Infinite abilities in Nether/near lava
+- ❓ Needs refinement and testing
+
+**Critical Files:**
+- `greek-mythology-mod-dev/src/main/java/com/example/greekmyth/item/HadesScytheItem.java` - Main Hades Scythe code
+- `GREEK_MYTHOLOGY_MOD_MASTER_BACKUP.md` - Complete system backup
+- `DEVELOPMENT_RULEBOOK.md` - Development workflow rules
+- `AI_QUICK_REFERENCE.md` - Quick commands and procedures
+
+**Important Rules:**
+- ALWAYS ask before making changes to server or modpack
+- NEVER undo existing work (unless creating new version)
+- ALWAYS use remote server (never local)
+- ALWAYS update version numbers and changelog
+- ALWAYS export modpack for testing
+
+**What I want to do:** Continue developing and refining the Hades Scythe. It's functional but needs work on balance, effects, or new features.
+
+Please read the master backup document first to understand the complete system, then help me continue working on the Hades Scythe. What specific aspect would you like to work on? 
