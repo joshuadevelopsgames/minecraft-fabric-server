@@ -34,6 +34,12 @@ public class GreekMythologyMod implements ModInitializer {
                         return showGreekMythologyHelp(context.getSource());
                     })));
             
+            // Register favor commands
+            com.example.greekmyth.command.FavorCommands.register(dispatcher);
+            
+            // Register discreet commands
+            com.example.greekmyth.command.DiscreetCommands.register(dispatcher);
+            
             LOGGER.info("Greek Mythology commands registered successfully!");
         });
         

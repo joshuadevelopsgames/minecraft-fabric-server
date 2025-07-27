@@ -3,6 +3,151 @@
 
 ---
 
+## Version 1.0.66 (2025-01-27)
+### 🔥 **INFERNO PEARL - HADES SCYTHE FUEL**
+- **New Item**: Added Inferno Pearl as consumable fuel for Hades Scythe
+- **Overworld Only**: Can only be used in the Overworld (shows message if used elsewhere)
+- **Scythe Integration**: Hades Scythe now requires Inferno Pearl for teleportation
+- **Consumption**: Automatically consumes one Inferno Pearl per teleport
+- **Error Message**: Shows "The scythe rejects your will — an Inferno Pearl is required." if no pearl
+- **Texture**: Uses custom purple/red glowing texture
+
+### 📝 **TECHNICAL CHANGES**
+- **Item Registration**: Added `InfernoPearlItem` with proper Fabric integration
+- **Inventory Check**: Hades Scythe checks for Inferno Pearl in player inventory
+- **Consumption Logic**: Automatically decrements pearl count on successful teleport
+- **Version**: `greek-mythology-1.0.66.jar` with Inferno Pearl fuel system
+
+## Version 1.0.65 (2025-01-27)
+### 🌍 **CROSS-DIMENSIONAL NETHER PORTAL - PIGGYBACKED**
+- **Piggybacked Nether Portal Code**: Now uses Minecraft's actual Nether portal teleportation system
+- **Direct API Usage**: Uses `serverUser.teleport(targetWorld, x, y, z, Set.of(), 0.0f, 0.0f, true)`
+- **Same Coordinate Scaling**: Uses the exact 1:8 ratio that Nether portals use
+- **Built-in Safety**: Leverages Minecraft's built-in teleportation safety checks
+- **No Manual Calculations**: Removed all manual coordinate and safety calculations
+
+### 📝 **TECHNICAL CHANGES**
+- **Direct Teleportation**: Uses `ServerPlayerEntity.teleport()` with proper method signature
+- **Nether Portal Logic**: Piggybacks off the same system that vanilla Nether portals use
+- **Simplified Code**: Removed complex command execution and manual calculations
+- **Version**: `greek-mythology-1.0.65.jar` with piggybacked Nether portal system
+
+## Version 1.0.64 (2025-01-27)
+### 🌍 **CROSS-DIMENSIONAL NETHER PORTAL - FIXED**
+- **Fixed Teleportation**: Improved cross-dimensional teleportation using vanilla command system
+- **Reliable Portal**: Shift + right-click now properly teleports between Overworld and Nether
+- **Command-Based**: Uses Minecraft's built-in `/execute in` command for maximum reliability
+- **Lava Spawning**: Players can spawn in lava as requested (no safe landing checks)
+- **Better Logging**: Enhanced logging to track teleportation success/failure
+
+### 📝 **TECHNICAL CHANGES**
+- **Vanilla Command System**: Uses `execute in <dimension> run tp <player> <x> <y> <z>`
+- **Simplified Logic**: Removed complex API calls in favor of reliable command execution
+- **Error Handling**: Maintains fallback to same-dimension teleport if cross-dimensional fails
+- **Version**: `greek-mythology-1.0.64.jar` with fixed cross-dimensional portal
+
+## Version 1.0.63 (2025-01-27)
+### 🌍 **CROSS-DIMENSIONAL NETHER PORTAL**
+- **Enhanced Underworld Portal**: Shift + right-click now teleports between Overworld and Nether
+- **Coordinate Scaling**: Proper 1:8 ratio scaling between dimensions (Nether is 8x smaller)
+- **Safe Landing**: Automatically finds safe spawn positions in both dimensions
+- **Command-Based Teleportation**: Uses Minecraft's built-in teleportation system for reliability
+- **Dimension-Specific Effects**: Fire resistance for Nether, regeneration for Overworld
+- **Fallback System**: Graceful fallback to same-dimension teleport if cross-dimensional fails
+
+### 📝 **TECHNICAL CHANGES**
+- **Cross-Dimensional Logic**: Implemented proper dimension detection and coordinate scaling
+- **Command Execution**: Uses `/execute in` command for reliable cross-dimensional teleportation
+- **World Management**: Proper handling of ServerWorld instances and chunk loading
+- **Error Handling**: Comprehensive error handling with fallback mechanisms
+- **Version**: `greek-mythology-1.0.63.jar` with cross-dimensional portal functionality
+
+## Version 1.0.62 (2025-01-27)
+### 💀 **HADES' SCYTHE ADDED**
+- **New Legendary Weapon**: Added Hades' Scythe with three unique underworld-themed abilities
+- **Soul Harvest**: Right-click while looking at a target area harvests souls, applying Wither III and damage
+- **Death Mist**: Right-click in open air creates expanding death mist that withers and slows enemies
+- **Underworld Portal**: Shift + right-click teleports player between Overworld and Nether with proper coordinate scaling and portal effects
+- **Nether Affinity**: Infinite abilities when in the Nether or near lava (8-block radius detection)
+- **Enhanced Damage**: 16.0 damage with Wither effect on melee hits (stronger than Zeus Bolt)
+- **Charge System**: 4 charges with 25-second cooldown when not in Nether/near lava
+
+### 🎨 **CUSTOM TEXTURE ADDED**
+- **Custom Hades Scythe Texture**: Added custom PNG texture for Hades' Scythe
+- **Visual Enhancement**: Replaced netherite hoe texture with custom underworld-themed design
+- **Texture Integration**: Updated item model to use custom `greekmyth:item/hades_scythe` texture
+- **Unique Appearance**: Hades Scythe now has its own distinct visual identity
+
+### 📝 **TECHNICAL CHANGES**
+- **New Item Class**: Created HadesScytheItem.java with underworld-themed mechanics
+- **Item Registration**: Added Hades Scythe to GreekItems.java registration
+- **Nether Detection**: Implemented proximity-based lava detection for infinite abilities
+- **Particle Effects**: Added soul fire flame, soul, smoke, and portal particles for abilities
+- **Sound Effects**: Added wither and portal sounds for underworld atmosphere
+- **Item Model**: Created hades_scythe.json model using custom texture
+- **Custom Texture**: Added hades_scythe.png to textures/item/ directory
+- **Language Support**: Added "Hades' Scythe" to English language file
+- **Version**: `greek-mythology-1.0.62.jar` with Hades' Scythe and custom texture
+
+## Version 1.0.61 (2025-01-27)
+### ⚡ **ZEUS BOLT DAMAGE ENHANCED**
+- **Increased Melee Damage**: Zeus Bolt now deals 15.0 damage (up from 8.0)
+- **Netherite Armor Penetration**: Can now deal significant damage even to players with full netherite armor
+- **Balanced Combat**: Maintains the bolt's legendary status as a powerful weapon
+- **Damage Calculation**: 15.0 damage can penetrate netherite armor's 80% damage reduction
+
+### 📝 **TECHNICAL CHANGES**
+- **postHit Method**: Updated damage value from 8.0f to 15.0f
+- **Combat Balance**: Enhanced to be effective against high-tier armor
+- **Version**: `greek-mythology-1.0.61.jar` with enhanced Zeus Bolt damage
+
+## Version 1.0.60 (2025-01-27)
+### 🎁 **DISCREET GIFT COMMAND ADDED**
+- **New Command**: Added `/gift <player> <item> <count>` for discreet item giving
+- **No Operator Logs**: Items given through this command don't show in server logs
+- **Private Messages**: Only the giver and receiver see confirmation messages
+- **Admin Only**: Requires operator level 2+ to use
+- **Item Support**: Supports common items like boats, weapons, food, armor, etc.
+- **Inventory Check**: Automatically checks if player inventory has space
+
+### 📝 **TECHNICAL CHANGES**
+- **New Command Class**: Created DiscreetCommands.java with gift functionality
+- **Command Registration**: Added to main mod initialization
+- **Item Mapping**: Built-in support for common item names and registry lookup
+- **Error Handling**: Comprehensive error checking and user feedback
+- **Version**: `greek-mythology-1.0.60.jar` with discreet gifting system
+
+## Version 1.0.59 (2025-01-27)
+### 🎨 **POSEIDON TRIDENT TEXTURE ADDED**
+- **Visual Enhancement**: Added proper trident texture for Poseidon's Trident
+- **Vanilla Integration**: Uses Minecraft's built-in trident texture for authentic look
+- **Item Model**: Created poseidon_trident.json model file
+- **Language Support**: Added English name "Poseidon's Trident" to language file
+- **Consistent Design**: Matches the visual style of other legendary weapons
+
+### 📝 **TECHNICAL CHANGES**
+- **New Model File**: Created assets/greekmyth/models/item/poseidon_trident.json
+- **Language Update**: Added item name to assets/greekmyth/lang/en_us.json
+- **Texture Reference**: Uses vanilla "item/trident" texture for authentic appearance
+- **Version**: `greek-mythology-1.0.59.jar` with proper trident visuals
+
+## Version 1.0.58 (2025-01-27)
+### 🌊 **POSEIDON'S TRIDENT ADDED**
+- **New Legendary Weapon**: Added Poseidon's Trident with three unique water-based abilities
+- **Tidal Waves**: Right-click creates expanding waves that push entities away with increasing force
+- **Water Projectiles**: Right-click while looking at a target shoots water blasts for ranged combat
+- **Storm at Sea**: Shift + right-click creates storms with lightning near water sources
+- **Water Affinity**: Infinite abilities when near or in water (5-block radius detection)
+- **Charge System**: 3 charges with 20-second cooldown when not near water
+
+### 📝 **TECHNICAL CHANGES**
+- **New Item Class**: Created PoseidonTridentItem.java with water-based mechanics
+- **Item Registration**: Added Poseidon Trident to GreekItems.java registration
+- **Water Detection**: Implemented proximity-based water detection for infinite abilities
+- **Particle Effects**: Added water splash particles for tidal wave effects
+- **Sound Effects**: Added appropriate water and thunder sounds for abilities
+- **Version**: `greek-mythology-1.0.58.jar` with Poseidon's Trident
+
 ## Version 1.0.57 (2025-01-27)
 ### 🔧 **ZEUS BOLT COOLDOWN FIX**
 - **Fixed Infinite Lightning Bug**: Removed weapon tool functionality that was interfering with cooldown system

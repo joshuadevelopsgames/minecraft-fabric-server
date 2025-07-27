@@ -64,9 +64,9 @@ public class ZeusBoltItem extends Item implements FabricItem {
     // Add weapon damage functionality
     @Override
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        // Apply Netherite sword-level damage (8.0 damage)
+        // Apply enhanced damage to penetrate netherite armor (15.0 damage)
         if (attacker.getWorld() instanceof ServerWorld serverWorld) {
-            target.damage(serverWorld, serverWorld.getDamageSources().generic(), 8.0f);
+            target.damage(serverWorld, serverWorld.getDamageSources().generic(), 15.0f);
         }
     }
     

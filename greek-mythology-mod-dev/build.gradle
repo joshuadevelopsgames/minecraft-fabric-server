@@ -4,7 +4,7 @@ plugins {
 
 group = 'com.example.greekmyth'
 archivesBaseName = 'greek-mythology'
-version = '1.0.57'
+version = '1.0.66'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
