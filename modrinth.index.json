@@ -1,9 +1,9 @@
 {
   "formatVersion": 1,
   "game": "minecraft",
-  "versionId": "1.0.62",
+  "versionId": "1.0.66",
   "name": "Greek Mythology Modpack",
-  "summary": "Greek Mythology mod with high-resolution Hades Scythe texture",
+  "summary": "Greek Mythology mod with Inferno Pearl texture and Hades Scythe fuel system",
   "files": [
     {
       "path": "mods/fabric-api-0.129.0+1.21.8.jar",
@@ -19,51 +19,6 @@
         "https://cdn.modrinth.com/data/P7dR8mSH/versions/X2hTodix/fabric-api-0.129.0%2B1.21.8.jar"
       ],
       "fileSize": 2212412
-    },
-    {
-      "path": "mods/lifesteal-2.2.0.jar",
-      "hashes": {
-        "sha1": "4217f131322d2729f9cb95a61662b6cfe4c3311c",
-        "sha512": "528cc3228f90ae3bbe01b1633bf9a4c8a43f7592dce5f783dcbb1c6fab6e100c19d0c5f09fadc339e760c52ccffa1ea5bc029216e73b680309fdbccf1ef27909"
-      },
-      "env": {
-        "client": "unsupported",
-        "server": "required"
-      },
-      "downloads": [
-        "https://cdn.modrinth.com/data/QgbgZM3a/versions/fSqKa0c8/lifesteal-2.2.0.jar"
-      ],
-      "fileSize": 1517449
-    },
-    {
-      "path": "mods/player-roles-1.6.15.jar",
-      "hashes": {
-        "sha1": "d4408c8a045a886aa33c51033a6b4421842b22a6",
-        "sha512": "32763f394c6511f10fd73ed88b364924f4027c83dbc42a5b1f2b738be8025f4e956c47fb9716c1f469da84d29900430fa17b0b7c75ceb85f64f2f914ad547a86"
-      },
-      "env": {
-        "client": "unsupported",
-        "server": "required"
-      },
-      "downloads": [
-        "https://cdn.modrinth.com/data/Rt1mrUHm/versions/aX5ZEmN4/player-roles-1.6.15.jar"
-      ],
-      "fileSize": 142039
-    },
-    {
-      "path": "mods/voicechat-fabric-1.21.8-2.5.34.jar",
-      "hashes": {
-        "sha1": "79f12ef25330e0d7a3a4d828630f73aa39d3e604",
-        "sha512": "348ae0b0cd6f855dadac3eb77c87e4611545267b0a46839b0735d311eaa91488734e2df71d502642bd7bc21a25e75d45b97ecab65662207067a72134f1bf6778"
-      },
-      "env": {
-        "client": "required",
-        "server": "required"
-      },
-      "downloads": [
-        "https://cdn.modrinth.com/data/9eGKb6K1/versions/yp2VrKIT/voicechat-fabric-1.21.8-2.5.34.jar"
-      ],
-      "fileSize": 7419929
     }
   ],
   "dependencies": {

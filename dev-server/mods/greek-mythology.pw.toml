@@ -1,0 +1,15 @@
+name = "Greek Mythology"
+filename = "greek-mythology-1.0.62.jar"
+side = "both"
+
+[download]
+hash-format = "sha256"
+hash = "0000000000000000000000000000000000000000000000000000000000000000"
+mode = "metadata:curseforge"
+
+[update]
+curseforge = 123456789
+modrinth = "greek-mythology"
+
+[install]
+file = "mods/greek-mythology-1.0.62.jar" 

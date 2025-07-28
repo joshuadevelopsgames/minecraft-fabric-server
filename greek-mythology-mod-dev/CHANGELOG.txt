@@ -10,13 +10,14 @@
 - **Scythe Integration**: Hades Scythe now requires Inferno Pearl for teleportation
 - **Consumption**: Automatically consumes one Inferno Pearl per teleport
 - **Error Message**: Shows "The scythe rejects your will — an Inferno Pearl is required." if no pearl
-- **Texture**: Uses custom purple/red glowing texture
+- **Custom Texture**: Updated to use correct red-pack texture for Inferno Pearl
 
 ### 📝 **TECHNICAL CHANGES**
 - **Item Registration**: Added `InfernoPearlItem` with proper Fabric integration
 - **Inventory Check**: Hades Scythe checks for Inferno Pearl in player inventory
 - **Consumption Logic**: Automatically decrements pearl count on successful teleport
-- **Version**: `greek-mythology-1.0.66.jar` with Inferno Pearl fuel system
+- **Texture Update**: Replaced placeholder texture with correct red-pack texture
+- **Version**: `greek-mythology-1.0.66.jar` with Inferno Pearl fuel system and correct texture
 
 ## Version 1.0.65 (2025-01-27)
 ### 🌍 **CROSS-DIMENSIONAL NETHER PORTAL - PIGGYBACKED**

@@ -72,9 +72,72 @@ public class HadesScytheItem extends Item implements FabricItem {
             if (target instanceof PlayerEntity) {
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 60, 1)); // 3 seconds of Wither II
             }
+            
+            // Transform skeletons into wither skeletons when hit with wither effect
+            if (target.getType() == EntityType.SKELETON && attacker instanceof ServerPlayerEntity) {
+                // Check if skeleton already has wither effect or apply it
+                boolean hasWither = target.hasStatusEffect(StatusEffects.WITHER);
+                if (!hasWither) {
+                    target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 60, 1)); // 3 seconds of Wither II
+                }
+                
+                // Transform skeleton into wither skeleton pet
+                transformSkeletonToWitherSkeleton(serverWorld, target, (ServerPlayerEntity) attacker);
+            }
         }
     }
-
+    
+    private void transformSkeletonToWitherSkeleton(ServerWorld world, LivingEntity skeleton, ServerPlayerEntity owner) {
+        // Create vanilla wither skeleton at the same position
+        net.minecraft.entity.mob.WitherSkeletonEntity witherSkeleton = EntityType.WITHER_SKELETON.create(world, net.minecraft.entity.SpawnReason.EVENT);
+        if (witherSkeleton != null) {
+            witherSkeleton.setPosition(skeleton.getPos());
+            witherSkeleton.setYaw(skeleton.getYaw());
+            witherSkeleton.setPitch(skeleton.getPitch());
+            witherSkeleton.setVelocity(skeleton.getVelocity());
+            
+            // Set full health for the wither skeleton
+            witherSkeleton.setHealth(witherSkeleton.getMaxHealth());
+            
+            // Remove the original skeleton
+            skeleton.discard();
+            
+            // Spawn the wither skeleton
+            world.spawnEntity(witherSkeleton);
+            
+            // Make it a pet by setting the owner
+            makeWitherSkeletonPet(witherSkeleton, owner);
+            
+            // Add transformation effects
+            for (int i = 0; i < 20; i++) {
+                double x = skeleton.getX() + (world.random.nextDouble() - 0.5) * 2;
+                double y = skeleton.getY() + world.random.nextDouble() * 2;
+                double z = skeleton.getZ() + (world.random.nextDouble() - 0.5) * 2;
+                world.spawnParticles(ParticleTypes.SOUL_FIRE_FLAME, x, y, z, 1, 0, 0, 0, 0.1);
+                world.spawnParticles(ParticleTypes.SMOKE, x, y, z, 1, 0, 0, 0, 0.05);
+            }
+            
+            // Play transformation sound
+            world.playSound(null, skeleton.getX(), skeleton.getY(), skeleton.getZ(),
+                SoundEvents.ENTITY_WITHER_SKELETON_AMBIENT, SoundCategory.HOSTILE, 1.0f, 0.8f);
+            
+            GreekMythologyMod.LOGGER.info("HADES SCYTHE: Transformed skeleton into pet wither skeleton at ({}, {}, {}) for player {}",
+                skeleton.getX(), skeleton.getY(), skeleton.getZ(), owner.getName().getString());
+        }
+    }
+    
+    private void makeWitherSkeletonPet(net.minecraft.entity.mob.WitherSkeletonEntity witherSkeleton, ServerPlayerEntity owner) {
+        // Set the wither skeleton to follow the owner like a pet
+        witherSkeleton.setCustomName(Text.literal("§6" + owner.getName().getString() + "'s Wither Skeleton"));
+        witherSkeleton.setCustomNameVisible(true);
+        
+        // Set the wither skeleton to not target its owner initially
+        witherSkeleton.setTarget(null);
+        witherSkeleton.setAttacking(false);
+        
+        GreekMythologyMod.LOGGER.info("HADES SCYTHE: Made wither skeleton pet for player {} with basic protection", owner.getName().getString());
+    }
+    
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
 
@@ -327,15 +390,8 @@ public class HadesScytheItem extends Item implements FabricItem {
         }
         
         // Find a safe spawn position in the target world
-        BlockPos spawnPos = targetWorld.getTopPosition(Heightmap.Type.WORLD_SURFACE, 
-            new BlockPos((int) targetPos.x, (int) targetPos.y, (int) targetPos.z));
-        
-        // Ensure the position is safe (not in lava, not too high)
-        while (spawnPos.getY() > targetWorld.getBottomY() + 10 && 
-               (targetWorld.getBlockState(spawnPos).isAir() || 
-                targetWorld.getBlockState(spawnPos).getFluidState().isIn(FluidTags.LAVA))) {
-            spawnPos = spawnPos.down();
-        }
+        BlockPos targetBlockPos = new BlockPos((int) targetPos.x, (int) targetPos.y, (int) targetPos.z);
+        BlockPos spawnPos = findSafeSpawnPosition(targetWorld, targetBlockPos);
         
         // Create portal particles at current location
         for (int i = 0; i < 50; i++) {
@@ -353,31 +409,18 @@ public class HadesScytheItem extends Item implements FabricItem {
         world.playSound(null, userPos.x, userPos.y, userPos.z,
             SoundEvents.BLOCK_PORTAL_TRIGGER, SoundCategory.PLAYERS, 1.0f, 0.8f);
         
-        // Use Minecraft's built-in Nether portal teleportation system
+        // Teleport to the safe spawn position
         try {
-            // Use the same teleportation logic that Nether portals use internally
-            if (targetDimension == World.NETHER) {
-                // Going to Nether - use the same coordinate scaling as Nether portals
-                serverUser.teleport(targetWorld, 
-                    (userPos.x / 8.0), 
-                    userPos.y, 
-                    (userPos.z / 8.0), 
-                    java.util.Set.of(), 0.0f, 0.0f, true);
-            } else {
-                // Going to Overworld - use the same coordinate scaling as Nether portals
-                serverUser.teleport(targetWorld, 
-                    (userPos.x * 8.0), 
-                    userPos.y, 
-                    (userPos.z * 8.0), 
-                    java.util.Set.of(), 0.0f, 0.0f, true);
-            }
+            serverUser.teleport(targetWorld, 
+                spawnPos.getX() + 0.5, 
+                spawnPos.getY() + 1, 
+                spawnPos.getZ() + 0.5, 
+                java.util.Set.of(), 0.0f, 0.0f, true);
             
-            GreekMythologyMod.LOGGER.info("UNDERWORLD PORTAL: Used Nether portal logic to teleport {} to {}", 
-                user.getName().getString(), dimensionName);
+            GreekMythologyMod.LOGGER.info("UNDERWORLD PORTAL: Teleported {} to {} at safe position ({}, {}, {})", 
+                user.getName().getString(), dimensionName, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
         } catch (Exception e) {
             GreekMythologyMod.LOGGER.error("UNDERWORLD PORTAL: Failed to teleport player: {}", e.getMessage());
-            // Fallback to same-dimension teleport
-            serverUser.teleport(spawnPos.getX() + 0.5, spawnPos.getY() + 1, spawnPos.getZ() + 0.5, true);
         }
         
         // Create arrival particles
@@ -407,5 +450,56 @@ public class HadesScytheItem extends Item implements FabricItem {
         GreekMythologyMod.LOGGER.info("UNDERWORLD PORTAL: Teleported {} from {} to {} at position ({}, {}, {})", 
             user.getName().getString(), world.getRegistryKey().getValue().getPath(), 
             dimensionName, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
+    }
+    
+    private BlockPos findSafeSpawnPosition(ServerWorld world, BlockPos targetPos) {
+        // If we're in the Overworld, find a good surface position
+        if (world.getRegistryKey().getValue().getPath().equals("overworld")) {
+            // Start from a reasonable height and work our way up
+            BlockPos safePos = new BlockPos(targetPos.getX(), 64, targetPos.getZ());
+            
+            // Look for a safe position starting from Y=64
+            while (safePos.getY() < 256) {
+                BlockState blockState = world.getBlockState(safePos);
+                BlockState aboveState = world.getBlockState(safePos.up());
+                BlockState aboveAboveState = world.getBlockState(safePos.up(2));
+                
+                // Check if this position is safe (solid ground below, air above)
+                if (blockState.isSolidBlock(world, safePos) && 
+                    !blockState.getFluidState().isIn(FluidTags.LAVA) &&
+                    aboveState.isAir() && 
+                    aboveAboveState.isAir()) {
+                    return safePos;
+                }
+                
+                safePos = safePos.up();
+            }
+            
+            // Fallback to a reasonable height
+            return new BlockPos(targetPos.getX(), 64, targetPos.getZ());
+        } else {
+            // For Nether, find ground level starting from below
+            BlockPos safePos = new BlockPos(targetPos.getX(), 120, targetPos.getZ());
+            
+            // Start from high up and work our way down to find ground
+            while (safePos.getY() > 32) { // Don't go below Y=32 in Nether
+                BlockState blockState = world.getBlockState(safePos);
+                BlockState aboveState = world.getBlockState(safePos.up());
+                BlockState aboveAboveState = world.getBlockState(safePos.up(2));
+                
+                // Check if this position is safe (solid ground below, air above)
+                if (blockState.isSolidBlock(world, safePos) && 
+                    !blockState.getFluidState().isIn(FluidTags.LAVA) &&
+                    aboveState.isAir() && 
+                    aboveAboveState.isAir()) {
+                    return safePos;
+                }
+                
+                safePos = safePos.down();
+            }
+            
+            // Fallback to a reasonable Nether height
+            return new BlockPos(targetPos.getX(), 64, targetPos.getZ());
+        }
     }
 } 
