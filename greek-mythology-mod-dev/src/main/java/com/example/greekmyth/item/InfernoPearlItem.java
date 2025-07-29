@@ -103,7 +103,7 @@ public class InfernoPearlItem extends Item implements FabricItem {
     
     private void corruptArea(World world, BlockPos center) {
         Random random = world.getRandom();
-        int radius = 3; // 3x3x3 area
+        int radius = 4; // Increased radius for better tree coverage
         
         for (int x = -radius; x <= radius; x++) {
             for (int y = -radius; y <= radius; y++) {
@@ -111,14 +111,75 @@ public class InfernoPearlItem extends Item implements FabricItem {
                     BlockPos pos = center.add(x, y, z);
                     BlockState currentState = world.getBlockState(pos);
                     
-                    // Only corrupt replaceable blocks
-                    if (isReplaceable(currentState)) {
+                    // Transform trees into crimson forest
+                    if (isTreeBlock(currentState)) {
+                        Block crimsonBlock = getCrimsonForestBlock(currentState, random);
+                        world.setBlockState(pos, crimsonBlock.getDefaultState());
+                    }
+                    // Corrupt other replaceable blocks
+                    else if (isReplaceable(currentState)) {
                         Block corruptedBlock = getRandomNetherBlock(random);
                         world.setBlockState(pos, corruptedBlock.getDefaultState());
                     }
                 }
             }
         }
+    }
+    
+    private boolean isTreeBlock(BlockState state) {
+        Block block = state.getBlock();
+        return block == Blocks.OAK_LOG ||
+               block == Blocks.BIRCH_LOG ||
+               block == Blocks.SPRUCE_LOG ||
+               block == Blocks.JUNGLE_LOG ||
+               block == Blocks.ACACIA_LOG ||
+               block == Blocks.DARK_OAK_LOG ||
+               block == Blocks.MANGROVE_LOG ||
+               block == Blocks.CHERRY_LOG ||
+               block == Blocks.OAK_LEAVES ||
+               block == Blocks.BIRCH_LEAVES ||
+               block == Blocks.SPRUCE_LEAVES ||
+               block == Blocks.JUNGLE_LEAVES ||
+               block == Blocks.ACACIA_LEAVES ||
+               block == Blocks.DARK_OAK_LEAVES ||
+               block == Blocks.MANGROVE_LEAVES ||
+               block == Blocks.CHERRY_LEAVES ||
+               block == Blocks.AZALEA_LEAVES ||
+               block == Blocks.FLOWERING_AZALEA_LEAVES;
+    }
+    
+    private Block getCrimsonForestBlock(BlockState originalState, Random random) {
+        Block originalBlock = originalState.getBlock();
+        
+        // Transform logs to crimson stems
+        if (originalBlock == Blocks.OAK_LOG || 
+            originalBlock == Blocks.BIRCH_LOG || 
+            originalBlock == Blocks.SPRUCE_LOG || 
+            originalBlock == Blocks.JUNGLE_LOG || 
+            originalBlock == Blocks.ACACIA_LOG || 
+            originalBlock == Blocks.DARK_OAK_LOG ||
+            originalBlock == Blocks.MANGROVE_LOG ||
+            originalBlock == Blocks.CHERRY_LOG) {
+            return Blocks.CRIMSON_STEM;
+        }
+        
+        // Transform leaves to crimson forest leaves (Nether Wart Blocks)
+        if (originalBlock == Blocks.OAK_LEAVES || 
+            originalBlock == Blocks.BIRCH_LEAVES || 
+            originalBlock == Blocks.SPRUCE_LEAVES || 
+            originalBlock == Blocks.JUNGLE_LEAVES || 
+            originalBlock == Blocks.ACACIA_LEAVES || 
+            originalBlock == Blocks.DARK_OAK_LEAVES ||
+            originalBlock == Blocks.MANGROVE_LEAVES ||
+            originalBlock == Blocks.CHERRY_LEAVES ||
+            originalBlock == Blocks.AZALEA_LEAVES ||
+            originalBlock == Blocks.FLOWERING_AZALEA_LEAVES) {
+            
+            return Blocks.NETHER_WART_BLOCK;
+        }
+        
+        // Fallback to crimson nylium
+        return Blocks.CRIMSON_NYLIUM;
     }
     
     private boolean isReplaceable(BlockState state) {
@@ -128,13 +189,7 @@ public class InfernoPearlItem extends Item implements FabricItem {
                block == Blocks.STONE || 
                block == Blocks.SAND || 
                block == Blocks.GRAVEL ||
-               block == Blocks.COBBLESTONE ||
-               block == Blocks.OAK_LEAVES ||
-               block == Blocks.BIRCH_LEAVES ||
-               block == Blocks.SPRUCE_LEAVES ||
-               block == Blocks.JUNGLE_LEAVES ||
-               block == Blocks.ACACIA_LEAVES ||
-               block == Blocks.DARK_OAK_LEAVES;
+               block == Blocks.COBBLESTONE;
     }
     
     private Block getRandomNetherBlock(Random random) {

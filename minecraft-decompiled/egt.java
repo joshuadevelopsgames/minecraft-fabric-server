@@ -1,0 +1,89 @@
+import java.util.List;
+import java.util.function.Predicate;
+import javax.annotation.Nullable;
+import org.apache.commons.lang3.Validate;
+
+public class egt<T> implements ego<T> {
+   private final jq<T> a;
+   @Nullable
+   private T b;
+   private final egp<T> c;
+
+   public egt(jq<T> $$0, egp<T> $$1, List<T> $$2) {
+      this.a = $$0;
+      this.c = $$1;
+      if ($$2.size() > 0) {
+         Validate.isTrue($$2.size() <= 1, "Can't initialize SingleValuePalette with %d values.", $$2.size());
+         this.b = $$2.get(0);
+      }
+   }
+
+   public static <A> ego<A> a(int $$0, jq<A> $$1, egp<A> $$2, List<A> $$3) {
+      return new egt<>($$1, $$2, $$3);
+   }
+
+   @Override
+   public int a(T $$0) {
+      if (this.b != null && this.b != $$0) {
+         return this.c.onResize(1, $$0);
+      } else {
+         this.b = $$0;
+         return 0;
+      }
+   }
+
+   @Override
+   public boolean a(Predicate<T> $$0) {
+      if (this.b == null) {
+         throw new IllegalStateException("Use of an uninitialized palette");
+      } else {
+         return $$0.test(this.b);
+      }
+   }
+
+   @Override
+   public T a(int $$0) {
+      if (this.b != null && $$0 == 0) {
+         return this.b;
+      } else {
+         throw new IllegalStateException("Missing Palette entry for id " + $$0 + ".");
+      }
+   }
+
+   @Override
+   public void a(wg $$0) {
+      this.b = this.a.b($$0.l());
+   }
+
+   @Override
+   public void b(wg $$0) {
+      if (this.b == null) {
+         throw new IllegalStateException("Use of an uninitialized palette");
+      } else {
+         $$0.c(this.a.a(this.b));
+      }
+   }
+
+   @Override
+   public int a() {
+      if (this.b == null) {
+         throw new IllegalStateException("Use of an uninitialized palette");
+      } else {
+         return xf.a(this.a.a(this.b));
+      }
+   }
+
+   @Override
+   public int b() {
+      return 1;
+   }
+
+   @Override
+   public ego<T> a(egp<T> $$0) {
+      if (this.b == null) {
+         throw new IllegalStateException("Use of an uninitialized palette");
+      } else {
+         return this;
+      }
+   }
+}

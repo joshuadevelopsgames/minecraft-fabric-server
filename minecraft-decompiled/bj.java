@@ -1,0 +1,29 @@
+import com.mojang.serialization.Codec;
+import java.util.List;
+import java.util.function.Predicate;
+
+public class bj {
+   public static final Codec<bj> a = fgs.e.listOf().xmap(bj::new, $$0 -> $$0.b);
+   private final List<fgs> b;
+   private final Predicate<fdj> c;
+
+   bj(List<fgs> $$0) {
+      this.b = $$0;
+      this.c = ag.a($$0);
+   }
+
+   public static bj a(fgs... $$0) {
+      return new bj(List.of($$0));
+   }
+
+   public boolean a(fdj $$0) {
+      return this.c.test($$0);
+   }
+
+   public void a(fdp $$0) {
+      for (int $$1 = 0; $$1 < this.b.size(); $$1++) {
+         fgs $$2 = this.b.get($$1);
+         $$2.a($$0.a(new bci.e($$1)));
+      }
+   }
+}

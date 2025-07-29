@@ -1,0 +1,27 @@
+import com.mojang.serialization.MapCodec;
+
+public abstract class dpp extends dpz {
+   private static final fjm a = dpz.b(4.0, 0.0, 10.0);
+
+   protected dpp(eea.d $$0) {
+      super($$0);
+   }
+
+   @Override
+   protected abstract MapCodec<? extends dpp> a();
+
+   @Override
+   protected fjm a(eeb $$0, dly $$1, jb $$2, fix $$3) {
+      return a;
+   }
+
+   @Override
+   protected eeb a(eeb $$0, dmx $$1, dnj $$2, jb $$3, jh $$4, jb $$5, eeb $$6, bck $$7) {
+      return $$4 == jh.a && !this.a($$0, $$1, $$3) ? dqb.a.m() : super.a($$0, $$1, $$2, $$3, $$4, $$5, $$6, $$7);
+   }
+
+   @Override
+   protected boolean a(eeb $$0, dmx $$1, jb $$2) {
+      return a($$1, $$2.e(), jh.b);
+   }
+}

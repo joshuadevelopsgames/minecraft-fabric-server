@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Main-Class: net.fabricmc.loader.impl.launch.server.FabricServerLauncher
+Class-Path: libraries/org/ow2/asm/asm/9.8/asm-9.8.jar libraries/org/ow2/
+ asm/asm-analysis/9.8/asm-analysis-9.8.jar libraries/org/ow2/asm/asm-com
+ mons/9.8/asm-commons-9.8.jar libraries/org/ow2/asm/asm-tree/9.8/asm-tre
+ e-9.8.jar libraries/org/ow2/asm/asm-util/9.8/asm-util-9.8.jar libraries
+ /net/fabricmc/sponge-mixin/0.15.5+mixin.0.8.7/sponge-mixin-0.15.5+mixin
+ .0.8.7.jar libraries/net/fabricmc/intermediary/1.21.8/intermediary-1.21
+ .8.jar libraries/net/fabricmc/fabric-loader/0.16.14/fabric-loader-0.16.
+ 14.jar
+

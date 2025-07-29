@@ -1,0 +1,46 @@
+package pkg;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class TestTryWithResourcesMultiJ16 {
+   public void testMulti(File file) throws IOException {
+      try (
+         Scanner scanner = new Scanner(file);// 10
+         FileWriter writer = new FileWriter(file);
+      ) {
+         scanner.next();// 11
+         writer.write("hello");// 12
+      }
+   }// 13
+}
+
+class 'pkg/TestTryWithResourcesMultiJ16' {
+   method 'testMulti (Ljava/io/File;)V' {
+      4      10
+      8      10
+      d      11
+      11      11
+      12      13
+      13      13
+      14      13
+      15      13
+      17      14
+      18      14
+      19      14
+      1a      14
+      1b      14
+      1c      14
+      3d      16
+   }
+}
+
+Lines mapping:
+10 <-> 11
+11 <-> 14
+12 <-> 15
+13 <-> 17
+Not mapped:
+14

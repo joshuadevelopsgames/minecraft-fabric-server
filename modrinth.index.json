@@ -1,9 +1,9 @@
 {
   "formatVersion": 1,
   "game": "minecraft",
-  "versionId": "1.0.66",
+  "versionId": "1.0.69",
   "name": "Greek Mythology Modpack",
-  "summary": "Greek Mythology mod with Inferno Pearl texture and Hades Scythe fuel system",
+  "summary": "Greek Mythology mod with Poseidon Trident Riptide III underwater sprinting",
   "files": [
     {
       "path": "mods/fabric-api-0.129.0+1.21.8.jar",

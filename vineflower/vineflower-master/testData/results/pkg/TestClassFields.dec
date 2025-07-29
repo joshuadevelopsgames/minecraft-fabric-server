@@ -1,0 +1,12 @@
+package pkg;
+
+public class TestClassFields {
+   private static int[] sizes = new int[TestClassFields.names.length];
+   private static String[] names = new String[]{"name1", "name2"};
+   private static final int SIZE = TestClassFields.Inner.staticMutable;
+
+   private static class Inner {
+      private static int staticMutable = 3;
+   }
+}
+

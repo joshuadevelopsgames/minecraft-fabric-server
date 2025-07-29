@@ -3,6 +3,56 @@
 
 ---
 
+## Version 1.0.69 (2025-01-28)
+### 🎨 **POSEIDON TRIDENT RIPTIDE III**
+- Added Riptide III underwater sprinting to Poseidon Trident
+- Activates when holding Poseidon Trident and pressing sprint key underwater
+- Also activates on double-tap forward movement underwater
+- Provides significant speed boost in the direction player is looking
+- Debug logging shows activation method (SPRINT or DOUBLE-TAP)
+
+## Version 1.0.68 (2025-01-28)
+### 🏊 **STRIDER-STYLE WATER WALKING**
+- **Strider-Inspired Implementation**: Water walking now uses the exact same logic as Striders walking on lava
+- **Collision Detection**: Uses `ShapeContext.isAbove(FluidBlock.COLLISION_SHAPE)` for proper surface detection
+- **Ground Setting**: Sets `player.setOnGround(true)` when at water surface for natural walking
+- **Floating Physics**: Applies Strider's velocity formula `velocity.multiply(0.5).add(0.0, 0.05, 0.0)` when in water
+- **Animation Control**: Prevents swimming animation with `setSwimming(false)` for walking appearance
+- **Surface vs Floating**: Different behavior when at surface vs. floating in water
+- **Enhanced Logging**: Detailed logging for surface detection and floating states
+
+### 🎨 **CUSTOM TRIDENT TEXTURE & ENHANCED ABILITIES**
+- **Custom Poseidon Trident Texture**: Added custom PNG texture for Poseidon's Trident
+- **Visual Enhancement**: Replaced placeholder texture with custom trident design
+- **Texture Integration**: Updated item model to use custom `greekmyth:item/poseidon_trident` texture
+- **Unique Appearance**: Poseidon Trident now has its own distinct visual identity
+- **Entity Texture**: Added custom trident entity texture for future projectile use
+
+### ⚡ **ENHANCED TRIDENT ABILITIES**
+- **Rain Affinity**: Trident now has infinite abilities when it's raining (in addition to water)
+- **Improved Storm Control**: Shift + right-click now sets weather to rain AND thunder (not just thunder)
+- **Weather Toggle**: Shift + right-click again when thundering clears the weather
+- **Water Requirement**: Weather control only works when near water (8-block radius)
+- **No Charge Consumption**: Failed weather control attempts (away from water) don't consume charges
+- **Trident Projectiles**: Water projectile ability now throws actual trident entities instead of water buckets
+- **Completely Straight Flight**: Trident projectiles now fly perfectly straight with no gravity (no diagonal or sideways movement)
+- **Vanilla Trident Behavior**: Trident projectiles now use the exact same throwing method as vanilla tridents for perfect orientation and physics
+- **Water Walking Ability**: Players can now walk on water while holding the Poseidon Trident (unless they press shift to intentionally fall into water)
+- **Immediate Despawn**: Trident projectiles now despawn immediately when they hit entities or blocks
+- **Controlled Lightning**: Storm activation only sets weather (no lightning strikes on click)
+- **Enhanced Logging**: Added detailed logging for infinite ability detection (water, rain, etc.)
+
+## Version 1.0.67 (2025-01-27)
+
+### 📝 **TECHNICAL CHANGES**
+- **Texture Replacement**: Replaced poseidon_trident.png with custom 16x16 texture
+- **Entity Texture**: Added poseidon_trident.png to textures/entity/ directory (32x32)
+- **Model Update**: Maintained item/generated parent for proper 16x16 texture rendering
+- **File Structure**: Properly organized textures in item/ and entity/ directories
+- **Rain Detection**: Added `world.isRaining()` check for infinite abilities
+- **Storm Enhancement**: Removed water requirement for storm creation
+- **Version**: `greek-mythology-1.0.67.jar` with custom trident texture and enhanced abilities
+
 ## Version 1.0.66 (2025-01-27)
 ### 🔥 **INFERNO PEARL - HADES SCYTHE FUEL**
 - **New Item**: Added Inferno Pearl as consumable fuel for Hades Scythe

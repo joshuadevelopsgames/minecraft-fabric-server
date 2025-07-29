@@ -3,6 +3,7 @@ package com.example.greekmyth.item;
 import com.example.greekmyth.GreekMythologyMod;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,6 +31,11 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.component.type.TooltipDisplayComponent;
+import java.util.List;
+import java.util.function.Consumer;
 import net.fabricmc.fabric.api.item.v1.FabricItem;
 
 public class HadesScytheItem extends Item implements FabricItem {
@@ -55,18 +61,19 @@ public class HadesScytheItem extends Item implements FabricItem {
 
     @Override
     public ItemStack getDefaultStack() {
-        ItemStack stack = super.getDefaultStack();
-        stack.setDamage(0); // Ensure new items start with full charges
-        GreekMythologyMod.LOGGER.info("HadesScytheItem getDefaultStack called - setting damage to 0");
-        return stack;
+        return super.getDefaultStack();
     }
 
     // Add weapon damage functionality
     @Override
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        // Apply enhanced damage to penetrate netherite armor (16.0 damage - slightly more than Zeus Bolt)
         if (attacker.getWorld() instanceof ServerWorld serverWorld) {
-            target.damage(serverWorld, serverWorld.getDamageSources().generic(), 16.0f);
+            // Base damage for Hades Scythe
+            float damage = 4.0f;
+            
+            GreekMythologyMod.LOGGER.info("HADES SCYTHE ATTACK: Damage: {}", damage);
+            
+            target.damage(serverWorld, serverWorld.getDamageSources().generic(), damage);
             
             // Add wither effect on hit (death magic)
             if (target instanceof PlayerEntity) {
@@ -87,55 +94,64 @@ public class HadesScytheItem extends Item implements FabricItem {
         }
     }
     
-    private void transformSkeletonToWitherSkeleton(ServerWorld world, LivingEntity skeleton, ServerPlayerEntity owner) {
-        // Create vanilla wither skeleton at the same position
-        net.minecraft.entity.mob.WitherSkeletonEntity witherSkeleton = EntityType.WITHER_SKELETON.create(world, net.minecraft.entity.SpawnReason.EVENT);
-        if (witherSkeleton != null) {
-            witherSkeleton.setPosition(skeleton.getPos());
-            witherSkeleton.setYaw(skeleton.getYaw());
-            witherSkeleton.setPitch(skeleton.getPitch());
-            witherSkeleton.setVelocity(skeleton.getVelocity());
-            
-            // Set full health for the wither skeleton
-            witherSkeleton.setHealth(witherSkeleton.getMaxHealth());
-            
+        private void transformSkeletonToWitherSkeleton(ServerWorld world, LivingEntity skeleton, ServerPlayerEntity owner) {
+        // Create a wolf entity that will be transformed into an Undead Warrior
+        WolfEntity wolf = EntityType.WOLF.create(world, net.minecraft.entity.SpawnReason.NATURAL);
+        if (wolf != null) {
+            wolf.setPosition(skeleton.getPos());
+            wolf.setYaw(skeleton.getYaw());
+            wolf.setPitch(skeleton.getPitch());
+            wolf.setVelocity(skeleton.getVelocity());
+
+            // Set up the wolf as a pet
+            wolf.setOwner(owner);
+            wolf.setTamed(true, true);
+            wolf.setCustomName(Text.literal("§6" + owner.getName().getString() + "'s Undead Warrior"));
+            wolf.setCustomNameVisible(true);
+
             // Remove the original skeleton
             skeleton.discard();
+
+            // Spawn the wolf
+            world.spawnEntity(wolf);
             
-            // Spawn the wither skeleton
-            world.spawnEntity(witherSkeleton);
-            
-            // Make it a pet by setting the owner
-            makeWitherSkeletonPet(witherSkeleton, owner);
+            // Add a glowing effect to make it look more undead
+            wolf.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 200, 0, false, false));
             
             // Add transformation effects
             for (int i = 0; i < 20; i++) {
                 double x = skeleton.getX() + (world.random.nextDouble() - 0.5) * 2;
                 double y = skeleton.getY() + world.random.nextDouble() * 2;
                 double z = skeleton.getZ() + (world.random.nextDouble() - 0.5) * 2;
-                world.spawnParticles(ParticleTypes.SOUL_FIRE_FLAME, x, y, z, 1, 0, 0, 0, 0.1);
+                world.spawnParticles(ParticleTypes.SOUL, x, y, z, 1, 0, 0, 0, 0.1);
                 world.spawnParticles(ParticleTypes.SMOKE, x, y, z, 1, 0, 0, 0, 0.05);
             }
             
             // Play transformation sound
             world.playSound(null, skeleton.getX(), skeleton.getY(), skeleton.getZ(),
-                SoundEvents.ENTITY_WITHER_SKELETON_AMBIENT, SoundCategory.HOSTILE, 1.0f, 0.8f);
+                SoundEvents.ENTITY_WITHER_AMBIENT, SoundCategory.PLAYERS, 1.0f, 1.2f);
             
-            GreekMythologyMod.LOGGER.info("HADES SCYTHE: Transformed skeleton into pet wither skeleton at ({}, {}, {}) for player {}",
+            GreekMythologyMod.LOGGER.info("HADES SCYTHE: Transformed skeleton into Undead Warrior at ({}, {}, {}) for player {}",
                 skeleton.getX(), skeleton.getY(), skeleton.getZ(), owner.getName().getString());
         }
     }
     
     private void makeWitherSkeletonPet(net.minecraft.entity.mob.WitherSkeletonEntity witherSkeleton, ServerPlayerEntity owner) {
-        // Set the wither skeleton to follow the owner like a pet
-        witherSkeleton.setCustomName(Text.literal("§6" + owner.getName().getString() + "'s Wither Skeleton"));
+        // Set custom name
+        witherSkeleton.setCustomName(Text.literal("§6" + owner.getName().getString() + "'s Undead Warrior"));
         witherSkeleton.setCustomNameVisible(true);
         
-        // Set the wither skeleton to not target its owner initially
+        // Clear current target and attacking state
         witherSkeleton.setTarget(null);
         witherSkeleton.setAttacking(false);
         
-        GreekMythologyMod.LOGGER.info("HADES SCYTHE: Made wither skeleton pet for player {} with basic protection", owner.getName().getString());
+        // Make the wither skeleton persistent so it doesn't despawn
+        witherSkeleton.setPersistent();
+        
+        // Set the wither skeleton to peaceful mode (won't attack players)
+        witherSkeleton.setSilent(true);
+        
+        GreekMythologyMod.LOGGER.info("HADES SCYTHE: Created pet wither skeleton for player {} with enhanced protection", owner.getName().getString());
     }
     
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
@@ -220,37 +236,16 @@ public class HadesScytheItem extends Item implements FabricItem {
                 return ActionResult.FAIL;
             }
         } else {
-            // Check if player is looking at a target for soul harvest
-            Vec3d start = user.getEyePos();
-            Vec3d end = start.add(user.getRotationVecClient().multiply(SOUL_HARVEST_RADIUS));
+            // Soul Harvest - Harvest souls from the target area (works anywhere)
+            if (infinite || currentCharges > 0) {
+                GreekMythologyMod.LOGGER.info("SOUL HARVEST: Harvesting souls from target area");
+                harvestSouls(serverWorld, user, user.getPos());
 
-            BlockHitResult hitResult = world.raycast(new RaycastContext(start, end,
-                RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, user));
-
-            if (hitResult.getType() == HitResult.Type.BLOCK) {
-                // Soul Harvest - Harvest souls from the target area
-                if (infinite || currentCharges > 0) {
-                    GreekMythologyMod.LOGGER.info("SOUL HARVEST: Harvesting souls from target area");
-                    harvestSouls(serverWorld, user, hitResult.getPos());
-
-                    if (!infinite) {
-                        consumeCharge(stack, currentDamage, user);
-                    }
-
-                    return ActionResult.SUCCESS;
+                if (!infinite) {
+                    consumeCharge(stack, currentDamage, user);
                 }
-            } else {
-                // Death Mist - Create a cloud of death that damages and withers enemies
-                if (infinite || currentCharges > 0) {
-                    GreekMythologyMod.LOGGER.info("DEATH MIST: Creating cloud of death");
-                    createDeathMist(serverWorld, user);
 
-                    if (!infinite) {
-                        consumeCharge(stack, currentDamage, user);
-                    }
-
-                    return ActionResult.SUCCESS;
-                }
+                return ActionResult.SUCCESS;
             }
         }
 
@@ -293,30 +288,44 @@ public class HadesScytheItem extends Item implements FabricItem {
             targetPos.x + SOUL_HARVEST_RADIUS, targetPos.y + 4, targetPos.z + SOUL_HARVEST_RADIUS
         );
 
-        world.getOtherEntities(user, harvestBox, entity ->
-            entity instanceof LivingEntity && entity != user).forEach(entity -> {
+        int soulsHarvested = 0;
+        
+        for (net.minecraft.entity.Entity entity : world.getOtherEntities(user, harvestBox, entity ->
+            entity instanceof LivingEntity && entity != user)) {
             LivingEntity livingEntity = (LivingEntity) entity;
             
             // Apply wither effect and damage
             livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 120, 2)); // 6 seconds of Wither III
             livingEntity.damage(world, world.getDamageSources().wither(), 4.0f);
 
+            // Try to harvest a soul from this entity
+            if (com.example.greekmyth.util.SoulHarvester.harvestSoul(livingEntity, world, livingEntity.getPos())) {
+                soulsHarvested++;
+            }
+
             // Create soul particle effects
             for (int i = 0; i < 10; i++) {
                 double x = livingEntity.getX() + (world.random.nextDouble() - 0.5) * 2;
                 double y = livingEntity.getY() + world.random.nextDouble() * 2;
                 double z = livingEntity.getZ() + (world.random.nextDouble() - 0.5) * 2;
-                world.spawnParticles(ParticleTypes.SOUL_FIRE_FLAME, x, y, z, 1, 0, 0, 0, 0.1);
+                world.spawnParticles(ParticleTypes.SOUL, x, y, z, 1, 0, 0, 0, 0.1);
+                world.spawnParticles(ParticleTypes.SMOKE, x, y, z, 1, 0, 0, 0, 0.05);
             }
 
-            GreekMythologyMod.LOGGER.info("SOUL HARVEST: Harvested soul from entity {}",
+            GreekMythologyMod.LOGGER.info("SOUL HARVEST: Processed entity {}",
                 livingEntity.getName().getString());
-        });
+        }
+        
+        if (soulsHarvested > 0) {
+            GreekMythologyMod.LOGGER.info("SOUL HARVEST: Successfully harvested {} souls from entities", soulsHarvested);
+        }
 
         // Play soul harvest sound
         world.playSound(null, targetPos.x, targetPos.y, targetPos.z,
-            SoundEvents.ENTITY_WITHER_SHOOT, SoundCategory.PLAYERS, 1.0f, 0.8f);
+            SoundEvents.ENTITY_WITHER_AMBIENT, SoundCategory.PLAYERS, 1.0f, 0.8f);
     }
+    
+
 
     private void createDeathMist(ServerWorld world, PlayerEntity user) {
         Vec3d userPos = user.getPos();
@@ -501,5 +510,25 @@ public class HadesScytheItem extends Item implements FabricItem {
             // Fallback to a reasonable Nether height
             return new BlockPos(targetPos.getX(), 64, targetPos.getZ());
         }
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, Item.TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> tooltip, TooltipType type) {
+        super.appendTooltip(stack, context, displayComponent, tooltip, type);
+        
+        tooltip.accept(Text.literal("").formatted(Formatting.GOLD));
+        tooltip.accept(Text.literal("💀 The scythe of the Lord of the Underworld").formatted(Formatting.GOLD, Formatting.BOLD));
+        tooltip.accept(Text.literal("").formatted(Formatting.GOLD));
+        tooltip.accept(Text.literal("Right-click to harvest souls and create death mist").formatted(Formatting.YELLOW));
+        tooltip.accept(Text.literal("Sneak + Right-click to open underworld portal").formatted(Formatting.YELLOW));
+        tooltip.accept(Text.literal("").formatted(Formatting.GOLD));
+        tooltip.accept(Text.literal("Harvests specific soul items from mobs").formatted(Formatting.AQUA));
+        tooltip.accept(Text.literal("Death mist blinds and weakens enemies").formatted(Formatting.AQUA));
+        tooltip.accept(Text.literal("").formatted(Formatting.GOLD));
+        tooltip.accept(Text.literal("⚔️ BASE DAMAGE: 4.0").formatted(Formatting.RED, Formatting.BOLD));
+        tooltip.accept(Text.literal("Soul items drop based on mob type").formatted(Formatting.LIGHT_PURPLE));
+        tooltip.accept(Text.literal("Portal to underworld dimensions").formatted(Formatting.RED));
+        tooltip.accept(Text.literal("").formatted(Formatting.GOLD));
+        tooltip.accept(Text.literal("Legendary Weapon").formatted(Formatting.LIGHT_PURPLE, Formatting.BOLD));
     }
 } 

@@ -1,0 +1,219 @@
+import com.google.common.collect.ImmutableList;
+import com.mojang.datafixers.util.Pair;
+
+public class qs {
+   public static final amd<ewi> a = qx.a("village/desert/town_centers");
+   private static final amd<ewi> b = qx.a("village/desert/terminators");
+   private static final amd<ewi> c = qx.a("village/desert/zombie/terminators");
+
+   public static void a(qq<ewi> $$0) {
+      jm<euc> $$1 = $$0.a(mn.bg);
+      jl<euc> $$2 = $$1.b(sj.j);
+      jl<euc> $$3 = $$1.b(sj.a);
+      jm<eyy> $$4 = $$0.a(mn.bh);
+      jl<eyy> $$5 = $$4.b(qy.e);
+      jl<eyy> $$6 = $$4.b(qy.p);
+      jm<ewi> $$7 = $$0.a(mn.bk);
+      jl<ewi> $$8 = $$7.b(qx.a);
+      jl<ewi> $$9 = $$7.b(b);
+      jl<ewi> $$10 = $$7.b(c);
+      $$0.a(
+         a,
+         new ewi(
+            $$8,
+            ImmutableList.of(
+               Pair.of(ewg.a("village/desert/town_centers/desert_meeting_point_1"), 98),
+               Pair.of(ewg.a("village/desert/town_centers/desert_meeting_point_2"), 98),
+               Pair.of(ewg.a("village/desert/town_centers/desert_meeting_point_3"), 49),
+               Pair.of(ewg.a("village/desert/zombie/town_centers/desert_meeting_point_1", $$5), 2),
+               Pair.of(ewg.a("village/desert/zombie/town_centers/desert_meeting_point_2", $$5), 2),
+               Pair.of(ewg.a("village/desert/zombie/town_centers/desert_meeting_point_3", $$5), 1)
+            ),
+            ewi.a.b
+         )
+      );
+      qx.a(
+         $$0,
+         "village/desert/streets",
+         new ewi(
+            $$9,
+            ImmutableList.of(
+               Pair.of(ewg.a("village/desert/streets/corner_01"), 3),
+               Pair.of(ewg.a("village/desert/streets/corner_02"), 3),
+               Pair.of(ewg.a("village/desert/streets/straight_01"), 4),
+               Pair.of(ewg.a("village/desert/streets/straight_02"), 4),
+               Pair.of(ewg.a("village/desert/streets/straight_03"), 3),
+               Pair.of(ewg.a("village/desert/streets/crossroad_01"), 3),
+               Pair.of(ewg.a("village/desert/streets/crossroad_02"), 3),
+               Pair.of(ewg.a("village/desert/streets/crossroad_03"), 3),
+               Pair.of(ewg.a("village/desert/streets/square_01"), 3),
+               Pair.of(ewg.a("village/desert/streets/square_02"), 3),
+               Pair.of(ewg.a("village/desert/streets/turn_01"), 3)
+            ),
+            ewi.a.a
+         )
+      );
+      qx.a(
+         $$0,
+         "village/desert/zombie/streets",
+         new ewi(
+            $$10,
+            ImmutableList.of(
+               Pair.of(ewg.a("village/desert/zombie/streets/corner_01"), 3),
+               Pair.of(ewg.a("village/desert/zombie/streets/corner_02"), 3),
+               Pair.of(ewg.a("village/desert/zombie/streets/straight_01"), 4),
+               Pair.of(ewg.a("village/desert/zombie/streets/straight_02"), 4),
+               Pair.of(ewg.a("village/desert/zombie/streets/straight_03"), 3),
+               Pair.of(ewg.a("village/desert/zombie/streets/crossroad_01"), 3),
+               Pair.of(ewg.a("village/desert/zombie/streets/crossroad_02"), 3),
+               Pair.of(ewg.a("village/desert/zombie/streets/crossroad_03"), 3),
+               Pair.of(ewg.a("village/desert/zombie/streets/square_01"), 3),
+               Pair.of(ewg.a("village/desert/zombie/streets/square_02"), 3),
+               Pair.of(ewg.a("village/desert/zombie/streets/turn_01"), 3)
+            ),
+            ewi.a.a
+         )
+      );
+      qx.a(
+         $$0,
+         "village/desert/houses",
+         new ewi(
+            $$9,
+            ImmutableList.of(
+               Pair.of(ewg.a("village/desert/houses/desert_small_house_1"), 2),
+               Pair.of(ewg.a("village/desert/houses/desert_small_house_2"), 2),
+               Pair.of(ewg.a("village/desert/houses/desert_small_house_3"), 2),
+               Pair.of(ewg.a("village/desert/houses/desert_small_house_4"), 2),
+               Pair.of(ewg.a("village/desert/houses/desert_small_house_5"), 2),
+               Pair.of(ewg.a("village/desert/houses/desert_small_house_6"), 1),
+               Pair.of(ewg.a("village/desert/houses/desert_small_house_7"), 2),
+               Pair.of(ewg.a("village/desert/houses/desert_small_house_8"), 2),
+               Pair.of(ewg.a("village/desert/houses/desert_medium_house_1"), 2),
+               Pair.of(ewg.a("village/desert/houses/desert_medium_house_2"), 2),
+               Pair.of(ewg.a("village/desert/houses/desert_butcher_shop_1"), 2),
+               Pair.of(ewg.a("village/desert/houses/desert_tool_smith_1"), 2),
+               new Pair[]{
+                  Pair.of(ewg.a("village/desert/houses/desert_fletcher_house_1"), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_shepherd_house_1"), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_armorer_1"), 1),
+                  Pair.of(ewg.a("village/desert/houses/desert_fisher_1"), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_tannery_1"), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_cartographer_house_1"), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_library_1"), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_mason_1"), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_weaponsmith_1"), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_temple_1"), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_temple_2"), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_large_farm_1", $$6), 11),
+                  Pair.of(ewg.a("village/desert/houses/desert_farm_1", $$6), 4),
+                  Pair.of(ewg.a("village/desert/houses/desert_farm_2", $$6), 4),
+                  Pair.of(ewg.a("village/desert/houses/desert_animal_pen_1"), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_animal_pen_2"), 2),
+                  Pair.of(ewg.i(), 5)
+               }
+            ),
+            ewi.a.b
+         )
+      );
+      qx.a(
+         $$0,
+         "village/desert/zombie/houses",
+         new ewi(
+            $$10,
+            ImmutableList.of(
+               Pair.of(ewg.a("village/desert/zombie/houses/desert_small_house_1", $$5), 2),
+               Pair.of(ewg.a("village/desert/zombie/houses/desert_small_house_2", $$5), 2),
+               Pair.of(ewg.a("village/desert/zombie/houses/desert_small_house_3", $$5), 2),
+               Pair.of(ewg.a("village/desert/zombie/houses/desert_small_house_4", $$5), 2),
+               Pair.of(ewg.a("village/desert/zombie/houses/desert_small_house_5", $$5), 2),
+               Pair.of(ewg.a("village/desert/zombie/houses/desert_small_house_6", $$5), 1),
+               Pair.of(ewg.a("village/desert/zombie/houses/desert_small_house_7", $$5), 2),
+               Pair.of(ewg.a("village/desert/zombie/houses/desert_small_house_8", $$5), 2),
+               Pair.of(ewg.a("village/desert/zombie/houses/desert_medium_house_1", $$5), 2),
+               Pair.of(ewg.a("village/desert/zombie/houses/desert_medium_house_2", $$5), 2),
+               Pair.of(ewg.a("village/desert/houses/desert_butcher_shop_1", $$5), 2),
+               Pair.of(ewg.a("village/desert/houses/desert_tool_smith_1", $$5), 2),
+               new Pair[]{
+                  Pair.of(ewg.a("village/desert/houses/desert_fletcher_house_1", $$5), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_shepherd_house_1", $$5), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_armorer_1", $$5), 1),
+                  Pair.of(ewg.a("village/desert/houses/desert_fisher_1", $$5), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_tannery_1", $$5), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_cartographer_house_1", $$5), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_library_1", $$5), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_mason_1", $$5), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_weaponsmith_1", $$5), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_temple_1", $$5), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_temple_2", $$5), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_large_farm_1", $$5), 7),
+                  Pair.of(ewg.a("village/desert/houses/desert_farm_1", $$5), 4),
+                  Pair.of(ewg.a("village/desert/houses/desert_farm_2", $$5), 4),
+                  Pair.of(ewg.a("village/desert/houses/desert_animal_pen_1", $$5), 2),
+                  Pair.of(ewg.a("village/desert/houses/desert_animal_pen_2", $$5), 2),
+                  Pair.of(ewg.i(), 5)
+               }
+            ),
+            ewi.a.b
+         )
+      );
+      $$0.a(
+         b,
+         new ewi(
+            $$8,
+            ImmutableList.of(Pair.of(ewg.a("village/desert/terminators/terminator_01"), 1), Pair.of(ewg.a("village/desert/terminators/terminator_02"), 1)),
+            ewi.a.a
+         )
+      );
+      $$0.a(
+         c,
+         new ewi(
+            $$8,
+            ImmutableList.of(
+               Pair.of(ewg.a("village/desert/terminators/terminator_01"), 1), Pair.of(ewg.a("village/desert/zombie/terminators/terminator_02"), 1)
+            ),
+            ewi.a.a
+         )
+      );
+      qx.a(
+         $$0,
+         "village/desert/decor",
+         new ewi(
+            $$8,
+            ImmutableList.of(Pair.of(ewg.a("village/desert/desert_lamp_1"), 10), Pair.of(ewg.a($$2), 4), Pair.of(ewg.a($$3), 4), Pair.of(ewg.i(), 10)),
+            ewi.a.b
+         )
+      );
+      qx.a(
+         $$0,
+         "village/desert/zombie/decor",
+         new ewi(
+            $$8,
+            ImmutableList.of(Pair.of(ewg.a("village/desert/desert_lamp_1", $$5), 10), Pair.of(ewg.a($$2), 4), Pair.of(ewg.a($$3), 4), Pair.of(ewg.i(), 10)),
+            ewi.a.b
+         )
+      );
+      qx.a(
+         $$0,
+         "village/desert/villagers",
+         new ewi(
+            $$8,
+            ImmutableList.of(
+               Pair.of(ewg.a("village/desert/villagers/nitwit"), 1),
+               Pair.of(ewg.a("village/desert/villagers/baby"), 1),
+               Pair.of(ewg.a("village/desert/villagers/unemployed"), 10)
+            ),
+            ewi.a.b
+         )
+      );
+      qx.a($$0, "village/desert/camel", new ewi($$8, ImmutableList.of(Pair.of(ewg.a("village/desert/camel_spawn"), 1)), ewi.a.b));
+      qx.a(
+         $$0,
+         "village/desert/zombie/villagers",
+         new ewi(
+            $$8,
+            ImmutableList.of(Pair.of(ewg.a("village/desert/zombie/villagers/nitwit"), 1), Pair.of(ewg.a("village/desert/zombie/villagers/unemployed"), 10)),
+            ewi.a.b
+         )
+      );
+   }
+}

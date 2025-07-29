@@ -1,10 +1,10 @@
 plugins {
-    id 'fabric-loom' version '1.11.4'
+    id 'fabric-loom' version '1.10.1'
 }
 
 group = 'com.example.greekmyth'
 archivesBaseName = 'greek-mythology'
-version = '1.0.66'
+version = '1.0.69'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17

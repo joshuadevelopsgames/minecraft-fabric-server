@@ -13,6 +13,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -22,8 +23,14 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.entity.projectile.thrown.SnowballEntity;
+import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.component.type.TooltipDisplayComponent;
+import java.util.function.Consumer;
 
 public class PoseidonTridentItem extends Item {
     private static final Identifier COOLDOWN_ID = Identifier.of("greekmyth", "poseidon_trident_cooldown");
@@ -47,6 +54,32 @@ public class PoseidonTridentItem extends Item {
     }
 
     @Override
+    public void appendTooltip(ItemStack stack, Item.TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> tooltip, TooltipType type) {
+        super.appendTooltip(stack, context, displayComponent, tooltip, type);
+        
+        // Calculate current charges
+        int currentDamage = stack.getDamage();
+        int currentCharges = MAX_CHARGES - currentDamage;
+        if (currentCharges < 0) currentCharges = 0;
+        if (currentCharges > MAX_CHARGES) currentCharges = MAX_CHARGES;
+        
+        GreekMythologyMod.LOGGER.info("POSEIDON TRIDENT TOOLTIP CALLED - Type: {}", type);
+        
+        tooltip.accept(Text.literal("").formatted(Formatting.GOLD));
+        tooltip.accept(Text.literal("🌊 The trident of the Lord of the Seas").formatted(Formatting.GOLD, Formatting.BOLD));
+        tooltip.accept(Text.literal("").formatted(Formatting.GOLD));
+        tooltip.accept(Text.literal("Right-click to control water and create storms").formatted(Formatting.YELLOW));
+        tooltip.accept(Text.literal("Sneak + Right-click for storm at sea").formatted(Formatting.YELLOW));
+        tooltip.accept(Text.literal("").formatted(Formatting.GOLD));
+        tooltip.accept(Text.literal("Charges: " + currentCharges + "/" + MAX_CHARGES + " (20s cooldown when empty)").formatted(Formatting.AQUA));
+        tooltip.accept(Text.literal("Infinite charges near water or in rain").formatted(Formatting.AQUA));
+        tooltip.accept(Text.literal("").formatted(Formatting.GOLD));
+        tooltip.accept(Text.literal("Damage: 8.0 (enhanced in water)").formatted(Formatting.RED));
+        tooltip.accept(Text.literal("Water breathing and night vision underwater").formatted(Formatting.RED));
+        tooltip.accept(Text.literal("").formatted(Formatting.GOLD));
+        tooltip.accept(Text.literal("Legendary Weapon").formatted(Formatting.LIGHT_PURPLE, Formatting.BOLD));
+    }
+    @Override
     public ItemStack getDefaultStack() {
         ItemStack stack = super.getDefaultStack();
         stack.setDamage(0); // Ensure new items start with full charges
@@ -62,6 +95,8 @@ public class PoseidonTridentItem extends Item {
             target.damage(serverWorld, serverWorld.getDamageSources().generic(), 8.0f);
         }
     }
+
+
 
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
@@ -80,10 +115,11 @@ public class PoseidonTridentItem extends Item {
         ServerPlayerEntity serverUser = (ServerPlayerEntity) user;
         ServerWorld serverWorld = (ServerWorld) world;
 
-        // Check for infinite abilities near water
+        // Check for infinite abilities near water or in rain
         boolean isNearWater = isNearWater(world, user.getBlockPos());
         boolean isInWater = user.isSubmergedInWater();
-        boolean infinite = isNearWater || isInWater;
+        boolean isRaining = world.isRaining();
+        boolean infinite = isNearWater || isInWater || isRaining;
         
         // Get current state
         boolean isOnCooldown = user.getItemCooldownManager().isCoolingDown(stack);
@@ -109,15 +145,18 @@ public class PoseidonTridentItem extends Item {
         // Log the actual damage and max damage values
         GreekMythologyMod.LOGGER.info("PoseidonTridentItem use - Damage: {}, MaxDamage: {}, Charges: {}/{}, Stack: {}", 
             currentDamage, stack.getMaxDamage(), currentCharges, MAX_CHARGES, stack.toString());
+        GreekMythologyMod.LOGGER.info("PoseidonTridentItem use - Infinite abilities: NearWater={}, InWater={}, Raining={}, Infinite={}", 
+            isNearWater, isInWater, isRaining, infinite);
         
         // Handle different abilities based on sneak state
         if (user.isSneaking()) {
             // Storm at Sea - Weather control near water
             if (infinite || currentCharges > 0) {
                 GreekMythologyMod.LOGGER.info("STORM AT SEA: Activating weather control");
-                activateStormAtSea(serverWorld, user.getBlockPos());
+                boolean weatherControlSuccess = activateStormAtSea(serverWorld, user.getBlockPos());
                 
-                if (!infinite) {
+                // Only consume charge if weather control was successful
+                if (weatherControlSuccess && !infinite) {
                     consumeCharge(stack, currentDamage, user);
                 }
                 
@@ -241,72 +280,72 @@ public class PoseidonTridentItem extends Item {
 
     private void shootWaterProjectile(ServerWorld world, PlayerEntity user, Vec3d targetPos) {
         Vec3d startPos = user.getEyePos();
-        Vec3d direction = targetPos.subtract(startPos).normalize();
         
-        // Create a water projectile entity (using snowball as base)
-        SnowballEntity projectile = new SnowballEntity(world, user, new ItemStack(Items.WATER_BUCKET));
-        projectile.setPosition(startPos);
-        projectile.setVelocity(direction.multiply(1.5)); // Faster than normal snowball
+        // Create a trident projectile entity
+        TridentEntity trident = new TridentEntity(world, user, new ItemStack(Items.TRIDENT)) {
+            @Override
+            protected void onEntityHit(EntityHitResult entityHitResult) {
+                super.onEntityHit(entityHitResult);
+                // Despawn immediately after hitting an entity
+                this.discard();
+            }
+            
+            @Override
+            protected void onBlockHit(BlockHitResult blockHitResult) {
+                super.onBlockHit(blockHitResult);
+                // Despawn immediately after hitting a block
+                this.discard();
+            }
+        };
         
-        world.spawnEntity(projectile);
+        trident.setPosition(startPos);
         
-        // Play water sound
+        // Use vanilla trident throwing method - this automatically handles orientation correctly
+        // Parameters: user, pitch, yaw, roll, speed, divergence
+        trident.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 2.0F, 0.0F);
+        
+        // Make it completely straight by disabling gravity
+        trident.setNoGravity(true);
+        
+        world.spawnEntity(trident);
+        
+        // Play trident throw sound
         world.playSound(null, startPos.x, startPos.y, startPos.z, 
-            SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.PLAYERS, 1.0f, 1.2f);
+            SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0f, 1.2f);
         
-        GreekMythologyMod.LOGGER.info("WATER PROJECTILE: Shot water blast at {}, {}, {}", 
-            targetPos.x, targetPos.y, targetPos.z);
+        GreekMythologyMod.LOGGER.info("TRIDENT PROJECTILE: Shot trident using vanilla throwing method");
     }
 
-    private void activateStormAtSea(ServerWorld world, BlockPos center) {
-        // Check if there's water nearby
-        boolean hasWaterNearby = false;
-        for (int x = -STORM_RADIUS; x <= STORM_RADIUS; x += 10) {
-            for (int z = -STORM_RADIUS; z <= STORM_RADIUS; z += 10) {
-                BlockPos checkPos = center.add(x, 0, z);
-                if (world.getBlockState(checkPos).getFluidState().isIn(FluidTags.WATER)) {
-                    hasWaterNearby = true;
-                    break;
-                }
-            }
+    private boolean activateStormAtSea(ServerWorld world, BlockPos center) {
+        // Check if player is near water before allowing weather control
+        if (!isNearWater(world, center)) {
+            GreekMythologyMod.LOGGER.info("STORM AT SEA: No water nearby, weather control failed");
+            // Play a failure sound
+            world.playSound(null, center.getX(), center.getY(), center.getZ(), 
+                SoundEvents.BLOCK_NOTE_BLOCK_BASS, SoundCategory.PLAYERS, 0.5f, 0.5f);
+            return false; // Return false to indicate failure
         }
         
-        if (hasWaterNearby) {
-            // Create a storm in the area
+        // Check if it's already thundering - if so, clear the weather
+        if (world.isThundering()) {
+            world.setWeather(6000, 0, false, false); // 5 minutes of clear weather
+            GreekMythologyMod.LOGGER.info("STORM AT SEA: Cleared weather - stopped rain and thunder");
+            
+            // Play a different sound for clearing weather
+            world.playSound(null, center.getX(), center.getY(), center.getZ(), 
+                SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1.0f, 1.5f);
+        } else {
+            // Create a storm (water requirement satisfied)
+            // Set weather to rain and thunder for 5 minutes
             world.setWeather(0, 6000, true, true); // 5 minutes of rain and thunder
             
-            // Create lightning strikes around the area
-            for (int i = 0; i < 3; i++) {
-                double angle = world.random.nextDouble() * 2 * Math.PI;
-                double distance = world.random.nextDouble() * STORM_RADIUS;
-                double x = center.getX() + Math.cos(angle) * distance;
-                double z = center.getZ() + Math.sin(angle) * distance;
-                
-                // Find the highest block at this position
-                BlockPos lightningPos = new BlockPos((int)x, 0, (int)z);
-                for (int y = world.getTopY(net.minecraft.world.Heightmap.Type.WORLD_SURFACE, lightningPos); y > world.getBottomY(); y--) {
-                    BlockPos checkPos = new BlockPos((int)x, y, (int)z);
-                    if (!world.getBlockState(checkPos).isAir()) {
-                        lightningPos = checkPos.up();
-                        break;
-                    }
-                }
-                
-                // Create lightning using the same method as Zeus Bolt
-                net.minecraft.entity.LightningEntity lightning = net.minecraft.entity.EntityType.LIGHTNING_BOLT.create(world, net.minecraft.entity.SpawnReason.NATURAL);
-                if (lightning != null) {
-                    lightning.refreshPositionAfterTeleport(lightningPos.getX(), lightningPos.getY(), lightningPos.getZ());
-                    world.spawnEntity(lightning);
-                }
-            }
+            GreekMythologyMod.LOGGER.info("STORM AT SEA: Created storm with rain and thunder");
             
-            GreekMythologyMod.LOGGER.info("STORM AT SEA: Created storm with lightning strikes");
-        } else {
-            GreekMythologyMod.LOGGER.info("STORM AT SEA: No water nearby, storm creation failed");
+            // Play thunder sound
+            world.playSound(null, center.getX(), center.getY(), center.getZ(), 
+                SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, SoundCategory.WEATHER, 10000.0f, 0.8f);
         }
         
-        // Play thunder sound
-        world.playSound(null, center.getX(), center.getY(), center.getZ(), 
-            SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, SoundCategory.WEATHER, 10000.0f, 0.8f);
+        return true; // Return true to indicate success
     }
 } 

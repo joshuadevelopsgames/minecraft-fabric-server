@@ -36,6 +36,12 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
 import net.fabricmc.fabric.api.item.v1.CustomDamageHandler;
 import net.fabricmc.fabric.api.item.v1.FabricItem;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.component.type.TooltipDisplayComponent;
+import java.util.List;
+import java.util.function.Consumer;
 
 public class ZeusBoltItem extends Item implements FabricItem {
     private static final Identifier COOLDOWN_ID = Identifier.of("greekmyth", "zeus_bolt_cooldown");
@@ -254,5 +260,30 @@ public class ZeusBoltItem extends Item implements FabricItem {
 
         GreekMythologyMod.LOGGER.info("=== ZEUS BOLT COMPLETE ===");
         return ActionResult.SUCCESS;
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, Item.TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> tooltip, TooltipType type) {
+        super.appendTooltip(stack, context, displayComponent, tooltip, type);
+        
+        // Calculate current charges
+        int currentDamage = stack.getDamage();
+        int currentCharges = MAX_CHARGES - currentDamage;
+        if (currentCharges < 0) currentCharges = 0; // Handle infinite mode (negative damage)
+        if (currentCharges > MAX_CHARGES) currentCharges = MAX_CHARGES; // Cap at max
+        
+        tooltip.accept(Text.literal("").formatted(Formatting.GOLD));
+        tooltip.accept(Text.literal("⚡ The weapon of the King of the Gods himself").formatted(Formatting.GOLD, Formatting.BOLD));
+        tooltip.accept(Text.literal("").formatted(Formatting.GOLD));
+        tooltip.accept(Text.literal("Right-click to summon lightning strikes").formatted(Formatting.YELLOW));
+        tooltip.accept(Text.literal("Sneak + Right-click for flight burst").formatted(Formatting.YELLOW));
+        tooltip.accept(Text.literal("").formatted(Formatting.GOLD));
+        tooltip.accept(Text.literal("Charges: " + currentCharges + "/" + MAX_CHARGES + " (30s cooldown when empty)").formatted(Formatting.AQUA));
+        tooltip.accept(Text.literal("Infinite charges during rain/thunder").formatted(Formatting.AQUA));
+        tooltip.accept(Text.literal("").formatted(Formatting.GOLD));
+        tooltip.accept(Text.literal("Damage: 15.0 (penetrates netherite)").formatted(Formatting.RED));
+        tooltip.accept(Text.literal("Lightning damage: 8.0 to nearby entities").formatted(Formatting.RED));
+        tooltip.accept(Text.literal("").formatted(Formatting.GOLD));
+        tooltip.accept(Text.literal("Legendary Weapon").formatted(Formatting.LIGHT_PURPLE, Formatting.BOLD));
     }
 } 

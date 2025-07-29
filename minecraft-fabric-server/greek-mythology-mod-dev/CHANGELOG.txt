@@ -1,0 +1,109 @@
+# Greek Mythology Mod Changelog
+
+## Version 1.0.68 (2025-01-28)
+### 🧪 **STRIDER WATER WALKING TEST**
+- **StriderEntityMixin**: Added mixin to make Striders walk on water instead of just lava
+- **Method Signature Fix**: Corrected `canWalkOnFluid(Lnet/minecraft/fluid/FluidState;)Z` method signature
+- **Universal Water Walking**: Temporarily enabled water walking for ALL players (not just trident holders)
+- **Strider-Style Logic**: Using exact same logic as Striders: `ShapeContext.of(player)`, `shapeContext.isAbove()`, `setOnGround(true)`
+- **Enhanced Debugging**: Added comprehensive logging for water walking detection and surface detection
+- **Testing Framework**: Created test environment to validate Strider-style water walking approach
+
+### 🏊 **WATER WALKING IMPROVEMENTS**
+- **Simplified Logic**: Removed trident requirement for testing universal water walking
+- **Strider Code Analysis**: Decompiled and analyzed actual StriderEntity.java for correct method signatures
+- **Surface Detection**: Using `ShapeContext.absent().isAbove(FluidBlock.COLLISION_SHAPE, blockPos, true)`
+- **Velocity Formula**: Applied Strider's exact velocity formula: `velocity.multiply(0.5).add(0.0, 0.05, 0.0)`
+- **Animation Control**: Preventing swimming animation with `setSwimming(false)`
+
+### 🔧 **TECHNICAL IMPROVEMENTS**
+- **Mixin Configuration**: Added StriderEntityMixin to both mixins.json and fabric.mod.json
+- **Method Injection**: Using `tick()` method injection for universal water walking
+- **Debug Logging**: Enhanced logging for troubleshooting water walking issues
+- **Build System**: Updated to version 1.0.68 across all configuration files
+
+## Version 1.0.67 (2025-01-28)
+### 🏊 **STRIDER-STYLE WATER WALKING**
+- **Strider-Inspired Implementation**: Water walking now uses the exact same logic as Striders walking on lava
+- **Collision Detection**: Uses `ShapeContext.isAbove(FluidBlock.COLLISION_SHAPE)` for proper surface detection
+- **Ground Setting**: Sets `player.setOnGround(true)` when at water surface for natural walking
+- **Floating Physics**: Applies Strider's velocity formula `velocity.multiply(0.5).add(0.0, 0.05, 0.0)` when in water
+- **Animation Control**: Prevents swimming animation with `setSwimming(false)` for walking appearance
+- **Surface vs Floating**: Different behavior when at surface vs. floating in water
+- **Enhanced Logging**: Detailed logging for surface detection and floating states
+
+## Version 1.0.66 (2025-01-28)
+### 🏊 **WATER WALKING IMPLEMENTATION**
+- **Poseidon Trident Water Walking**: Players can now walk on water while holding the Poseidon Trident
+- **Shift to Sink**: Pressing shift allows players to fall into water normally
+- **Strider-Style Physics**: Implemented water walking using the same logic as Striders walking on lava
+- **Surface Detection**: Uses `ShapeContext.isAbove()` for precise water surface detection
+- **Velocity Control**: Applies Strider's floating formula for natural water movement
+- **Animation Prevention**: Prevents swimming animation for walking appearance
+
+### 🎯 **TRIDENT PROJECTILE IMPROVEMENTS**
+- **Vanilla Throwing**: Trident projectiles now use vanilla throwing mechanics
+- **Correct Orientation**: Tridents fly straight with proper visual orientation
+- **Immediate Despawn**: Tridents despawn immediately upon hitting blocks or entities
+- **No Pickup**: Tridents cannot be picked up after being thrown
+- **Sound Effects**: Added proper trident throw sound effects
+
+## Version 1.0.65 (2025-01-28)
+### 🌩️ **WEATHER CONTROL ENHANCEMENTS**
+- **Water Proximity Check**: Weather control now only works when near a body of water
+- **No Charge Consumption**: Failed weather control attempts don't consume charges or trigger cooldowns
+- **Weather Toggle**: Shift-right-click toggles between rain/thunder and clear weather
+- **Infinite Charges**: Trident grants infinite charges when raining
+- **Enhanced Feedback**: Better sound effects and logging for weather control attempts
+
+## Version 1.0.64 (2025-01-28)
+### 🎯 **TRIDENT PROJECTILE SYSTEM**
+- **Trident Entities**: Right-click now throws actual TridentEntity projectiles instead of water buckets
+- **Vanilla Mechanics**: Uses vanilla trident throwing for proper trajectory and orientation
+- **Non-Pickupable**: Thrown tridents cannot be picked up by players
+- **Immediate Despawn**: Tridents despawn immediately upon hitting blocks or entities
+- **Sound Integration**: Added proper trident throw sound effects
+
+## Version 1.0.63 (2025-01-28)
+### 🌩️ **WEATHER CONTROL SYSTEM**
+- **Rain and Thunder**: Shift-right-click now sets weather to both rain and thunder
+- **Weather Toggle**: Shift-right-click again clears the weather when already thundering
+- **Infinite Charges**: Trident grants infinite charges when raining
+- **Enhanced Feedback**: Better sound effects for weather control actions
+
+## Version 1.0.62 (2025-01-28)
+### 🎨 **CUSTOM TEXTURES**
+- **Poseidon Trident Item Texture**: Added custom 16x16 item texture for the trident
+- **Poseidon Trident Entity Texture**: Added custom 32x32 entity texture for thrown tridents
+- **Texture Integration**: Properly integrated textures into the mod's asset system
+- **Model Updates**: Updated item models to use the new custom textures
+
+## Version 1.0.61 (2025-01-28)
+### 🔧 **BUG FIXES**
+- **Server Deployment**: Fixed issues with server deployment and mod loading
+- **Version Consistency**: Ensured all version numbers are consistent across files
+- **Build System**: Improved build process and error handling
+
+## Version 1.0.60 (2025-01-28)
+### 🎯 **POSEIDON TRIDENT ABILITIES**
+- **Water Projectiles**: Right-click throws water projectiles
+- **Weather Control**: Shift-right-click controls weather (thunder)
+- **Charge System**: Limited charges with cooldown system
+- **Infinite Abilities**: Grants infinite charges when near water or in water
+- **Sound Effects**: Added thunder and level-up sound effects
+
+## Version 1.0.59 (2025-01-28)
+### 🏛️ **GREEK MYTHOLOGY ITEMS**
+- **Poseidon Trident**: Added powerful trident with water and weather abilities
+- **Hades Scythe**: Added scythe with underworld-themed abilities
+- **Inferno Pearl**: Added pearl with corruption abilities
+- **Item Registration**: Proper item registration and crafting recipes
+- **Custom Abilities**: Unique abilities for each mythological item
+
+## Version 1.0.58 (2025-01-28)
+### 🔧 **FOUNDATION**
+- **Mod Structure**: Established basic mod structure with Fabric API
+- **Item Framework**: Created framework for custom items
+- **Event System**: Implemented event handling system
+- **Configuration**: Added mod configuration and settings
+- **Documentation**: Added comprehensive documentation and guides 

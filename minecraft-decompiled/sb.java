@@ -1,0 +1,65 @@
+public class sb {
+   public static final amd<euc> a = sg.a("monster_room");
+   public static final amd<euc> b = sg.a("monster_room_deep");
+   public static final amd<euc> c = sg.a("fossil_upper");
+   public static final amd<euc> d = sg.a("fossil_lower");
+   public static final amd<euc> e = sg.a("dripstone_cluster");
+   public static final amd<euc> f = sg.a("large_dripstone");
+   public static final amd<euc> g = sg.a("pointed_dripstone");
+   public static final amd<euc> h = sg.a("underwater_magma");
+   public static final amd<euc> i = sg.a("glow_lichen");
+   public static final amd<euc> j = sg.a("rooted_azalea_tree");
+   public static final amd<euc> k = sg.a("cave_vines");
+   public static final amd<euc> l = sg.a("lush_caves_vegetation");
+   public static final amd<euc> m = sg.a("lush_caves_clay");
+   public static final amd<euc> n = sg.a("lush_caves_ceiling_vegetation");
+   public static final amd<euc> o = sg.a("spore_blossom");
+   public static final amd<euc> p = sg.a("classic_vines_cave_feature");
+   public static final amd<euc> q = sg.a("amethyst_geode");
+   public static final amd<euc> r = sg.a("sculk_patch_deep_dark");
+   public static final amd<euc> s = sg.a("sculk_patch_ancient_city");
+   public static final amd<euc> t = sg.a("sculk_vein");
+
+   public static void a(qq<euc> $$0) {
+      jm<ems<?, ?>> $$1 = $$0.a(mn.aP);
+      jl<ems<?, ?>> $$2 = $$1.b(rp.a);
+      jl<ems<?, ?>> $$3 = $$1.b(rp.b);
+      jl<ems<?, ?>> $$4 = $$1.b(rp.c);
+      jl<ems<?, ?>> $$5 = $$1.b(rp.d);
+      jl<ems<?, ?>> $$6 = $$1.b(rp.e);
+      jl<ems<?, ?>> $$7 = $$1.b(rp.f);
+      jl<ems<?, ?>> $$8 = $$1.b(rp.g);
+      jl<ems<?, ?>> $$9 = $$1.b(rp.h);
+      jl<ems<?, ?>> $$10 = $$1.b(rp.i);
+      jl<ems<?, ?>> $$11 = $$1.b(rp.j);
+      jl<ems<?, ?>> $$12 = $$1.b(rp.m);
+      jl<ems<?, ?>> $$13 = $$1.b(rp.r);
+      jl<ems<?, ?>> $$14 = $$1.b(rp.s);
+      jl<ems<?, ?>> $$15 = $$1.b(rp.t);
+      jl<ems<?, ?>> $$16 = $$1.b(rx.c);
+      jl<ems<?, ?>> $$17 = $$1.b(rp.u);
+      jl<ems<?, ?>> $$18 = $$1.b(rp.v);
+      jl<ems<?, ?>> $$19 = $$1.b(rp.w);
+      jl<ems<?, ?>> $$20 = $$1.b(rp.x);
+      sg.a($$0, a, $$2, etu.a(10), etz.a(), etx.a(eku.a(0), eku.b()), etq.a());
+      sg.a($$0, b, $$2, etu.a(4), etz.a(), etx.a(eku.b(6), eku.a(-1)), etq.a());
+      sg.a($$0, c, $$3, eui.a(64), etz.a(), etx.a(eku.a(0), eku.b()), etq.a());
+      sg.a($$0, d, $$4, eui.a(64), etz.a(), etx.a(eku.a(), eku.a(-8)), etq.a());
+      sg.a($$0, e, $$5, etu.a(bwu.a(48, 96)), etz.a(), sg.j, etq.a());
+      sg.a($$0, f, $$6, etu.a(bwu.a(10, 48)), etz.a(), sg.j, etq.a());
+      sg.a($$0, g, $$7, etu.a(bwu.a(192, 256)), etz.a(), sg.j, etu.a(bwu.a(1, 5)), euh.a(bwj.a(0.0F, 3.0F, -10, 10), bwj.a(0.0F, 0.6F, -2, 2)), etq.a());
+      sg.a($$0, h, $$8, etu.a(bwu.a(44, 52)), etz.a(), sg.j, euk.a(eka.a.c, Integer.MIN_VALUE, -2), etq.a());
+      sg.a($$0, i, $$9, etu.a(bwu.a(104, 157)), sg.j, etz.a(), euk.a(eka.a.c, Integer.MIN_VALUE, -13), etq.a());
+      sg.a($$0, j, $$10, etu.a(bwu.a(1, 2)), etz.a(), sg.j, etv.a(jh.b, elh.c(), elh.c, 12), euh.a(bwl.a(-1)), etq.a());
+      sg.a($$0, k, $$11, etu.a(188), etz.a(), sg.j, etv.a(jh.b, elh.a(jh.a), elh.c, 12), euh.a(bwl.a(-1)), etq.a());
+      sg.a($$0, l, $$12, etu.a(125), etz.a(), sg.j, etv.a(jh.a, elh.c(), elh.c, 12), euh.a(bwl.a(1)), etq.a());
+      sg.a($$0, m, $$13, etu.a(62), etz.a(), sg.j, etv.a(jh.a, elh.c(), elh.c, 12), euh.a(bwl.a(1)), etq.a());
+      sg.a($$0, n, $$14, etu.a(125), etz.a(), sg.j, etv.a(jh.b, elh.c(), elh.c, 12), euh.a(bwl.a(-1)), etq.a());
+      sg.a($$0, o, $$15, etu.a(25), etz.a(), sg.j, etv.a(jh.b, elh.c(), elh.c, 12), euh.a(bwl.a(-1)), etq.a());
+      sg.a($$0, p, $$16, etu.a(256), etz.a(), sg.j, etq.a());
+      sg.a($$0, q, $$17, eui.a(24), etz.a(), etx.a(eku.b(6), eku.a(30)), etq.a());
+      sg.a($$0, r, $$18, etu.a(bwl.a(256)), etz.a(), sg.j, etq.a());
+      sg.a($$0, s, $$19);
+      sg.a($$0, t, $$20, etu.a(bwu.a(204, 250)), etz.a(), sg.j, etq.a());
+   }
+}

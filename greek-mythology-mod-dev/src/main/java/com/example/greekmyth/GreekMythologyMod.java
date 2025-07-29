@@ -2,6 +2,8 @@ package com.example.greekmyth;
 
 import com.example.greekmyth.item.GreekItems;
 import com.example.greekmyth.event.ModEvents;
+import com.example.greekmyth.event.UndeadWarriorEvents;
+import com.example.greekmyth.event.UndeadWarriorSoundEvents;
 import com.example.greekmyth.favor.FavorManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -18,6 +20,8 @@ public class GreekMythologyMod implements ModInitializer {
 
         GreekItems.init();
         ModEvents.register();
+        UndeadWarriorEvents.register();
+        UndeadWarriorSoundEvents.register();
         
         // Initialize favor system
         LOGGER.info("Initializing Greek Mythology Favor System...");

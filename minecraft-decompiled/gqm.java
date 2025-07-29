@@ -1,0 +1,345 @@
+import com.google.common.collect.Sets;
+import java.util.Set;
+import java.util.stream.Stream;
+
+public class gqm {
+   private static final String eK = "main";
+   private static final Set<gql> eL = Sets.newHashSet();
+   public static final gql a = a("boat/acacia");
+   public static final gql b = a("chest_boat/acacia");
+   public static final gql c = a("allay");
+   public static final gql d = a("armadillo");
+   public static final gql e = a("armadillo_baby");
+   public static final gql f = a("armor_stand");
+   public static final gql g = b("armor_stand");
+   public static final gql h = c("armor_stand");
+   public static final gql i = a("armor_stand_small");
+   public static final gql j = b("armor_stand_small");
+   public static final gql k = c("armor_stand_small");
+   public static final gql l = a("arrow");
+   public static final gql m = a("axolotl");
+   public static final gql n = a("axolotl_baby");
+   public static final gql o = a("chest_boat/bamboo");
+   public static final gql p = a("boat/bamboo");
+   public static final gql q = a("standing_banner");
+   public static final gql r = a("standing_banner", "flag");
+   public static final gql s = a("wall_banner");
+   public static final gql t = a("wall_banner", "flag");
+   public static final gql u = a("bat");
+   public static final gql v = a("bed_foot");
+   public static final gql w = a("bed_head");
+   public static final gql x = a("bee");
+   public static final gql y = a("bee_baby");
+   public static final gql z = a("bee_stinger");
+   public static final gql A = a("bell");
+   public static final gql B = a("boat/birch");
+   public static final gql C = a("chest_boat/birch");
+   public static final gql D = a("blaze");
+   public static final gql E = a("boat", "water_patch");
+   public static final gql F = a("bogged");
+   public static final gql G = b("bogged");
+   public static final gql H = c("bogged");
+   public static final gql I = a("bogged", "outer");
+   public static final gql J = a("book");
+   public static final gql K = a("breeze");
+   public static final gql L = a("breeze_wind");
+   public static final gql M = a("camel");
+   public static final gql N = a("camel_baby");
+   public static final gql O = a("camel", "saddle");
+   public static final gql P = a("camel_baby", "saddle");
+   public static final gql Q = a("cat");
+   public static final gql R = a("cat_baby");
+   public static final gql S = a("cat_baby", "collar");
+   public static final gql T = a("cat", "collar");
+   public static final gql U = a("cave_spider");
+   public static final gql V = a("boat/cherry");
+   public static final gql W = a("chest_boat/cherry");
+   public static final gql X = a("chest");
+   public static final gql Y = a("chest_minecart");
+   public static final gql Z = a("chicken");
+   public static final gql aa = a("chicken_baby");
+   public static final gql ab = a("cod");
+   public static final gql ac = a("cold_chicken");
+   public static final gql ad = a("cold_chicken_baby");
+   public static final gql ae = a("cold_cow");
+   public static final gql af = a("cold_cow_baby");
+   public static final gql ag = a("cold_pig");
+   public static final gql ah = a("cold_pig_baby");
+   public static final gql ai = a("command_block_minecart");
+   public static final gql aj = a("conduit", "cage");
+   public static final gql ak = a("conduit", "eye");
+   public static final gql al = a("conduit", "shell");
+   public static final gql am = a("conduit", "wind");
+   public static final gql an = a("cow");
+   public static final gql ao = a("cow_baby");
+   public static final gql ap = a("creaking");
+   public static final gql aq = a("creeper");
+   public static final gql ar = a("creeper", "armor");
+   public static final gql as = a("creeper_head");
+   public static final gql at = a("boat/dark_oak");
+   public static final gql au = a("chest_boat/dark_oak");
+   public static final gql av = a("decorated_pot_base");
+   public static final gql aw = a("decorated_pot_sides");
+   public static final gql ax = a("dolphin");
+   public static final gql ay = a("dolphin_baby");
+   public static final gql az = a("donkey");
+   public static final gql aA = a("donkey_baby");
+   public static final gql aB = a("donkey", "saddle");
+   public static final gql aC = a("donkey_baby", "saddle");
+   public static final gql aD = a("double_chest_left");
+   public static final gql aE = a("double_chest_right");
+   public static final gql aF = a("dragon_skull");
+   public static final gql aG = a("drowned");
+   public static final gql aH = a("drowned_baby");
+   public static final gql aI = b("drowned_baby");
+   public static final gql aJ = c("drowned_baby");
+   public static final gql aK = a("drowned_baby", "outer");
+   public static final gql aL = b("drowned");
+   public static final gql aM = c("drowned");
+   public static final gql aN = a("drowned", "outer");
+   public static final gql aO = a("elder_guardian");
+   public static final gql aP = a("elytra");
+   public static final gql aQ = a("elytra_baby");
+   public static final gql aR = a("enderman");
+   public static final gql aS = a("endermite");
+   public static final gql aT = a("ender_dragon");
+   public static final gql aU = a("end_crystal");
+   public static final gql aV = a("evoker");
+   public static final gql aW = a("evoker_fangs");
+   public static final gql aX = a("fox");
+   public static final gql aY = a("fox_baby");
+   public static final gql aZ = a("frog");
+   public static final gql ba = a("furnace_minecart");
+   public static final gql bb = a("ghast");
+   public static final gql bc = a("giant");
+   public static final gql bd = b("giant");
+   public static final gql be = c("giant");
+   public static final gql bf = a("glow_squid");
+   public static final gql bg = a("glow_squid_baby");
+   public static final gql bh = a("goat");
+   public static final gql bi = a("goat_baby");
+   public static final gql bj = a("guardian");
+   public static final gql bk = a("happy_ghast");
+   public static final gql bl = a("happy_ghast_baby");
+   public static final gql bm = a("happy_ghast_harness");
+   public static final gql bn = a("happy_ghast_baby_harness");
+   public static final gql bo = a("happy_ghast_ropes");
+   public static final gql bp = a("happy_ghast_baby_ropes");
+   public static final gql bq = a("hoglin");
+   public static final gql br = a("hoglin_baby");
+   public static final gql bs = a("hopper_minecart");
+   public static final gql bt = a("horse");
+   public static final gql bu = a("horse_armor");
+   public static final gql bv = a("horse", "saddle");
+   public static final gql bw = a("horse_baby");
+   public static final gql bx = a("horse_armor_baby");
+   public static final gql by = a("horse_baby", "saddle");
+   public static final gql bz = a("husk");
+   public static final gql bA = a("husk_baby");
+   public static final gql bB = b("husk_baby");
+   public static final gql bC = c("husk_baby");
+   public static final gql bD = b("husk");
+   public static final gql bE = c("husk");
+   public static final gql bF = a("illusioner");
+   public static final gql bG = a("iron_golem");
+   public static final gql bH = a("boat/jungle");
+   public static final gql bI = a("chest_boat/jungle");
+   public static final gql bJ = a("leash_knot");
+   public static final gql bK = a("llama");
+   public static final gql bL = a("llama_baby");
+   public static final gql bM = a("llama_baby", "decor");
+   public static final gql bN = a("llama", "decor");
+   public static final gql bO = a("llama_spit");
+   public static final gql bP = a("magma_cube");
+   public static final gql bQ = a("boat/mangrove");
+   public static final gql bR = a("chest_boat/mangrove");
+   public static final gql bS = a("minecart");
+   public static final gql bT = a("mooshroom");
+   public static final gql bU = a("mooshroom_baby");
+   public static final gql bV = a("mule");
+   public static final gql bW = a("mule_baby");
+   public static final gql bX = a("mule", "saddle");
+   public static final gql bY = a("mule_baby", "saddle");
+   public static final gql bZ = a("boat/oak");
+   public static final gql ca = a("chest_boat/oak");
+   public static final gql cb = a("ocelot");
+   public static final gql cc = a("ocelot_baby");
+   public static final gql cd = a("boat/pale_oak");
+   public static final gql ce = a("chest_boat/pale_oak");
+   public static final gql cf = a("panda");
+   public static final gql cg = a("panda_baby");
+   public static final gql ch = a("parrot");
+   public static final gql ci = a("phantom");
+   public static final gql cj = a("pig");
+   public static final gql ck = a("piglin");
+   public static final gql cl = a("piglin_baby");
+   public static final gql cm = b("piglin_baby");
+   public static final gql cn = c("piglin_baby");
+   public static final gql co = a("piglin_brute");
+   public static final gql cp = b("piglin_brute");
+   public static final gql cq = c("piglin_brute");
+   public static final gql cr = a("piglin_head");
+   public static final gql cs = b("piglin");
+   public static final gql ct = c("piglin");
+   public static final gql cu = a("pig_baby");
+   public static final gql cv = a("pig_baby", "saddle");
+   public static final gql cw = a("pig", "saddle");
+   public static final gql cx = a("pillager");
+   public static final gql cy = a("player");
+   public static final gql cz = a("player", "cape");
+   public static final gql cA = a("player", "ears");
+   public static final gql cB = a("player_head");
+   public static final gql cC = b("player");
+   public static final gql cD = c("player");
+   public static final gql cE = a("player_slim");
+   public static final gql cF = b("player_slim");
+   public static final gql cG = c("player_slim");
+   public static final gql cH = a("spin_attack");
+   public static final gql cI = a("polar_bear");
+   public static final gql cJ = a("polar_bear_baby");
+   public static final gql cK = a("pufferfish_big");
+   public static final gql cL = a("pufferfish_medium");
+   public static final gql cM = a("pufferfish_small");
+   public static final gql cN = a("rabbit");
+   public static final gql cO = a("rabbit_baby");
+   public static final gql cP = a("ravager");
+   public static final gql cQ = a("salmon");
+   public static final gql cR = a("salmon_large");
+   public static final gql cS = a("salmon_small");
+   public static final gql cT = a("sheep");
+   public static final gql cU = a("sheep_baby");
+   public static final gql cV = a("sheep_baby", "wool");
+   public static final gql cW = a("sheep", "wool");
+   public static final gql cX = a("sheep", "wool_undercoat");
+   public static final gql cY = a("sheep_baby", "wool_undercoat");
+   public static final gql cZ = a("shield");
+   public static final gql da = a("shulker");
+   public static final gql db = a("shulker_box");
+   public static final gql dc = a("shulker_bullet");
+   public static final gql dd = a("silverfish");
+   public static final gql de = a("skeleton");
+   public static final gql df = a("skeleton_horse");
+   public static final gql dg = a("skeleton_horse_baby");
+   public static final gql dh = a("skeleton_horse", "saddle");
+   public static final gql di = a("skeleton_horse_baby", "saddle");
+   public static final gql dj = b("skeleton");
+   public static final gql dk = c("skeleton");
+   public static final gql dl = a("skeleton_skull");
+   public static final gql dm = a("slime");
+   public static final gql dn = a("slime", "outer");
+   public static final gql do = a("sniffer");
+   public static final gql dp = a("sniffer_baby");
+   public static final gql dq = a("snow_golem");
+   public static final gql dr = a("spawner_minecart");
+   public static final gql ds = a("spider");
+   public static final gql dt = a("boat/spruce");
+   public static final gql du = a("chest_boat/spruce");
+   public static final gql dv = a("squid");
+   public static final gql dw = a("squid_baby");
+   public static final gql dx = a("stray");
+   public static final gql dy = b("stray");
+   public static final gql dz = c("stray");
+   public static final gql dA = a("stray", "outer");
+   public static final gql dB = a("strider");
+   public static final gql dC = a("strider", "saddle");
+   public static final gql dD = a("strider_baby");
+   public static final gql dE = a("strider_baby", "saddle");
+   public static final gql dF = a("tadpole");
+   public static final gql dG = a("tnt_minecart");
+   public static final gql dH = a("trader_llama");
+   public static final gql dI = a("trader_llama_baby");
+   public static final gql dJ = a("trident");
+   public static final gql dK = a("tropical_fish_large");
+   public static final gql dL = a("tropical_fish_large", "pattern");
+   public static final gql dM = a("tropical_fish_small");
+   public static final gql dN = a("tropical_fish_small", "pattern");
+   public static final gql dO = a("turtle");
+   public static final gql dP = a("turtle_baby");
+   public static final gql dQ = a("vex");
+   public static final gql dR = a("villager");
+   public static final gql dS = a("villager_baby");
+   public static final gql dT = a("vindicator");
+   public static final gql dU = a("wandering_trader");
+   public static final gql dV = a("warden");
+   public static final gql dW = a("warm_cow");
+   public static final gql dX = a("warm_cow_baby");
+   public static final gql dY = a("wind_charge");
+   public static final gql dZ = a("witch");
+   public static final gql ea = a("wither");
+   public static final gql eb = a("wither", "armor");
+   public static final gql ec = a("wither_skeleton");
+   public static final gql ed = b("wither_skeleton");
+   public static final gql ee = c("wither_skeleton");
+   public static final gql ef = a("wither_skeleton_skull");
+   public static final gql eg = a("wither_skull");
+   public static final gql eh = a("wolf");
+   public static final gql ei = a("wolf_armor");
+   public static final gql ej = a("wolf_baby");
+   public static final gql ek = a("wolf_baby_armor");
+   public static final gql el = a("zoglin");
+   public static final gql em = a("zoglin_baby");
+   public static final gql en = a("zombie");
+   public static final gql eo = a("zombie_baby");
+   public static final gql ep = b("zombie_baby");
+   public static final gql eq = c("zombie_baby");
+   public static final gql er = a("zombie_head");
+   public static final gql es = a("zombie_horse");
+   public static final gql et = a("zombie_horse_baby");
+   public static final gql eu = a("zombie_horse", "saddle");
+   public static final gql ev = a("zombie_horse_baby", "saddle");
+   public static final gql ew = b("zombie");
+   public static final gql ex = c("zombie");
+   public static final gql ey = a("zombie_villager");
+   public static final gql ez = a("zombie_villager_baby");
+   public static final gql eA = b("zombie_villager_baby");
+   public static final gql eB = c("zombie_villager_baby");
+   public static final gql eC = b("zombie_villager");
+   public static final gql eD = c("zombie_villager");
+   public static final gql eE = a("zombified_piglin");
+   public static final gql eF = a("zombified_piglin_baby");
+   public static final gql eG = b("zombified_piglin_baby");
+   public static final gql eH = c("zombified_piglin_baby");
+   public static final gql eI = b("zombified_piglin");
+   public static final gql eJ = c("zombified_piglin");
+
+   private static gql a(String $$0) {
+      return a($$0, "main");
+   }
+
+   private static gql a(String $$0, String $$1) {
+      gql $$2 = b($$0, $$1);
+      if (!eL.add($$2)) {
+         throw new IllegalStateException("Duplicate registration for " + $$2);
+      } else {
+         return $$2;
+      }
+   }
+
+   private static gql b(String $$0, String $$1) {
+      return new gql(ame.b($$0), $$1);
+   }
+
+   private static gql b(String $$0) {
+      return a($$0, "inner_armor");
+   }
+
+   private static gql c(String $$0) {
+      return a($$0, "outer_armor");
+   }
+
+   public static gql a(efp $$0) {
+      return b("sign/standing/" + $$0.b(), "main");
+   }
+
+   public static gql b(efp $$0) {
+      return b("sign/wall/" + $$0.b(), "main");
+   }
+
+   public static gql a(efp $$0, han.a $$1) {
+      return b("hanging_sign/" + $$0.b() + "/" + $$1.c(), "main");
+   }
+
+   public static Stream<gql> a() {
+      return eL.stream();
+   }
+}

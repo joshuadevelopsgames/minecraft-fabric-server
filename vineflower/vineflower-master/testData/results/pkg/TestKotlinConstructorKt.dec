@@ -1,0 +1,125 @@
+package pkg;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import kotlin.Metadata;
+import kotlin.collections.CollectionsKt;
+import kotlin.jvm.internal.Intrinsics;
+import kotlin.jvm.internal.SourceDebugExtension;
+
+@Metadata(
+   mv = {2, 0, 0},
+   k = 2,
+   xi = 48,
+   d1 = {"\u0000\u0016\n\u0000\n\u0002\u0010 \n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u001e\n\u0002\u0010\u000e\n\u0000\u001a\u001e\u0010\u0000\u001a\b\u0012\u0004\u0012\u00020\u00020\u00012\u000e\u0010\u0003\u001a\n\u0012\u0006\u0012\u0004\u0018\u00010\u00050\u0004H\u0002¨\u0006\u0006"},
+   d2 = {"foo", "", "Lpkg/Mapping;", "list", "", "", "vineflower_testDataKotlin"}
+)
+@SourceDebugExtension({"SMAP\nTestKotlinConstructor.kt\nKotlin\n*S Kotlin\n*F\n+ 1 TestKotlinConstructor.kt\npkg/TestKotlinConstructorKt\n+ 2 _Collections.kt\nkotlin/collections/CollectionsKt___CollectionsKt\n*L\n1#1,11:1\n1557#2:12\n1628#2,3:13\n*S KotlinDebug\n*F\n+ 1 TestKotlinConstructor.kt\npkg/TestKotlinConstructorKt\n*L\n4#1:12\n4#1:13,3\n*E\n"})
+public final class TestKotlinConstructorKt {
+   private static final List<Mapping> foo(Collection<String> list) {
+      Iterable $this$map$iv = list;
+      int $i$f$map = 0;
+      var destination$iv$iv = new ArrayList(CollectionsKt.collectionSizeOrDefault($this$map$iv, 10));
+      int $i$f$mapTo = 0;
+
+      for (Object item$iv$iv : $this$map$iv) {// 12 13
+         String it = (String)item$iv$iv;
+         int $i$a$-map-TestKotlinConstructorKt$foo$1 = 0;
+         Intrinsics.checkNotNull(it, "null cannot be cast to non-null type kotlin.String");// 5
+         destination$iv$iv.add(new Mapping(it));// 14
+      }
+
+      return CollectionsKt.toList(destination$iv$iv);// 4 6 15
+   }
+}
+
+class 'pkg/TestKotlinConstructorKt' {
+   method 'foo (Ljava/util/Collection;)Ljava/util/List;' {
+      0      20
+      1      20
+      2      20
+      3      20
+      4      20
+      5      21
+      6      21
+      7      25
+      d      22
+      e      22
+      f      22
+      10      22
+      11      22
+      12      22
+      16      22
+      17      22
+      18      22
+      19      22
+      1a      22
+      1b      23
+      1c      23
+      1d      23
+      1e      25
+      1f      25
+      20      25
+      21      25
+      22      25
+      23      25
+      24      25
+      25      25
+      30      25
+      31      25
+      32      25
+      33      25
+      34      25
+      35      25
+      36      25
+      37      25
+      38      25
+      39      29
+      3a      29
+      3b      26
+      3c      26
+      3d      26
+      3e      26
+      3f      26
+      40      26
+      41      26
+      44      27
+      45      27
+      46      27
+      4b      28
+      4c      28
+      4d      28
+      4e      28
+      4f      28
+      50      28
+      51      28
+      52      29
+      53      29
+      57      29
+      58      29
+      5a      29
+      5b      29
+      5c      29
+      5d      29
+      5e      29
+      63      32
+      64      32
+      69      32
+      6a      32
+      6b      32
+      6c      32
+      6d      32
+      6e      32
+      6f      32
+   }
+}
+
+Lines mapping:
+4 <-> 33
+5 <-> 29
+6 <-> 33
+12 <-> 26
+13 <-> 26
+14 <-> 30
+15 <-> 33

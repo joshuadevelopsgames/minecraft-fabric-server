@@ -1,0 +1,12 @@
+name = "Greek Mythology Modpack"
+author = "Greek Mythology Team"
+version = "1.0.69"
+description = "A modpack featuring the Greek Mythology mod with Poseidon Trident Riptide underwater sprinting"
+license = "MIT"
+[mods]
+greekmyth = { version = "1.0.69", optional = false }
+player-roles = { version = "*", optional = true }
+[files]
+minecraft = "1.21.8"
+fabric = "0.16.14"
+fabric-api = "0.129.0" 

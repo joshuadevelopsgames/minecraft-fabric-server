@@ -1,0 +1,278 @@
+package pkg;
+
+public class TestSwitchPatternMatching19 {
+   // $VF: Could not properly define all variable types!
+   static void test(TestSwitchPatternMatching19.XXX s) {
+      <unknown> var1;
+      switch (s) {// 5
+         case X1:
+            System.out.println("x1");// 6
+            break;
+         case TestSwitchPatternMatching19.XXX var8 when var1 != TestSwitchPatternMatching19.XXX.X1:// 7
+            System.out.println("a");
+            break;
+         case TestSwitchPatternMatching19.XXX var9 when var1 instanceof TestSwitchPatternMatching19.C:// 8
+            System.out.println("b");
+            break;
+         case TestSwitchPatternMatching19.XXX var10 when var1 == var1:// 9
+            System.out.println("d");
+            break;
+         case TestSwitchPatternMatching19.XXX var11 when false:
+            break;
+         case null:
+         default:
+            System.out.println("f");// 11
+      }
+   }// 13
+
+   static void test2(TestSwitchPatternMatching19.XXX s) {
+      switch (s) {// 16
+         case X2:
+         case null:
+            System.out.println("maybe x2?");// 18
+            break;
+         case X1:
+            System.out.println("x1");// 17
+            break;
+         case TestSwitchPatternMatching19.XXX var4 when Math.random() > 0.0:// 19
+            System.out.println("just making sure!");// 20
+            break;
+         default:
+            System.out.println("default");// 21
+      }
+   }// 23
+
+   interface A {
+   }
+
+   interface B {
+   }
+
+   interface C {
+   }
+
+   interface D {
+   }
+
+   interface E {
+   }
+
+   interface F {
+   }
+
+   static enum XXX
+      implements TestSwitchPatternMatching19.A,
+      TestSwitchPatternMatching19.B,
+      TestSwitchPatternMatching19.C,
+      TestSwitchPatternMatching19.D,
+      TestSwitchPatternMatching19.E,
+      TestSwitchPatternMatching19.F {
+      X1,
+      X2,
+      X3;
+   }
+}
+
+class 'pkg/TestSwitchPatternMatching19' {
+   method 'test (Lpkg/TestSwitchPatternMatching19$XXX;)V' {
+      0      6
+      4      6
+      b      6
+      c      6
+      d      6
+      e      6
+      f      6
+      10      6
+      11      6
+      12      6
+      13      6
+      14      6
+      15      6
+      16      6
+      17      6
+      18      6
+      19      6
+      1a      6
+      1b      6
+      1c      6
+      1d      6
+      1e      6
+      1f      6
+      20      6
+      21      6
+      22      6
+      23      6
+      24      6
+      25      6
+      26      6
+      27      6
+      28      6
+      29      6
+      2a      6
+      2b      6
+      2c      6
+      2d      6
+      2e      6
+      2f      6
+      30      8
+      31      8
+      32      8
+      33      8
+      34      8
+      35      8
+      36      8
+      37      8
+      38      9
+      3b      10
+      3d      10
+      3e      10
+      3f      10
+      40      10
+      41      10
+      42      10
+      43      10
+      49      11
+      4a      11
+      4b      11
+      4c      11
+      4d      11
+      4e      11
+      4f      11
+      50      11
+      51      12
+      54      13
+      57      13
+      58      13
+      59      13
+      5a      13
+      5b      13
+      64      14
+      65      14
+      66      14
+      67      14
+      68      14
+      69      14
+      6a      14
+      6b      14
+      6c      15
+      6f      16
+      72      16
+      73      16
+      74      16
+      75      16
+      76      16
+      77      16
+      78      16
+      7e      17
+      7f      17
+      80      17
+      81      17
+      82      17
+      83      17
+      84      17
+      85      17
+      86      18
+      94      23
+      95      23
+      96      23
+      97      23
+      98      23
+      99      23
+      9a      23
+      9b      23
+      9f      25
+   }
+
+   method 'test2 (Lpkg/TestSwitchPatternMatching19$XXX;)V' {
+      0      28
+      4      28
+      b      28
+      c      28
+      d      28
+      e      28
+      f      28
+      10      28
+      11      28
+      12      28
+      13      28
+      14      28
+      15      28
+      16      28
+      17      28
+      18      28
+      19      28
+      1a      28
+      1b      28
+      1c      28
+      1d      28
+      1e      28
+      1f      28
+      20      28
+      21      28
+      22      28
+      23      28
+      24      28
+      25      28
+      26      28
+      27      28
+      28      34
+      29      34
+      2a      34
+      2b      34
+      2c      34
+      2d      34
+      2e      34
+      2f      34
+      30      35
+      33      31
+      34      31
+      35      31
+      36      31
+      37      31
+      38      31
+      39      31
+      3a      31
+      3b      32
+      40      36
+      41      36
+      42      36
+      43      36
+      44      36
+      4d      37
+      4e      37
+      4f      37
+      50      37
+      51      37
+      52      37
+      53      37
+      54      37
+      55      38
+      58      40
+      59      40
+      5a      40
+      5b      40
+      5c      40
+      5d      40
+      5e      40
+      5f      40
+      63      42
+   }
+}
+
+Lines mapping:
+5 <-> 7
+6 <-> 9
+7 <-> 11
+8 <-> 14
+9 <-> 17
+11 <-> 24
+13 <-> 26
+16 <-> 29
+17 <-> 35
+18 <-> 32
+19 <-> 37
+20 <-> 38
+21 <-> 41
+23 <-> 43
+Not mapped:
+10

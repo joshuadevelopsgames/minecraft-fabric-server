@@ -1,0 +1,427 @@
+package pkg;
+
+import java.util.Objects;
+
+public class TestSwitchPatternMatching21 {
+   // $VF: Could not properly define all variable types!
+   public void test1(String it) {
+      Objects.requireNonNull(it);// 5
+      <unknown> var2;
+      switch (it) {
+         case "":
+            System.out.println("nothing");// 6
+            break;
+         case "hi":
+            System.out.println("hello");// 7
+            break;
+         case String var7 when Math.random() > 0.0:
+            System.out.println(it + "!");// 8 9
+            break;
+         case String var8 when Math.random() > 0.0:
+            System.out.println(it + "!!");// 10 11
+            break;
+         case String var9 when var2.startsWith("?"):// 12
+            System.out.println(it + "?");// 13
+            break;
+         default:
+            System.out.println("Default");// 14
+      }
+   }// 16
+
+   public void test2(String it) {
+      switch (it) {// 19
+         case "":
+            System.out.println("nothing");// 20
+            break;
+         case "hi":
+            System.out.println("hello");// 21
+            break;
+         case String var7 when Math.random() > 0.0:
+            System.out.println(it + "!");// 22 23
+            break;
+         case String var8 when Math.random() > 0.0:
+            System.out.println(it + "!!");// 24 25
+            break;
+         case null:
+         default:
+            System.out.println(it + "?");// 26 27
+      }
+   }// 29
+
+   public void test3(String it) {
+      switch (it) {// 32
+         case "":
+         case null:
+            System.out.println("nothing");// 33
+            break;
+         case "hi":
+            System.out.println("hello");// 34
+            break;
+         case String var5 when Math.random() > 0.0:
+            System.out.println(it + "!");// 35 36
+            break;
+         default:
+            System.out.println("Default");// 37
+      }
+   }// 39
+}
+
+class 'pkg/TestSwitchPatternMatching21' {
+   method 'test1 (Ljava/lang/String;)V' {
+      0      7
+      2      7
+      3      7
+      4      7
+      9      9
+      10      9
+      11      9
+      12      9
+      13      9
+      14      9
+      15      9
+      16      9
+      17      9
+      18      9
+      19      9
+      1a      9
+      1b      9
+      1c      9
+      1d      9
+      1e      9
+      1f      9
+      20      9
+      21      9
+      22      9
+      23      9
+      24      9
+      25      9
+      26      9
+      27      9
+      28      9
+      29      9
+      2a      9
+      2b      9
+      2c      9
+      2d      9
+      2e      9
+      2f      9
+      30      9
+      31      9
+      32      9
+      33      9
+      34      11
+      35      11
+      36      11
+      37      11
+      38      11
+      39      11
+      3a      11
+      3b      11
+      3c      12
+      3f      14
+      40      14
+      41      14
+      42      14
+      43      14
+      44      14
+      45      14
+      46      14
+      47      15
+      4a      17
+      4d      16
+      4e      16
+      4f      16
+      50      16
+      51      16
+      5a      17
+      5b      17
+      5c      17
+      5d      17
+      5e      17
+      5f      17
+      60      17
+      61      17
+      62      17
+      63      17
+      64      17
+      65      17
+      66      17
+      67      18
+      6a      20
+      6d      19
+      6e      19
+      6f      19
+      70      19
+      71      19
+      7a      20
+      7b      20
+      7c      20
+      7d      20
+      7e      20
+      7f      20
+      80      20
+      81      20
+      82      20
+      83      20
+      84      20
+      85      20
+      86      20
+      87      21
+      8a      22
+      8d      22
+      8e      22
+      8f      22
+      90      22
+      91      22
+      92      22
+      93      22
+      9c      23
+      9d      23
+      9e      23
+      9f      23
+      a0      23
+      a1      23
+      a2      23
+      a3      23
+      a4      23
+      a5      23
+      a6      23
+      a7      23
+      a8      23
+      a9      24
+      ac      26
+      ad      26
+      ae      26
+      af      26
+      b0      26
+      b1      26
+      b2      26
+      b3      26
+      b7      28
+   }
+
+   method 'test2 (Ljava/lang/String;)V' {
+      0      31
+      4      31
+      b      31
+      c      31
+      d      31
+      e      31
+      f      31
+      10      31
+      11      31
+      12      31
+      13      31
+      14      31
+      15      31
+      16      31
+      17      31
+      18      31
+      19      31
+      1a      31
+      1b      31
+      1c      31
+      1d      31
+      1e      31
+      1f      31
+      20      31
+      21      31
+      22      31
+      23      31
+      24      31
+      25      31
+      26      31
+      27      31
+      28      31
+      29      31
+      2a      31
+      2b      31
+      2c      33
+      2d      33
+      2e      33
+      2f      33
+      30      33
+      31      33
+      32      33
+      33      33
+      34      34
+      37      36
+      38      36
+      39      36
+      3a      36
+      3b      36
+      3c      36
+      3d      36
+      3e      36
+      3f      37
+      42      39
+      45      38
+      46      38
+      47      38
+      48      38
+      49      38
+      52      39
+      53      39
+      54      39
+      55      39
+      56      39
+      57      39
+      58      39
+      59      39
+      5a      39
+      5b      39
+      5c      39
+      5d      39
+      5e      39
+      5f      40
+      62      42
+      65      41
+      66      41
+      67      41
+      68      41
+      69      41
+      6a      41
+      6b      41
+      6c      41
+      72      42
+      73      42
+      74      42
+      75      42
+      76      42
+      77      42
+      78      42
+      79      42
+      7a      42
+      7b      42
+      7c      42
+      7d      42
+      7e      42
+      7f      43
+      82      46
+      85      46
+      86      46
+      87      46
+      88      46
+      89      46
+      8a      46
+      8b      46
+      8c      46
+      8d      46
+      8e      46
+      8f      46
+      90      46
+      91      46
+      95      48
+   }
+
+   method 'test3 (Ljava/lang/String;)V' {
+      0      51
+      4      51
+      b      51
+      c      51
+      d      51
+      e      51
+      f      51
+      10      51
+      11      51
+      12      51
+      13      51
+      14      51
+      15      51
+      16      51
+      17      51
+      18      51
+      19      51
+      1a      51
+      1b      51
+      1c      51
+      1d      51
+      1e      51
+      1f      51
+      20      51
+      21      51
+      22      51
+      23      51
+      24      51
+      25      51
+      26      51
+      27      51
+      28      54
+      29      54
+      2a      54
+      2b      54
+      2c      54
+      2d      54
+      2e      54
+      2f      54
+      30      55
+      33      57
+      34      57
+      35      57
+      36      57
+      37      57
+      38      57
+      39      57
+      3a      57
+      3b      58
+      3e      60
+      41      59
+      42      59
+      43      59
+      44      59
+      45      59
+      4e      60
+      4f      60
+      50      60
+      51      60
+      52      60
+      53      60
+      54      60
+      55      60
+      56      60
+      57      60
+      58      60
+      59      60
+      5a      60
+      5b      61
+      5e      63
+      5f      63
+      60      63
+      61      63
+      62      63
+      63      63
+      64      63
+      65      63
+      69      65
+   }
+}
+
+Lines mapping:
+5 <-> 8
+6 <-> 12
+7 <-> 15
+8 <-> 18
+9 <-> 18
+10 <-> 21
+11 <-> 21
+12 <-> 23
+13 <-> 24
+14 <-> 27
+16 <-> 29
+19 <-> 32
+20 <-> 34
+21 <-> 37
+22 <-> 40
+23 <-> 40
+24 <-> 43
+25 <-> 43
+26 <-> 47
+27 <-> 47
+29 <-> 49
+32 <-> 52
+33 <-> 55
+34 <-> 58
+35 <-> 61
+36 <-> 61
+37 <-> 64
+39 <-> 66

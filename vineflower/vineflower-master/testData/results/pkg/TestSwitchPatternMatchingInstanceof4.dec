@@ -1,0 +1,101 @@
+package pkg;
+
+import java.util.Objects;
+
+public class TestSwitchPatternMatchingInstanceof4 {
+   public void test(Object o) {
+      Objects.requireNonNull(o);// 5
+      switch (o) {
+         case String s when o instanceof Class<?> clzz && clzz.getSigners()[0] instanceof Class<?> c2:// 6
+            System.out.println("" + clzz + c2);
+            break;
+         default:
+            System.out.println("Default");// 7
+      }
+   }// 9
+}
+
+class 'pkg/TestSwitchPatternMatchingInstanceof4' {
+   method 'test (Ljava/lang/Object;)V' {
+      0      6
+      2      6
+      3      6
+      4      6
+      9      7
+      10      7
+      11      7
+      12      7
+      13      7
+      14      7
+      15      7
+      16      7
+      17      7
+      18      7
+      19      7
+      1a      7
+      1b      7
+      1c      7
+      1d      7
+      1e      7
+      1f      7
+      20      7
+      21      7
+      22      7
+      23      7
+      28      8
+      29      8
+      2a      8
+      2b      8
+      2c      8
+      2d      8
+      2e      8
+      2f      8
+      30      8
+      35      8
+      36      8
+      37      8
+      38      8
+      39      8
+      3a      8
+      3b      8
+      3c      8
+      3d      8
+      42      8
+      43      8
+      44      8
+      45      8
+      46      8
+      47      8
+      4d      8
+      4e      8
+      4f      9
+      50      9
+      51      9
+      57      9
+      58      9
+      5c      9
+      5d      9
+      61      9
+      62      9
+      63      9
+      64      9
+      65      9
+      66      9
+      6c      10
+      6f      12
+      70      12
+      71      12
+      72      12
+      73      12
+      74      12
+      75      12
+      76      12
+      7a      14
+   }
+}
+
+Lines mapping:
+5 <-> 7
+6 <-> 9
+7 <-> 13
+9 <-> 15

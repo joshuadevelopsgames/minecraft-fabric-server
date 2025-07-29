@@ -1,0 +1,291 @@
+package net.minecraft.client.main;
+
+import com.google.common.base.Stopwatch;
+import com.google.common.base.Ticker;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.mojang.authlib.properties.PropertyMap;
+import com.mojang.authlib.properties.PropertyMap.Serializer;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.jtracy.TracyClient;
+import com.mojang.logging.LogUtils;
+import com.mojang.util.UndashedUuid;
+import java.io.File;
+import java.net.Authenticator;
+import java.net.InetSocketAddress;
+import java.net.PasswordAuthentication;
+import java.net.Proxy;
+import java.net.Proxy.Type;
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Stream;
+import javax.annotation.Nullable;
+import joptsimple.ArgumentAcceptingOptionSpec;
+import joptsimple.OptionParser;
+import joptsimple.OptionSet;
+import joptsimple.OptionSpec;
+import net.minecraft.obfuscate.DontObfuscate;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.slf4j.Logger;
+
+public class Main {
+   @DontObfuscate
+   public static void main(String[] $$0) {
+      OptionParser $$1 = new OptionParser();
+      $$1.allowsUnrecognizedOptions();
+      $$1.accepts("demo");
+      $$1.accepts("disableMultiplayer");
+      $$1.accepts("disableChat");
+      $$1.accepts("fullscreen");
+      $$1.accepts("checkGlErrors");
+      OptionSpec<Void> $$2 = $$1.accepts("renderDebugLabels");
+      OptionSpec<Void> $$3 = $$1.accepts("jfrProfile");
+      OptionSpec<Void> $$4 = $$1.accepts("tracy");
+      OptionSpec<Void> $$5 = $$1.accepts("tracyNoImages");
+      OptionSpec<String> $$6 = $$1.accepts("quickPlayPath").withRequiredArg();
+      OptionSpec<String> $$7 = $$1.accepts("quickPlaySingleplayer").withOptionalArg();
+      OptionSpec<String> $$8 = $$1.accepts("quickPlayMultiplayer").withRequiredArg();
+      OptionSpec<String> $$9 = $$1.accepts("quickPlayRealms").withRequiredArg();
+      OptionSpec<File> $$10 = $$1.accepts("gameDir").withRequiredArg().ofType(File.class).defaultsTo(new File("."), new File[0]);
+      OptionSpec<File> $$11 = $$1.accepts("assetsDir").withRequiredArg().ofType(File.class);
+      OptionSpec<File> $$12 = $$1.accepts("resourcePackDir").withRequiredArg().ofType(File.class);
+      OptionSpec<String> $$13 = $$1.accepts("proxyHost").withRequiredArg();
+      OptionSpec<Integer> $$14 = $$1.accepts("proxyPort").withRequiredArg().defaultsTo("8080", new String[0]).ofType(Integer.class);
+      OptionSpec<String> $$15 = $$1.accepts("proxyUser").withRequiredArg();
+      OptionSpec<String> $$16 = $$1.accepts("proxyPass").withRequiredArg();
+      OptionSpec<String> $$17 = $$1.accepts("username").withRequiredArg().defaultsTo("Player" + System.currentTimeMillis() % 1000L, new String[0]);
+      OptionSpec<String> $$18 = $$1.accepts("uuid").withRequiredArg();
+      OptionSpec<String> $$19 = $$1.accepts("xuid").withOptionalArg().defaultsTo("", new String[0]);
+      OptionSpec<String> $$20 = $$1.accepts("clientId").withOptionalArg().defaultsTo("", new String[0]);
+      OptionSpec<String> $$21 = $$1.accepts("accessToken").withRequiredArg().required();
+      OptionSpec<String> $$22 = $$1.accepts("version").withRequiredArg().required();
+      OptionSpec<Integer> $$23 = $$1.accepts("width").withRequiredArg().ofType(Integer.class).defaultsTo(854, new Integer[0]);
+      OptionSpec<Integer> $$24 = $$1.accepts("height").withRequiredArg().ofType(Integer.class).defaultsTo(480, new Integer[0]);
+      OptionSpec<Integer> $$25 = $$1.accepts("fullscreenWidth").withRequiredArg().ofType(Integer.class);
+      OptionSpec<Integer> $$26 = $$1.accepts("fullscreenHeight").withRequiredArg().ofType(Integer.class);
+      OptionSpec<String> $$27 = $$1.accepts("userProperties").withRequiredArg().defaultsTo("{}", new String[0]);
+      OptionSpec<String> $$28 = $$1.accepts("profileProperties").withRequiredArg().defaultsTo("{}", new String[0]);
+      OptionSpec<String> $$29 = $$1.accepts("assetIndex").withRequiredArg();
+      OptionSpec<String> $$30 = $$1.accepts("userType").withRequiredArg().defaultsTo("legacy", new String[0]);
+      OptionSpec<String> $$31 = $$1.accepts("versionType").withRequiredArg().defaultsTo("release", new String[0]);
+      OptionSpec<String> $$32 = $$1.nonOptions();
+      OptionSet $$33 = $$1.parse($$0);
+      File $$34 = a($$33, $$10);
+      String $$35 = a($$33, $$22);
+      String $$36 = "Pre-bootstrap";
+
+      Logger $$40;
+      glm $$71;
+      try {
+         if ($$33.has($$3)) {
+            bub.f.a(btz.a);
+         }
+
+         if ($$33.has($$4)) {
+            flf.a();
+         }
+
+         Stopwatch $$37 = Stopwatch.createStarted(Ticker.systemTicker());
+         Stopwatch $$38 = Stopwatch.createStarted(Ticker.systemTicker());
+         hxm.a.a(hxi.z, $$37);
+         hxm.a.a(hxi.A, $$38);
+         ac.a();
+         TracyClient.reportAppInfo("Minecraft Java Edition " + ac.b().c());
+         CompletableFuture<?> $$39 = bds.a(bdr.u);
+         p.g();
+         $$40 = LogUtils.getLogger();
+         $$36 = "Bootstrap";
+         amg.a();
+         fto.a();
+         hxm.a.a(amg.b.get());
+         amg.c();
+         $$36 = "Argument parsing";
+         List<String> $$41 = $$33.valuesOf($$32);
+         if (!$$41.isEmpty()) {
+            $$40.info("Completely ignored arguments: {}", $$41);
+         }
+
+         String $$42 = (String)$$30.value($$33);
+         fuq.a $$43 = fuq.a.a($$42);
+         if ($$43 == null) {
+            $$40.warn("Unrecognized user type: {}", $$42);
+         }
+
+         String $$44 = a($$33, $$13);
+         Proxy $$45 = Proxy.NO_PROXY;
+         if ($$44 != null) {
+            try {
+               $$45 = new Proxy(Type.SOCKS, new InetSocketAddress($$44, a($$33, $$14)));
+            } catch (Exception var81) {
+            }
+         }
+
+         final String $$46 = a($$33, $$15);
+         final String $$47 = a($$33, $$16);
+         if (!$$45.equals(Proxy.NO_PROXY) && c($$46) && c($$47)) {
+            Authenticator.setDefault(new Authenticator() {
+               @Override
+               protected PasswordAuthentication getPasswordAuthentication() {
+                  return new PasswordAuthentication($$46, $$47.toCharArray());
+               }
+            });
+         }
+
+         int $$48 = a($$33, $$23);
+         int $$49 = a($$33, $$24);
+         OptionalInt $$50 = a(a($$33, $$25));
+         OptionalInt $$51 = a(a($$33, $$26));
+         boolean $$52 = $$33.has("fullscreen");
+         boolean $$53 = $$33.has("demo");
+         boolean $$54 = $$33.has("disableMultiplayer");
+         boolean $$55 = $$33.has("disableChat");
+         boolean $$56 = !$$33.has($$5);
+         boolean $$57 = $$33.has($$2);
+         Gson $$58 = new GsonBuilder().registerTypeAdapter(PropertyMap.class, new Serializer()).create();
+         PropertyMap $$59 = bbq.a($$58, a($$33, $$27), PropertyMap.class);
+         PropertyMap $$60 = bbq.a($$58, a($$33, $$28), PropertyMap.class);
+         String $$61 = a($$33, $$31);
+         File $$62 = $$33.has($$11) ? a($$33, $$11) : new File($$34, "assets/");
+         File $$63 = $$33.has($$12) ? a($$33, $$12) : new File($$34, "resourcepacks/");
+         UUID $$64 = a($$18, $$33, $$40) ? UndashedUuid.fromStringLenient((String)$$18.value($$33)) : kf.a((String)$$17.value($$33));
+         String $$65 = $$33.has($$29) ? (String)$$29.value($$33) : null;
+         String $$66 = (String)$$33.valueOf($$19);
+         String $$67 = (String)$$33.valueOf($$20);
+         String $$68 = a($$33, $$6);
+         glm.h $$69 = a($$33, $$7, $$8, $$9);
+         fuq $$70 = new fuq((String)$$17.value($$33), $$64, (String)$$21.value($$33), b($$66), b($$67), $$43);
+         $$71 = new glm(
+            new glm.i($$70, $$59, $$60, $$45),
+            new fmx($$48, $$49, $$50, $$51, $$52),
+            new glm.a($$34, $$63, $$62, $$65),
+            new glm.b($$53, $$35, $$61, $$54, $$55, $$56, $$57),
+            new glm.c($$68, $$69)
+         );
+         ag.q();
+         $$39.join();
+      } catch (Throwable var82) {
+         p $$73 = p.a(var82, $$36);
+         q $$74 = $$73.a("Initialization");
+         bcc.a($$74);
+         fue.a(null, null, $$35, null, $$73);
+         fue.a(null, $$34, $$73);
+         return;
+      }
+
+      Thread $$77 = new Thread("Client Shutdown Thread") {
+         @Override
+         public void run() {
+            fue $$0x = fue.R();
+            if ($$0x != null) {
+               hwf $$1x = $$0x.W();
+               if ($$1x != null) {
+                  $$1x.a(true);
+               }
+            }
+         }
+      };
+      $$77.setUncaughtExceptionHandler(new s($$40));
+      Runtime.getRuntime().addShutdownHook($$77);
+      fue $$78 = null;
+
+      try {
+         Thread.currentThread().setName("Render thread");
+         RenderSystem.initRenderThread();
+         $$78 = new fue($$71);
+      } catch (gln var79) {
+         ag.k();
+         $$40.warn("Failed to create window: ", var79);
+         return;
+      } catch (Throwable var80) {
+         p $$81 = p.a(var80, "Initializing game");
+         q $$82 = $$81.a("Initialization");
+         bcc.a($$82);
+         fue.a($$78, null, $$71.d.b, null, $$81);
+         fue.a($$78, $$71.c.a, $$81);
+         return;
+      }
+
+      fue $$83 = $$78;
+      $$78.f();
+
+      try {
+         $$83.q();
+      } finally {
+         $$78.n();
+      }
+   }
+
+   private static glm.h a(OptionSet $$0, OptionSpec<String> $$1, OptionSpec<String> $$2, OptionSpec<String> $$3) {
+      long $$4 = Stream.of($$1, $$2, $$3).filter($$0::has).count();
+      if ($$4 == 0L) {
+         return glm.h.a;
+      } else if ($$4 > 1L) {
+         throw new IllegalArgumentException("Only one quick play option can be specified");
+      } else if ($$0.has($$1)) {
+         String $$5 = a(a($$0, $$1));
+         return new glm.g($$5);
+      } else if ($$0.has($$2)) {
+         String $$6 = a(a($$0, $$2));
+         return y.a($$6, glm.e::new, glm.h.a);
+      } else if ($$0.has($$3)) {
+         String $$7 = a(a($$0, $$3));
+         return y.a($$7, glm.f::new, glm.h.a);
+      } else {
+         return glm.h.a;
+      }
+   }
+
+   @Nullable
+   private static String a(@Nullable String $$0) {
+      return $$0 == null ? null : StringEscapeUtils.unescapeJava($$0);
+   }
+
+   private static Optional<String> b(String $$0) {
+      return $$0.isEmpty() ? Optional.empty() : Optional.of($$0);
+   }
+
+   private static OptionalInt a(@Nullable Integer $$0) {
+      return $$0 != null ? OptionalInt.of($$0) : OptionalInt.empty();
+   }
+
+   @Nullable
+   private static <T> T a(OptionSet $$0, OptionSpec<T> $$1) {
+      try {
+         return (T)$$0.valueOf($$1);
+      } catch (Throwable var5) {
+         if ($$1 instanceof ArgumentAcceptingOptionSpec<T> $$3) {
+            List<T> $$4 = $$3.defaultValues();
+            if (!$$4.isEmpty()) {
+               return $$4.get(0);
+            }
+         }
+
+         throw var5;
+      }
+   }
+
+   private static boolean c(@Nullable String $$0) {
+      return $$0 != null && !$$0.isEmpty();
+   }
+
+   private static boolean a(OptionSpec<String> $$0, OptionSet $$1, Logger $$2) {
+      return $$1.has($$0) && b($$0, $$1, $$2);
+   }
+
+   private static boolean b(OptionSpec<String> $$0, OptionSet $$1, Logger $$2) {
+      try {
+         UndashedUuid.fromStringLenient((String)$$0.value($$1));
+         return true;
+      } catch (IllegalArgumentException var4) {
+         $$2.warn("Invalid UUID: '{}", $$0.value($$1));
+         return false;
+      }
+   }
+
+   static {
+      System.setProperty("java.awt.headless", "true");
+   }
+}

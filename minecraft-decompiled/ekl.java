@@ -1,0 +1,77 @@
+public class ekl implements dmg {
+   private int a;
+
+   @Override
+   public void a(aub $$0, boolean $$1, boolean $$2) {
+      if ($$1) {
+         if ($$0.P().c(dmq.M)) {
+            bck $$3 = $$0.A;
+            this.a--;
+            if (this.a <= 0) {
+               this.a = this.a + 12000 + $$3.a(1200);
+               long $$4 = $$0.af() / 24000L;
+               if ($$4 >= 5L && $$0.W()) {
+                  if ($$3.a(5) == 0) {
+                     int $$5 = $$0.A().size();
+                     if ($$5 >= 1) {
+                        cut $$6 = $$0.A().get($$3.a($$5));
+                        if (!$$6.am()) {
+                           if (!$$0.a($$6.dx(), 2)) {
+                              int $$7 = (24 + $$3.a(24)) * ($$3.h() ? -1 : 1);
+                              int $$8 = (24 + $$3.a(24)) * ($$3.h() ? -1 : 1);
+                              jb.a $$9 = $$6.dx().k().e($$7, 0, $$8);
+                              int $$10 = 10;
+                              if ($$0.b($$9.u() - 10, $$9.w() - 10, $$9.u() + 10, $$9.w() + 10)) {
+                                 jl<dnx> $$11 = $$0.v($$9);
+                                 if (!$$11.a(azn.ag)) {
+                                    int $$12 = (int)Math.ceil($$0.d_($$9).b()) + 1;
+
+                                    for (int $$13 = 0; $$13 < $$12; $$13++) {
+                                       $$9.q($$0.a(eka.a.f, $$9).v());
+                                       if ($$13 == 0) {
+                                          if (!this.a($$0, $$9, $$3, true)) {
+                                             break;
+                                          }
+                                       } else {
+                                          this.a($$0, $$9, $$3, false);
+                                       }
+
+                                       $$9.p($$9.u() + $$3.a(5) - $$3.a(5));
+                                       $$9.r($$9.w() + $$3.a(5) - $$3.a(5));
+                                    }
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   private boolean a(aub $$0, jb $$1, bck $$2, boolean $$3) {
+      eeb $$4 = $$0.a_($$1);
+      if (!dnf.a($$0, $$1, $$4, $$4.y(), bzv.aV)) {
+         return false;
+      } else if (!crw.b(bzv.aV, $$0, bzu.p, $$1, $$2)) {
+         return false;
+      } else {
+         crw $$5 = bzv.aV.a($$0, bzu.p);
+         if ($$5 != null) {
+            if ($$3) {
+               $$5.x(true);
+               $$5.gO();
+            }
+
+            $$5.a_($$1.u(), $$1.v(), $$1.w());
+            $$5.a($$0, $$0.d_($$1), bzu.p, null);
+            $$0.a_($$5);
+            return true;
+         } else {
+            return false;
+         }
+      }
+   }
+}

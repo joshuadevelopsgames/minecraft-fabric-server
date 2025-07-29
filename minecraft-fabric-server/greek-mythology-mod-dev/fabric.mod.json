@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "greekmyth",
+  "version": "1.0.68",
+  "name": "Greek Mythology",
+  "description": "Adds mythological items like Zeus's Lightning Bolt.",
+  "authors": ["Joshua"],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+  "license": "MIT",
+  "icon": "assets/greekmyth/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.example.greekmyth.GreekMythologyMod"
+    ]
+  },
+  "client": [],
+  "server": [
+    "ItemEntityMixin",
+    "PlayerEntityMixin",
+    "FluidBlockMixin",
+    "StriderEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "depends": {
+    "fabricloader": ">=0.16.14",
+    "fabric": "*",
+    "minecraft": "1.21.8"
+  }
+} 

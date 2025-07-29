@@ -17,10 +17,7 @@ if [ ! -d "$WORLD_DIR" ]; then
     mkdir -p $WORLD_DIR
 fi
 
-# Start the Fabric server using the loader
-java $JAVA_OPTS \
-    -cp "../libraries/net/fabricmc/fabric-loader/0.16.14/fabric-loader-0.16.14.jar:../versions/1.21.8/server-1.21.8.jar" \
-    net.fabricmc.loader.launch.server.FabricServerLauncher \
-    nogui
+# Start the Fabric server using the launcher (same as production)
+java $JAVA_OPTS -jar fabric-server-launch.jar nogui
 
 echo "Development server stopped." 

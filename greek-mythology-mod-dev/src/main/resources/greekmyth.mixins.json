@@ -5,7 +5,10 @@
   "mixins": [],
   "client": [],
   "server": [
-    "ItemEntityMixin"
+    "ItemEntityMixin",
+    "PlayerEntityMixin",
+    "FluidBlockMixin",
+    "StriderEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

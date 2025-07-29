@@ -1,0 +1,328 @@
+// Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
+
+import org.vineflower.build.JasmCompile
+import org.vineflower.build.TestDataRuntimesProvider
+
+import java.time.Duration
+
+plugins {
+  id 'jacoco'
+  id 'com.gradleup.shadow' version '8.3.0'
+  id 'org.jetbrains.kotlin.jvm' version '2.0.0'
+  id("io.github.gradle-nexus.publish-plugin") version '2.0.0'
+}
+
+apply plugin: 'jacoco'
+apply plugin: 'java-test-fixtures'
+apply plugin: 'groovy'
+apply plugin: 'scala'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+allprojects {
+  apply plugin: 'com.gradleup.shadow'
+  apply plugin: 'java'
+  ext.isArm = System.getProperty('os.arch') == 'aarch64'
+
+  group = 'org.vineflower'
+
+  compileJava {
+    sourceCompatibility = '17'
+    targetCompatibility = '17'
+  }
+
+  java.toolchain {
+    languageVersion = JavaLanguageVersion.of(17)
+  }
+
+  repositories {
+    mavenCentral()
+  }
+
+  dependencies {
+    implementation 'org.jetbrains:annotations:24.0.0'
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${project.junit_bom}")
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${project.junit_bom}")
+  }
+
+  test {
+    useJUnitPlatform()
+  }
+
+  tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+  }
+}
+
+group = 'org.vineflower'
+base.archivesName = 'vineflower'
+
+version = '1.11.1'
+
+def ENV = System.getenv()
+version = version + (ENV.GITHUB_ACTIONS ? "" : "+local")
+version = version + (ENV.STATUS == "snapshot" ? "-SNAPSHOT" : "")
+
+sourceSets {
+  main.java.srcDirs 'src'
+  test.java.srcDirs 'test'
+  testFixtures.java.srcDirs 'testFixtures'
+  testDataGroovy.groovy.srcDirs files("testData/src/groovy/")
+  testDataKotlin.kotlin.srcDirs files("testData/src/kt/")
+  testDataScala.scala.srcDirs files("testData/src/scala")
+}
+
+repositories { mavenCentral() }
+
+dependencies {
+  testImplementation("org.junit.jupiter:junit-jupiter-api:${project.junit_bom}")
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${project.junit_bom}")
+  testImplementation("org.junit.jupiter:junit-jupiter-params:${project.junit_bom}")
+
+  testImplementation("org.hamcrest:hamcrest:${project.hamcrest}")
+
+  testFixturesImplementation("org.junit.jupiter:junit-jupiter-params:${project.junit_bom}")
+  testFixturesImplementation("org.hamcrest:hamcrest:${project.hamcrest}")
+
+  testDataGroovyImplementation("org.codehaus.groovy:groovy:${project.groovy}")
+  testDataKotlinImplementation platform("org.jetbrains.kotlin:kotlin-bom")
+  testDataKotlinImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+  testDataScalaImplementation("org.scala-lang:scala3-library_3:${project.scala_library}")
+  testRuntimeOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+}
+
+
+jacocoTestReport.dependsOn(test)
+
+build.dependsOn(jacocoTestReport)
+
+jacocoTestReport {
+  reports {
+    xml.required = true
+  }
+}
+
+tasks.withType(JavaCompile) {
+  options.deprecation = true
+}
+
+task testDataClasses {
+  group = 'build'
+}
+testClasses.dependsOn(testDataClasses)
+
+void createJavaTestDataSet(int version, String suffix = "", List<String> compilerArgs = []) {
+  sourceSets.create("testDataJava${version}${suffix}") {
+    it.java.srcDirs file("testData/src/java${version}${suffix.toLowerCase()}")
+  }
+  tasks.getByName("compileTestDataJava${version}${suffix}Java") {
+    destinationDirectory = file("testData/classes/java${version}${suffix.toLowerCase()}")
+    if (project.isArm && version > 8 && version < 11) {
+      // On ARM systems, a more limited set of JVM versions are available
+      // We'll accept the `--release` flag so development is at least somewhat possible
+      javaCompiler = javaToolchains.compilerFor {
+        languageVersion = JavaLanguageVersion.of(11)
+      }
+      options.release = version
+    } else {
+      javaCompiler = javaToolchains.compilerFor {
+        languageVersion = JavaLanguageVersion.of(version)
+      }
+    }
+
+    options.compilerArgs = compilerArgs
+  }
+  testDataClasses.dependsOn("testDataJava${version}${suffix}Classes")
+}
+
+def testJavaRuntimes = [:]
+
+[8, 9, 11, 16, 17, 21].forEach { version ->
+    def runtimeVersion = isArm && version > 8 && version < 11 ? 11 : version
+    createJavaTestDataSet(version)
+    testJavaRuntimes[version] = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(runtimeVersion)
+    }
+}
+[16, 17, 21].forEach { version -> createJavaTestDataSet(version, "Preview", ["--enable-preview"]) }
+[8, 16].forEach { version -> createJavaTestDataSet(version, "NoDebug", ["-g:none"])}
+
+task compileTestDataJasm(type: JasmCompile) {
+  source = fileTree("testData/src/jasm/")
+  destinationDirectory = file("testData/classes/jasm/")
+  options.compilerArgs += ["-g"]
+}
+task testDataJasmClasses {
+  group = 'build'
+}
+testDataJasmClasses.dependsOn(compileTestDataJasm)
+testDataClasses.dependsOn(testDataJasmClasses)
+
+compileTestDataGroovyGroovy {
+  destinationDirectory = file("testData/classes/groovy")
+}
+testDataClasses.dependsOn(testDataGroovyClasses)
+
+compileTestDataKotlinKotlin {
+  destinationDirectory = file("testData/classes/kt")
+}
+testDataClasses.dependsOn(testDataKotlinClasses)
+
+compileTestDataScalaScala {
+  destinationDirectory = file("testData/classes/scala")
+}
+testDataClasses.dependsOn(testDataScalaClasses)
+
+test {
+  maxHeapSize = "512M"
+
+  systemProperty "DOT_EXPORT_DIR", System.getProperty("DOT_EXPORT_DIR", null)
+  systemProperty "DOT_ERROR_EXPORT_DIR", System.getProperty("DOT_ERROR_EXPORT_DIR", null)
+  systemProperty "VALIDATE_DECOMPILED_CODE", System.getProperty("VALIDATE_DECOMPILED_CODE", "false")
+  
+  def provider = objects.newInstance(TestDataRuntimesProvider)
+  testJavaRuntimes.each { k, v ->
+      provider.launchers.put(k, v)
+  }
+  jvmArgumentProviders << provider
+}
+
+jar {
+  archiveClassifier = "slim"
+  from sourceSets.main.output
+
+  manifest {
+    attributes (
+      'Main-Class': 'org.jetbrains.java.decompiler.main.decompiler.ConsoleDecompiler',
+      'Implementation-Name': "Vineflower",
+      'Implementation-Version': project.version
+    )
+  }
+}
+
+// If testFixtures can't be inferred from the build path, it'll need to be manually specified to be able to find
+// the test fixtures class. Put it in a unique place to mark it as such.
+testFixturesJar {
+  destinationDirectory = file("$rootDir/build/extralibs")
+}
+
+task sourceJar(type:Jar) {
+  archiveClassifier = "sources"
+  from sourceSets.main.allSource
+}
+
+tasks.withType(Javadoc) {
+  failOnError false
+  include 'org/jetbrains/java/decompiler/api/**'
+  include 'org/jetbrains/java/decompiler/main/extern/**'
+  options.addStringOption('Xdoclint:none', '-quiet')
+  options.addStringOption('encoding', 'UTF-8')
+  options.addStringOption('charSet', 'UTF-8')
+}
+
+java {
+  withSourcesJar()
+  withJavadocJar()
+}
+
+tasks.withType(Jar) {
+  reproducibleFileOrder = true
+  preserveFileTimestamps = false
+}
+
+def allJar = tasks.register('allJar', Jar) {allJar ->
+  archiveClassifier.set('')
+  from sourceSets.main.output
+
+  manifest {
+    attributes (
+      'Main-Class': 'org.jetbrains.java.decompiler.main.decompiler.ConsoleDecompiler',
+      'Implementation-Name': "Vineflower",
+      'Implementation-Version': project.version
+    )
+  }
+
+  subprojects.each {
+    // Check if gradle.properties has 'does_shadow=true', and use the shadowJar configuration if so
+    Task buildTask = it.tasks.named("true".equals(it.does_shadow) ? 'shadowJar' : 'jar').get()
+    // Make sure the task is defined as a dependency
+    dependsOn buildTask
+    // Relocate the jar into META-INF/plugins
+    allJar.from(buildTask.outputs) {
+      into 'META-INF/plugins/'
+    }
+  }
+}
+
+build.dependsOn(allJar)
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      pom {
+        name = 'Vineflower'
+        packaging = 'jar'
+        // optionally artifactId can be defined here
+        description = 'Modern Java & JVM language decompiler aiming to be as accurate as possible, with an emphasis on output quality.'
+        url = 'https://vineflower.org'
+
+        scm {
+          connection = 'scm:git:https://github.com/Vineflower/vineflower.git'
+          developerConnection = 'scm:git:ssh:git@github.com:Vineflower/vineflower.git'
+          url = 'https://github.com/Vineflower/vineflower'
+        }
+
+        licenses {
+          license {
+            name = 'The Apache License, Version 2.0'
+            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+
+        developers {
+          developer {
+            id = 'vineflower'
+            name = 'Vineflower Development Team'
+            email = '~jasmine/vineflower-discuss@lists.sr.ht'
+          }
+        }
+      }
+
+      // VF-only jar
+      artifact jar
+      // Jar with included plugins
+      artifact allJar
+      artifact sourcesJar
+      artifact javadocJar
+    }
+  }
+}
+
+nexusPublishing {
+  repositories {
+    sonatype {
+      username = ENV.SONATYPE_USER
+      password = ENV.SONATYPE_PASS
+
+      nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+      snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+    }
+  }
+
+  // nexus is eepy, give her time to respond
+  def timeout = Duration.ofMinutes(6)
+  clientTimeout = timeout
+  connectTimeout = timeout
+}
+
+signing {
+  if (ENV.SIGNING_KEY) {
+    def signingKey = ENV.SIGNING_KEY
+    def signingPassword = ENV.SIGNING_KEY_PASSPHRASE
+
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications.mavenJava
+  }
+}

@@ -1,0 +1,95 @@
+package pkg;
+
+import java.util.Objects;
+
+public class TestSwitchPatternMatchingReturn2 {
+   public int test(Object o) {
+      Objects.requireNonNull(o);
+
+      return switch (o) {// 5
+         case Integer i when i > 100 -> -i;// 6
+         case Integer ix -> ix;// 7
+         case String s -> s.length();// 8
+         default -> 0;// 9
+      };
+   }
+}
+
+class 'pkg/TestSwitchPatternMatchingReturn2' {
+   method 'test (Ljava/lang/Object;)I' {
+      0      6
+      2      6
+      3      6
+      4      6
+      9      8
+      10      8
+      11      8
+      12      8
+      13      8
+      14      8
+      15      8
+      16      8
+      17      8
+      18      8
+      19      8
+      1a      8
+      1b      8
+      1c      8
+      1d      8
+      1e      8
+      1f      8
+      20      8
+      21      8
+      22      8
+      23      8
+      24      8
+      25      8
+      26      8
+      27      8
+      28      8
+      29      8
+      2a      8
+      2b      8
+      30      9
+      31      9
+      32      9
+      33      9
+      34      9
+      35      9
+      36      9
+      37      9
+      38      9
+      39      9
+      3a      9
+      3b      9
+      41      9
+      42      9
+      43      9
+      44      9
+      45      9
+      46      9
+      4e      10
+      4f      10
+      50      10
+      51      10
+      52      10
+      53      10
+      54      10
+      5c      11
+      5d      11
+      5e      11
+      5f      11
+      60      11
+      61      11
+      62      11
+      66      12
+      6a      8
+   }
+}
+
+Lines mapping:
+5 <-> 9
+6 <-> 10
+7 <-> 11
+8 <-> 12
+9 <-> 13

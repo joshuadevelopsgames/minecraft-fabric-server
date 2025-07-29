@@ -1,0 +1,283 @@
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
+import java.util.List;
+import javax.annotation.Nullable;
+
+public class si {
+   public static final amd<euc> a = sg.a("bamboo_light");
+   public static final amd<euc> b = sg.a("bamboo");
+   public static final amd<euc> c = sg.a("vines");
+   public static final amd<euc> d = sg.a("patch_sunflower");
+   public static final amd<euc> e = sg.a("patch_pumpkin");
+   public static final amd<euc> f = sg.a("patch_grass_plain");
+   public static final amd<euc> g = sg.a("patch_grass_meadow");
+   public static final amd<euc> h = sg.a("patch_grass_forest");
+   public static final amd<euc> i = sg.a("patch_grass_badlands");
+   public static final amd<euc> j = sg.a("patch_grass_savanna");
+   public static final amd<euc> k = sg.a("patch_grass_normal");
+   public static final amd<euc> l = sg.a("patch_grass_taiga_2");
+   public static final amd<euc> m = sg.a("patch_grass_taiga");
+   public static final amd<euc> n = sg.a("patch_grass_jungle");
+   public static final amd<euc> o = sg.a("grass_bonemeal");
+   public static final amd<euc> p = sg.a("patch_dead_bush_2");
+   public static final amd<euc> q = sg.a("patch_dead_bush");
+   public static final amd<euc> r = sg.a("patch_dead_bush_badlands");
+   public static final amd<euc> s = sg.a("patch_dry_grass_badlands");
+   public static final amd<euc> t = sg.a("patch_dry_grass_desert");
+   public static final amd<euc> u = sg.a("patch_melon");
+   public static final amd<euc> v = sg.a("patch_melon_sparse");
+   public static final amd<euc> w = sg.a("patch_berry_common");
+   public static final amd<euc> x = sg.a("patch_berry_rare");
+   public static final amd<euc> y = sg.a("patch_waterlily");
+   public static final amd<euc> z = sg.a("patch_tall_grass_2");
+   public static final amd<euc> A = sg.a("patch_tall_grass");
+   public static final amd<euc> B = sg.a("patch_large_fern");
+   public static final amd<euc> C = sg.a("patch_bush");
+   public static final amd<euc> D = sg.a("patch_leaf_litter");
+   public static final amd<euc> E = sg.a("patch_cactus_desert");
+   public static final amd<euc> F = sg.a("patch_cactus_decorated");
+   public static final amd<euc> G = sg.a("patch_sugar_cane_swamp");
+   public static final amd<euc> H = sg.a("patch_sugar_cane_desert");
+   public static final amd<euc> I = sg.a("patch_sugar_cane_badlands");
+   public static final amd<euc> J = sg.a("patch_sugar_cane");
+   public static final amd<euc> K = sg.a("patch_firefly_bush_swamp");
+   public static final amd<euc> L = sg.a("patch_firefly_bush_near_water_swamp");
+   public static final amd<euc> M = sg.a("patch_firefly_bush_near_water");
+   public static final amd<euc> N = sg.a("brown_mushroom_nether");
+   public static final amd<euc> O = sg.a("red_mushroom_nether");
+   public static final amd<euc> P = sg.a("brown_mushroom_normal");
+   public static final amd<euc> Q = sg.a("red_mushroom_normal");
+   public static final amd<euc> R = sg.a("brown_mushroom_taiga");
+   public static final amd<euc> S = sg.a("red_mushroom_taiga");
+   public static final amd<euc> T = sg.a("brown_mushroom_old_growth");
+   public static final amd<euc> U = sg.a("red_mushroom_old_growth");
+   public static final amd<euc> V = sg.a("brown_mushroom_swamp");
+   public static final amd<euc> W = sg.a("red_mushroom_swamp");
+   public static final amd<euc> X = sg.a("flower_warm");
+   public static final amd<euc> Y = sg.a("flower_default");
+   public static final amd<euc> Z = sg.a("flower_flower_forest");
+   public static final amd<euc> aa = sg.a("flower_swamp");
+   public static final amd<euc> ab = sg.a("flower_plains");
+   public static final amd<euc> ac = sg.a("flower_meadow");
+   public static final amd<euc> ad = sg.a("flower_cherry");
+   public static final amd<euc> ae = sg.a("flower_pale_garden");
+   public static final amd<euc> af = sg.a("wildflowers_birch_forest");
+   public static final amd<euc> ag = sg.a("wildflowers_meadow");
+   public static final amd<euc> ah = sg.a("trees_plains");
+   public static final amd<euc> ai = sg.a("dark_forest_vegetation");
+   public static final amd<euc> aj = sg.a("pale_garden_vegetation");
+   public static final amd<euc> ak = sg.a("flower_forest_flowers");
+   public static final amd<euc> al = sg.a("forest_flowers");
+   public static final amd<euc> am = sg.a("pale_garden_flowers");
+   public static final amd<euc> an = sg.a("pale_moss_patch");
+   public static final amd<euc> ao = sg.a("trees_flower_forest");
+   public static final amd<euc> ap = sg.a("trees_meadow");
+   public static final amd<euc> aq = sg.a("trees_cherry");
+   public static final amd<euc> ar = sg.a("trees_taiga");
+   public static final amd<euc> as = sg.a("trees_grove");
+   public static final amd<euc> at = sg.a("trees_badlands");
+   public static final amd<euc> au = sg.a("trees_snowy");
+   public static final amd<euc> av = sg.a("trees_swamp");
+   public static final amd<euc> aw = sg.a("trees_windswept_savanna");
+   public static final amd<euc> ax = sg.a("trees_savanna");
+   public static final amd<euc> ay = sg.a("birch_tall");
+   public static final amd<euc> az = sg.a("trees_birch");
+   public static final amd<euc> aA = sg.a("trees_windswept_forest");
+   public static final amd<euc> aB = sg.a("trees_windswept_hills");
+   public static final amd<euc> aC = sg.a("trees_water");
+   public static final amd<euc> aD = sg.a("trees_birch_and_oak_leaf_litter");
+   public static final amd<euc> aE = sg.a("trees_sparse_jungle");
+   public static final amd<euc> aF = sg.a("trees_old_growth_spruce_taiga");
+   public static final amd<euc> aG = sg.a("trees_old_growth_pine_taiga");
+   public static final amd<euc> aH = sg.a("trees_jungle");
+   public static final amd<euc> aI = sg.a("bamboo_vegetation");
+   public static final amd<euc> aJ = sg.a("mushroom_island_vegetation");
+   public static final amd<euc> aK = sg.a("trees_mangrove");
+   private static final euf aL = eul.a(0);
+
+   public static List<euf> a(int $$0) {
+      return List.of(etu.a($$0), etz.a(), sg.d, etq.a());
+   }
+
+   private static List<euf> a(int $$0, @Nullable euf $$1) {
+      Builder<euf> $$2 = ImmutableList.builder();
+      if ($$1 != null) {
+         $$2.add($$1);
+      }
+
+      if ($$0 != 0) {
+         $$2.add(eui.a($$0));
+      }
+
+      $$2.add(etz.a());
+      $$2.add(sg.a);
+      $$2.add(etq.a());
+      return $$2.build();
+   }
+
+   private static Builder<euf> b(euf $$0) {
+      return ImmutableList.builder().add($$0).add(etz.a()).add(aL).add(sg.e).add(etq.a());
+   }
+
+   public static List<euf> a(euf $$0) {
+      return b($$0).build();
+   }
+
+   public static List<euf> a(euf $$0, dpz $$1) {
+      return b($$0).add(etr.a(elh.a($$1.m(), jb.c))).build();
+   }
+
+   public static void a(qq<euc> $$0) {
+      jm<ems<?, ?>> $$1 = $$0.a(mn.aP);
+      jl<ems<?, ?>> $$2 = $$1.b(rx.a);
+      jl<ems<?, ?>> $$3 = $$1.b(rx.b);
+      jl<ems<?, ?>> $$4 = $$1.b(rx.c);
+      jl<ems<?, ?>> $$5 = $$1.b(rx.f);
+      jl<ems<?, ?>> $$6 = $$1.b(rx.g);
+      jl<ems<?, ?>> $$7 = $$1.b(rx.j);
+      jl<ems<?, ?>> $$8 = $$1.b(rx.k);
+      jl<ems<?, ?>> $$9 = $$1.b(rx.u);
+      jl<ems<?, ?>> $$10 = $$1.b(rx.i);
+      jl<ems<?, ?>> $$11 = $$1.b(rx.l);
+      jl<ems<?, ?>> $$12 = $$1.b(rx.m);
+      jl<ems<?, ?>> $$13 = $$1.b(rx.n);
+      jl<ems<?, ?>> $$14 = $$1.b(rx.o);
+      jl<ems<?, ?>> $$15 = $$1.b(rx.v);
+      jl<ems<?, ?>> $$16 = $$1.b(rx.p);
+      jl<ems<?, ?>> $$17 = $$1.b(rx.h);
+      jl<ems<?, ?>> $$18 = $$1.b(rx.q);
+      jl<ems<?, ?>> $$19 = $$1.b(rx.r);
+      jl<ems<?, ?>> $$20 = $$1.b(rx.s);
+      jl<ems<?, ?>> $$21 = $$1.b(rx.t);
+      jl<ems<?, ?>> $$22 = $$1.b(rx.w);
+      jl<ems<?, ?>> $$23 = $$1.b(rx.x);
+      jl<ems<?, ?>> $$24 = $$1.b(rx.d);
+      jl<ems<?, ?>> $$25 = $$1.b(rx.e);
+      jl<ems<?, ?>> $$26 = $$1.b(rx.y);
+      jl<ems<?, ?>> $$27 = $$1.b(rx.z);
+      jl<ems<?, ?>> $$28 = $$1.b(rx.A);
+      jl<ems<?, ?>> $$29 = $$1.b(rx.B);
+      jl<ems<?, ?>> $$30 = $$1.b(rx.C);
+      jl<ems<?, ?>> $$31 = $$1.b(rx.D);
+      jl<ems<?, ?>> $$32 = $$1.b(rx.E);
+      jl<ems<?, ?>> $$33 = $$1.b(rx.F);
+      jl<ems<?, ?>> $$34 = $$1.b(rx.G);
+      jl<ems<?, ?>> $$35 = $$1.b(rx.aa);
+      jl<ems<?, ?>> $$36 = $$1.b(rx.J);
+      jl<ems<?, ?>> $$37 = $$1.b(rx.K);
+      jl<ems<?, ?>> $$38 = $$1.b(rx.H);
+      jl<ems<?, ?>> $$39 = $$1.b(rx.I);
+      jl<ems<?, ?>> $$40 = $$1.b(rx.M);
+      jl<ems<?, ?>> $$41 = $$1.b(rx.O);
+      jl<ems<?, ?>> $$42 = $$1.b(rx.P);
+      jl<ems<?, ?>> $$43 = $$1.b(rx.Q);
+      jl<ems<?, ?>> $$44 = $$1.b(rx.R);
+      jl<ems<?, ?>> $$45 = $$1.b(rx.S);
+      jl<ems<?, ?>> $$46 = $$1.b(rx.U);
+      jl<ems<?, ?>> $$47 = $$1.b(rw.O);
+      jl<ems<?, ?>> $$48 = $$1.b(rw.x);
+      jl<ems<?, ?>> $$49 = $$1.b(rx.T);
+      jl<ems<?, ?>> $$50 = $$1.b(rx.W);
+      jl<ems<?, ?>> $$51 = $$1.b(rx.V);
+      jl<ems<?, ?>> $$52 = $$1.b(rx.X);
+      jl<ems<?, ?>> $$53 = $$1.b(rx.Y);
+      jl<ems<?, ?>> $$54 = $$1.b(rx.Z);
+      jl<ems<?, ?>> $$55 = $$1.b(rx.ab);
+      jl<ems<?, ?>> $$56 = $$1.b(rx.ac);
+      jl<ems<?, ?>> $$57 = $$1.b(rx.ad);
+      jl<ems<?, ?>> $$58 = $$1.b(rx.ae);
+      jl<ems<?, ?>> $$59 = $$1.b(rx.af);
+      jl<ems<?, ?>> $$60 = $$1.b(rx.ag);
+      jl<ems<?, ?>> $$61 = $$1.b(rx.ah);
+      sg.a($$0, a, $$2, eui.a(4), etz.a(), sg.a, etq.a());
+      sg.a($$0, b, $$3, eua.a(160, 80.0, 0.3), etz.a(), sg.d, etq.a());
+      sg.a($$0, c, $$4, etu.a(127), etz.a(), etx.a(eku.a(64), eku.a(100)), etq.a());
+      sg.a($$0, d, $$5, eui.a(3), etz.a(), sg.a, etq.a());
+      sg.a($$0, e, $$6, eui.a(300), etz.a(), sg.a, etq.a());
+      sg.a($$0, f, $$7, eub.a(-0.8, 5, 10), etz.a(), sg.d, etq.a());
+      sg.a($$0, g, $$8, eub.a(-0.8, 5, 10), etz.a(), sg.d, etq.a());
+      sg.a($$0, h, $$7, a(2));
+      sg.a($$0, D, $$9, a(2));
+      sg.a($$0, i, $$7, etz.a(), sg.d, etq.a());
+      sg.a($$0, j, $$7, a(20));
+      sg.a($$0, k, $$7, a(5));
+      sg.a($$0, l, $$10, etz.a(), sg.d, etq.a());
+      sg.a($$0, m, $$10, a(7));
+      sg.a($$0, n, $$11, a(25));
+      sg.a($$0, o, $$12, sg.a());
+      sg.a($$0, p, $$13, a(2));
+      sg.a($$0, q, $$13, etz.a(), sg.d, etq.a());
+      sg.a($$0, r, $$13, a(20));
+      sg.a($$0, s, $$14, eui.a(6), etz.a(), sg.a, etq.a());
+      sg.a($$0, t, $$14, eui.a(3), etz.a(), sg.a, etq.a());
+      sg.a($$0, u, $$16, eui.a(6), etz.a(), sg.a, etq.a());
+      sg.a($$0, v, $$16, eui.a(64), etz.a(), sg.a, etq.a());
+      sg.a($$0, w, $$17, eui.a(32), etz.a(), sg.d, etq.a());
+      sg.a($$0, x, $$17, eui.a(384), etz.a(), sg.d, etq.a());
+      sg.a($$0, y, $$18, a(4));
+      sg.a($$0, z, $$19, eub.a(-0.8, 0, 7), eui.a(32), etz.a(), sg.a, etq.a());
+      sg.a($$0, A, $$19, eui.a(5), etz.a(), sg.a, etq.a());
+      sg.a($$0, B, $$20, eui.a(5), etz.a(), sg.a, etq.a());
+      sg.a($$0, C, $$21, eui.a(4), etz.a(), sg.a, etq.a());
+      sg.a($$0, E, $$22, eui.a(6), etz.a(), sg.a, etq.a());
+      sg.a($$0, F, $$22, eui.a(13), etz.a(), sg.a, etq.a());
+      sg.a($$0, G, $$23, eui.a(3), etz.a(), sg.a, etq.a());
+      sg.a($$0, H, $$23, etz.a(), sg.a, etq.a());
+      sg.a($$0, I, $$23, eui.a(5), etz.a(), sg.a, etq.a());
+      sg.a($$0, J, $$23, eui.a(6), etz.a(), sg.a, etq.a());
+      sg.a($$0, M, $$15, etu.a(2), etz.a(), sg.b, etq.a(), rx.a(dqb.um));
+      sg.a($$0, L, $$15, etu.a(3), etz.a(), sg.a, etq.a(), rx.a(dqb.um));
+      sg.a($$0, K, $$15, eui.a(8), etz.a(), sg.a, etq.a());
+      sg.a($$0, N, $$24, eui.a(2), etz.a(), sg.f, etq.a());
+      sg.a($$0, O, $$25, eui.a(2), etz.a(), sg.f, etq.a());
+      sg.a($$0, P, $$24, a(256, null));
+      sg.a($$0, Q, $$25, a(512, null));
+      sg.a($$0, R, $$24, a(4, null));
+      sg.a($$0, S, $$25, a(256, null));
+      sg.a($$0, T, $$24, a(4, etu.a(3)));
+      sg.a($$0, U, $$25, a(171, null));
+      sg.a($$0, V, $$24, a(0, etu.a(2)));
+      sg.a($$0, W, $$25, a(64, null));
+      sg.a($$0, X, $$26, eui.a(16), etz.a(), sg.a, etq.a());
+      sg.a($$0, Y, $$26, eui.a(32), etz.a(), sg.a, etq.a());
+      sg.a($$0, Z, $$27, etu.a(3), eui.a(2), etz.a(), sg.a, etq.a());
+      sg.a($$0, aa, $$28, eui.a(32), etz.a(), sg.a, etq.a());
+      sg.a($$0, ab, $$29, eub.a(-0.8, 15, 4), eui.a(32), etz.a(), sg.a, etq.a());
+      sg.a($$0, ad, $$31, eub.a(-0.8, 5, 10), etz.a(), sg.a, etq.a());
+      sg.a($$0, ac, $$30, etz.a(), sg.a, etq.a());
+      sg.a($$0, ae, $$32, eui.a(32), etz.a(), sg.a, etq.a());
+      sg.a($$0, af, $$33, etu.a(3), eui.a(2), etz.a(), sg.a, etq.a());
+      sg.a($$0, ag, $$34, eub.a(-0.8, 5, 10), etz.a(), sg.a, etq.a());
+      euf $$62 = eul.a(0);
+      sg.a($$0, ah, $$35, sg.a(0, 0.05F, 1), etz.a(), $$62, sg.e, etr.a(elh.a(dqb.z.m(), jb.c)), etq.a());
+      sg.a($$0, ai, $$36, etu.a(16), etz.a(), $$62, sg.e, etq.a());
+      sg.a($$0, aj, $$37, etu.a(16), etz.a(), $$62, sg.e, etq.a());
+      sg.a($$0, ak, $$38, eui.a(7), etz.a(), sg.a, etu.a(bwh.a(bwu.a(-1, 3), 0, 3)), etq.a());
+      sg.a($$0, al, $$38, eui.a(7), etz.a(), sg.a, etu.a(bwh.a(bwu.a(-3, 1), 0, 1)), etq.a());
+      sg.a($$0, am, $$39, eui.a(8), etz.a(), sg.b, etq.a());
+      sg.a($$0, an, $$40, etu.a(1), etz.a(), sg.b, etq.a());
+      sg.a($$0, ao, $$41, a(sg.a(6, 0.1F, 1)));
+      sg.a($$0, ap, $$42, a(eui.a(100)));
+      sg.a($$0, aq, $$47, a(sg.a(10, 0.1F, 1), dqb.E));
+      sg.a($$0, ar, $$43, a(sg.a(10, 0.1F, 1)));
+      sg.a($$0, as, $$45, a(sg.a(10, 0.1F, 1)));
+      sg.a($$0, at, $$44, a(sg.a(5, 0.1F, 1), dqb.z));
+      sg.a($$0, au, $$46, a(sg.a(0, 0.1F, 1), dqb.A));
+      sg.a($$0, av, $$48, sg.a(2, 0.1F, 1), etz.a(), eul.a(2), sg.e, etq.a(), etr.a(elh.a(dqb.z.m(), jb.c)));
+      sg.a($$0, aw, $$49, a(sg.a(2, 0.1F, 1)));
+      sg.a($$0, ax, $$49, a(sg.a(1, 0.1F, 1)));
+      sg.a($$0, ay, $$50, a(sg.a(10, 0.1F, 1)));
+      sg.a($$0, az, $$51, a(sg.a(10, 0.1F, 1), dqb.B));
+      sg.a($$0, aA, $$52, a(sg.a(3, 0.1F, 1)));
+      sg.a($$0, aB, $$52, a(sg.a(0, 0.1F, 1)));
+      sg.a($$0, aC, $$53, a(sg.a(0, 0.1F, 1)));
+      sg.a($$0, aD, $$54, a(sg.a(10, 0.1F, 1)));
+      sg.a($$0, aE, $$55, a(sg.a(2, 0.1F, 1)));
+      sg.a($$0, aF, $$56, a(sg.a(10, 0.1F, 1)));
+      sg.a($$0, aG, $$57, a(sg.a(10, 0.1F, 1)));
+      sg.a($$0, aH, $$58, a(sg.a(50, 0.1F, 1)));
+      sg.a($$0, aI, $$59, a(sg.a(30, 0.1F, 1)));
+      sg.a($$0, aJ, $$60, etz.a(), sg.a, etq.a());
+      sg.a($$0, aK, $$61, etu.a(25), etz.a(), eul.a(5), sg.e, etq.a(), etr.a(elh.a(dqb.H.m(), jb.c)));
+   }
+}

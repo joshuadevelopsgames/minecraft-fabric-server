@@ -1,0 +1,107 @@
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableSet.Builder;
+import com.mojang.datafixers.util.Either;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.OptionalInt;
+import java.util.Set;
+import java.util.function.Function;
+import javax.annotation.Nullable;
+
+public class fdi {
+   private static final Codec<fdi> b = RecordCodecBuilder.create(
+      $$0 -> $$0.group(
+            fhp.a.optionalFieldOf("min").forGetter($$0x -> Optional.ofNullable($$0x.c)),
+            fhp.a.optionalFieldOf("max").forGetter($$0x -> Optional.ofNullable($$0x.d))
+         )
+         .apply($$0, fdi::new)
+   );
+   public static final Codec<fdi> a = Codec.either(Codec.INT, b).xmap($$0 -> (fdi)$$0.map(fdi::a, Function.identity()), $$0 -> {
+      OptionalInt $$1 = $$0.b();
+      return $$1.isPresent() ? Either.left($$1.getAsInt()) : Either.right($$0);
+   });
+   @Nullable
+   private final fho c;
+   @Nullable
+   private final fho d;
+   private final fdi.b e;
+   private final fdi.a f;
+
+   public Set<bdn<?>> a() {
+      Builder<bdn<?>> $$0 = ImmutableSet.builder();
+      if (this.c != null) {
+         $$0.addAll(this.c.a());
+      }
+
+      if (this.d != null) {
+         $$0.addAll(this.d.a());
+      }
+
+      return $$0.build();
+   }
+
+   private fdi(Optional<fho> $$0, Optional<fho> $$1) {
+      this($$0.orElse(null), $$1.orElse(null));
+   }
+
+   private fdi(@Nullable fho $$0, @Nullable fho $$1) {
+      this.c = $$0;
+      this.d = $$1;
+      if ($$0 == null) {
+         if ($$1 == null) {
+            this.e = ($$0x, $$1x) -> $$1x;
+            this.f = ($$0x, $$1x) -> true;
+         } else {
+            this.e = ($$1x, $$2) -> Math.min($$1.a($$1x), $$2);
+            this.f = ($$1x, $$2) -> $$2 <= $$1.a($$1x);
+         }
+      } else if ($$1 == null) {
+         this.e = ($$1x, $$2) -> Math.max($$0.a($$1x), $$2);
+         this.f = ($$1x, $$2) -> $$2 >= $$0.a($$1x);
+      } else {
+         this.e = ($$2, $$3) -> bcb.a($$3, $$0.a($$2), $$1.a($$2));
+         this.f = ($$2, $$3) -> $$3 >= $$0.a($$2) && $$3 <= $$1.a($$2);
+      }
+   }
+
+   public static fdi a(int $$0) {
+      fhl $$1 = fhl.a($$0);
+      return new fdi(Optional.of($$1), Optional.of($$1));
+   }
+
+   public static fdi a(int $$0, int $$1) {
+      return new fdi(Optional.of(fhl.a($$0)), Optional.of(fhl.a($$1)));
+   }
+
+   public static fdi b(int $$0) {
+      return new fdi(Optional.of(fhl.a($$0)), Optional.empty());
+   }
+
+   public static fdi c(int $$0) {
+      return new fdi(Optional.empty(), Optional.of(fhl.a($$0)));
+   }
+
+   public int a(fdj $$0, int $$1) {
+      return this.e.apply($$0, $$1);
+   }
+
+   public boolean b(fdj $$0, int $$1) {
+      return this.f.test($$0, $$1);
+   }
+
+   private OptionalInt b() {
+      return Objects.equals(this.c, this.d) && this.c instanceof fhl $$0 && Math.floor($$0.c()) == $$0.c() ? OptionalInt.of((int)$$0.c()) : OptionalInt.empty();
+   }
+
+   @FunctionalInterface
+   interface a {
+      boolean test(fdj var1, int var2);
+   }
+
+   @FunctionalInterface
+   interface b {
+      int apply(fdj var1, int var2);
+   }
+}

@@ -1,0 +1,70 @@
+public class guc extends gvt {
+   private static final float a = 0.3F;
+   private static final float b = 0.1F;
+   private static final float F = 0.5F;
+   private static final float G = 0.3F;
+   private static final int H = 200;
+   private static final int I = 300;
+
+   guc(grk $$0, double $$1, double $$2, double $$3, double $$4, double $$5, double $$6) {
+      super($$0, $$1, $$2, $$3, $$4, $$5, $$6);
+      this.C = true;
+      this.B = 0.96F;
+      this.D *= 0.75F;
+      this.k *= 0.8F;
+      this.j *= 0.8F;
+      this.l *= 0.8F;
+   }
+
+   @Override
+   public gux b() {
+      return gux.c;
+   }
+
+   @Override
+   public int a(float $$0) {
+      return (int)(255.0F * b(this.f(this.s + $$0), 0.1F, 0.3F));
+   }
+
+   @Override
+   public void a() {
+      super.a();
+      if (!this.c.a_(jb.a(this.g, this.h, this.i)).l()) {
+         this.k();
+      } else {
+         this.e(b(this.f(this.s), 0.3F, 0.5F));
+         if (Math.random() > 0.95 || this.s == 1) {
+            this.b(-0.05F + 0.1F * Math.random(), -0.05F + 0.1F * Math.random(), -0.05F + 0.1F * Math.random());
+         }
+      }
+   }
+
+   private float f(float $$0) {
+      return bcb.a($$0 / this.t, 0.0F, 1.0F);
+   }
+
+   private static float b(float $$0, float $$1, float $$2) {
+      if ($$0 >= 1.0F - $$1) {
+         return (1.0F - $$0) / $$1;
+      } else {
+         return $$0 <= $$2 ? $$0 / $$2 : 1.0F;
+      }
+   }
+
+   public static class a implements guw<mi> {
+      private final gvo a;
+
+      public a(gvo $$0) {
+         this.a = $$0;
+      }
+
+      public gut a(mi $$0, grk $$1, double $$2, double $$3, double $$4, double $$5, double $$6, double $$7) {
+         guc $$8 = new guc($$1, $$2, $$3, $$4, 0.5 - $$1.A.j(), $$1.A.h() ? $$6 : -$$6, 0.5 - $$1.A.j());
+         $$8.a($$1.A.a(200, 300));
+         $$8.d(1.5F);
+         $$8.a(this.a);
+         $$8.e(0.0F);
+         return $$8;
+      }
+   }
+}

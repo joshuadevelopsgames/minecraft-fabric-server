@@ -1,0 +1,26 @@
+{
+  "entity.wolf.ambient": {
+    "sounds": [
+      "entity/wither_skeleton/ambient"
+    ],
+    "subtitle": "Wither Skeleton growls"
+  },
+  "entity.wolf.hurt": {
+    "sounds": [
+      "entity/wither_skeleton/hurt"
+    ],
+    "subtitle": "Wither Skeleton hurts"
+  },
+  "entity.wolf.death": {
+    "sounds": [
+      "entity/wither_skeleton/death"
+    ],
+    "subtitle": "Wither Skeleton dies"
+  },
+  "entity.wolf.step": {
+    "sounds": [
+      "entity/skeleton/step"
+    ],
+    "subtitle": "Skeleton steps"
+  }
+} 

@@ -39,6 +39,15 @@ git add .
 git commit -m "Deploy to both environments - $(date)"
 git push
 
+# Deploy worlds to both environments
+echo ""
+echo "🌍 Deploying standardized worlds..."
+./deploy-worlds.sh
+
+# Restart remote server to apply changes
+echo "Restarting remote server..."
+ssh root@178.156.165.14 "cd /root/minecraft && git fetch origin && git reset --hard origin/master && pkill -f 'java.*fabric' && sleep 2 && screen -dmS minecraft java -Xmx3G -Xms3G -jar fabric-server-launch.jar nogui"
+
 echo ""
 echo "🎉 Deployment Complete!"
 echo ""

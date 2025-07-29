@@ -1,0 +1,24 @@
+import org.joml.Vector3f;
+
+public class gtv extends gtw<lz> {
+   protected gtv(grk $$0, double $$1, double $$2, double $$3, double $$4, double $$5, double $$6, lz $$7, gvo $$8) {
+      super($$0, $$1, $$2, $$3, $$4, $$5, $$6, $$7, $$8);
+      float $$9 = this.r.i() * 0.4F + 0.6F;
+      Vector3f $$10 = $$7.b();
+      this.v = this.a($$10.x(), $$9);
+      this.w = this.a($$10.y(), $$9);
+      this.x = this.a($$10.z(), $$9);
+   }
+
+   public static class a implements guw<lz> {
+      private final gvo a;
+
+      public a(gvo $$0) {
+         this.a = $$0;
+      }
+
+      public gut a(lz $$0, grk $$1, double $$2, double $$3, double $$4, double $$5, double $$6, double $$7) {
+         return new gtv($$1, $$2, $$3, $$4, $$5, $$6, $$7, $$0, this.a);
+      }
+   }
+}

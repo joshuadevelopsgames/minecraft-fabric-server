@@ -1,0 +1,29 @@
+import com.mojang.serialization.Codec;
+import java.util.stream.Stream;
+
+public record ems<FC extends epm, F extends enh<FC>>(F d, FC e) {
+   public static final Codec<ems<?, ?>> a = mm.O.q().dispatch($$0 -> $$0.d, enh::a);
+   public static final Codec<jl<ems<?, ?>>> b = ama.a(mn.aP, a);
+   public static final Codec<jp<ems<?, ?>>> c = ka.a(mn.aP, a);
+
+   public boolean a(dnt $$0, efz $$1, bck $$2, jb $$3) {
+      return this.d.a(this.e, $$0, $$1, $$2, $$3);
+   }
+
+   public Stream<ems<?, ?>> a() {
+      return Stream.concat(Stream.of(this), this.e.e());
+   }
+
+   @Override
+   public String toString() {
+      return "Configured: " + this.d + ": " + this.e;
+   }
+
+   public F b() {
+      return this.d;
+   }
+
+   public FC c() {
+      return this.e;
+   }
+}

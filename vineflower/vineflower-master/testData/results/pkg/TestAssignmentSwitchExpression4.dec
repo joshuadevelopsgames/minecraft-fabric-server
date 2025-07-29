@@ -1,0 +1,108 @@
+package pkg;
+
+public class TestAssignmentSwitchExpression4 {
+   public void test(String directionStr) {
+      String var3 = directionStr.toLowerCase();// 5
+
+      String axis = switch (var3) {
+         case "north", "south" -> "y";// 8
+         case "east", "west" -> "x";// 11
+         case "up", "down" -> "z";// 14
+         default -> throw new IllegalStateException("Unexpected value: " + directionStr);// 16
+      };
+      System.out.println(axis);// 18
+   }// 19
+}
+
+class 'pkg/TestAssignmentSwitchExpression4' {
+   method 'test (Ljava/lang/String;)V' {
+      0      4
+      1      4
+      2      4
+      3      4
+      4      4
+      8      6
+      49      7
+      4a      7
+      58      7
+      59      7
+      67      8
+      68      8
+      76      8
+      77      8
+      85      9
+      86      9
+      94      9
+      95      9
+      a1      6
+      a2      6
+      a3      6
+      a4      6
+      a5      6
+      a6      6
+      a7      6
+      a8      6
+      a9      6
+      aa      6
+      ab      6
+      ac      6
+      ad      6
+      ae      6
+      af      6
+      b0      6
+      b1      6
+      b2      6
+      b3      6
+      b4      6
+      b5      6
+      b6      6
+      b7      6
+      b8      6
+      b9      6
+      ba      6
+      bb      6
+      bc      6
+      bd      6
+      be      6
+      bf      6
+      c0      6
+      c1      6
+      c2      6
+      c3      6
+      c4      6
+      c5      6
+      c6      6
+      c7      6
+      c8      7
+      c9      7
+      cd      8
+      ce      8
+      d2      9
+      d3      9
+      db      10
+      dc      10
+      dd      10
+      de      10
+      df      10
+      e0      10
+      e4      10
+      e5      6
+      e6      12
+      e7      12
+      e8      12
+      e9      12
+      ea      12
+      eb      12
+      ec      12
+      ed      13
+   }
+}
+
+Lines mapping:
+5 <-> 5
+8 <-> 8
+11 <-> 9
+14 <-> 10
+16 <-> 11
+18 <-> 13
+19 <-> 14

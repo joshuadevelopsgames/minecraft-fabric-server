@@ -1,0 +1,552 @@
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.mojang.datafixers.util.Pair;
+import com.mojang.logging.LogUtils;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
+import java.nio.ByteBuffer;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Predicate;
+import javax.annotation.Nullable;
+import org.slf4j.Logger;
+
+public class fcg extends fbx {
+   private static final Logger j = LogUtils.getLogger();
+   private static final int k = 128;
+   private static final int l = 64;
+   public static final int a = 4;
+   public static final int b = 256;
+   private static final String m = "frame-";
+   public static final Codec<fcg> c = RecordCodecBuilder.create(
+      $$0 -> $$0.group(
+            dmu.h.fieldOf("dimension").forGetter($$0x -> $$0x.f),
+            Codec.INT.fieldOf("xCenter").forGetter($$0x -> $$0x.d),
+            Codec.INT.fieldOf("zCenter").forGetter($$0x -> $$0x.e),
+            Codec.BYTE.optionalFieldOf("scale", (byte)0).forGetter($$0x -> $$0x.g),
+            Codec.BYTE_BUFFER.fieldOf("colors").forGetter($$0x -> ByteBuffer.wrap($$0x.h)),
+            Codec.BOOL.optionalFieldOf("trackingPosition", true).forGetter($$0x -> $$0x.n),
+            Codec.BOOL.optionalFieldOf("unlimitedTracking", false).forGetter($$0x -> $$0x.o),
+            Codec.BOOL.optionalFieldOf("locked", false).forGetter($$0x -> $$0x.i),
+            fbz.a.listOf().optionalFieldOf("banners", List.of()).forGetter($$0x -> List.copyOf($$0x.r.values())),
+            fcd.a.listOf().optionalFieldOf("frames", List.of()).forGetter($$0x -> List.copyOf($$0x.t.values()))
+         )
+         .apply($$0, fcg::new)
+   );
+   public final int d;
+   public final int e;
+   public final amd<dmu> f;
+   private final boolean n;
+   private final boolean o;
+   public final byte g;
+   public byte[] h = new byte[16384];
+   public final boolean i;
+   private final List<fcg.a> p = Lists.newArrayList();
+   private final Map<cut, fcg.a> q = Maps.newHashMap();
+   private final Map<String, fbz> r = Maps.newHashMap();
+   final Map<String, fca> s = Maps.newLinkedHashMap();
+   private final Map<String, fcd> t = Maps.newHashMap();
+   private int u;
+
+   public static fby<fcg> a(fce $$0) {
+      return new fby<>($$0.a(), () -> {
+         throw new IllegalStateException("Should never create an empty map saved data");
+      }, c, bdr.k);
+   }
+
+   private fcg(int $$0, int $$1, byte $$2, boolean $$3, boolean $$4, boolean $$5, amd<dmu> $$6) {
+      this.g = $$2;
+      this.d = $$0;
+      this.e = $$1;
+      this.f = $$6;
+      this.n = $$3;
+      this.o = $$4;
+      this.i = $$5;
+   }
+
+   private fcg(amd<dmu> $$0, int $$1, int $$2, byte $$3, ByteBuffer $$4, boolean $$5, boolean $$6, boolean $$7, List<fbz> $$8, List<fcd> $$9) {
+      this($$1, $$2, (byte)bcb.a($$3, 0, 4), $$5, $$6, $$7, $$0);
+      if ($$4.array().length == 16384) {
+         this.h = $$4.array();
+      }
+
+      for (fbz $$10 : $$8) {
+         this.r.put($$10.b(), $$10);
+         this.a($$10.a(), null, $$10.b(), $$10.c().u(), $$10.c().w(), 180.0, $$10.e().orElse(null));
+      }
+
+      for (fcd $$11 : $$9) {
+         this.t.put($$11.a(), $$11);
+         this.a(fcc.b, null, b($$11.d()), $$11.b().u(), $$11.b().w(), $$11.c(), null);
+      }
+   }
+
+   public static fcg a(double $$0, double $$1, byte $$2, boolean $$3, boolean $$4, amd<dmu> $$5) {
+      int $$6 = 128 * (1 << $$2);
+      int $$7 = bcb.a(($$0 + 64.0) / $$6);
+      int $$8 = bcb.a(($$1 + 64.0) / $$6);
+      int $$9 = $$7 * $$6 + $$6 / 2 - 64;
+      int $$10 = $$8 * $$6 + $$6 / 2 - 64;
+      return new fcg($$9, $$10, $$2, $$3, $$4, false, $$5);
+   }
+
+   public static fcg a(byte $$0, boolean $$1, amd<dmu> $$2) {
+      return new fcg(0, 0, $$0, false, false, $$1, $$2);
+   }
+
+   public fcg a() {
+      fcg $$0 = new fcg(this.d, this.e, this.g, this.n, this.o, true, this.f);
+      $$0.r.putAll(this.r);
+      $$0.s.putAll(this.s);
+      $$0.u = this.u;
+      System.arraycopy(this.h, 0, $$0.h, 0, this.h.length);
+      return $$0;
+   }
+
+   public fcg b() {
+      return a(this.d, this.e, (byte)bcb.a(this.g + 1, 0, 4), this.n, this.o, this.f);
+   }
+
+   private static Predicate<dcv> a(dcv $$0) {
+      fce $$1 = $$0.a(kq.M);
+      return $$2 -> $$2 == $$0 ? true : $$2.a($$0.h()) && Objects.equals($$1, $$2.a(kq.M));
+   }
+
+   public void a(cut $$0, dcv $$1) {
+      if (!this.q.containsKey($$0)) {
+         fcg.a $$2 = new fcg.a($$0);
+         this.q.put($$0, $$2);
+         this.p.add($$2);
+      }
+
+      Predicate<dcv> $$3 = a($$1);
+      if (!$$0.gs().b($$3)) {
+         this.a($$0.aj().getString());
+      }
+
+      for (int $$4 = 0; $$4 < this.p.size(); $$4++) {
+         fcg.a $$5 = this.p.get($$4);
+         cut $$6 = $$5.a;
+         String $$7 = $$6.aj().getString();
+         if (!$$6.dU() && ($$6.gs().b($$3) || $$1.H())) {
+            if (!$$1.H() && $$6.ai().aj() == this.f && this.n) {
+               this.a(fcc.a, $$6.ai(), $$7, $$6.dC(), $$6.dI(), $$6.dP(), null);
+            }
+         } else {
+            this.q.remove($$6);
+            this.p.remove($$5);
+            this.a($$7);
+         }
+
+         if (!$$6.equals($$0) && b($$6)) {
+            this.a($$7);
+         }
+      }
+
+      if ($$1.H() && this.n) {
+         cqs $$8 = $$1.I();
+         jb $$9 = $$8.i();
+         fcd $$10 = this.t.get(fcd.a($$9));
+         if ($$10 != null && $$8.ar() != $$10.d() && this.t.containsKey($$10.a())) {
+            this.a(b($$10.d()));
+         }
+
+         fcd $$11 = new fcd($$9, $$8.cS().e() * 90, $$8.ar());
+         this.a(fcc.b, $$0.ai(), b($$8.ar()), $$9.u(), $$9.w(), $$8.cS().e() * 90, null);
+         fcd $$12 = this.t.put($$11.a(), $$11);
+         if (!$$11.equals($$12)) {
+            this.e();
+         }
+      }
+
+      dfq $$13 = $$1.a(kq.N, dfq.a);
+      if (!this.s.keySet().containsAll($$13.a().keySet())) {
+         $$13.a().forEach(($$1x, $$2) -> {
+            if (!this.s.containsKey($$1x)) {
+               this.a($$2.a(), $$0.ai(), $$1x, $$2.b(), $$2.c(), $$2.d(), null);
+            }
+         });
+      }
+   }
+
+   private static boolean b(cut $$0) {
+      for (bzw $$1 : bzw.values()) {
+         if ($$1 != bzw.a && $$1 != bzw.b && $$0.a($$1).a(azx.cv)) {
+            return true;
+         }
+      }
+
+      return false;
+   }
+
+   private void a(String $$0) {
+      fca $$1 = this.s.remove($$0);
+      if ($$1 != null && $$1.c().a().f()) {
+         this.u--;
+      }
+
+      this.h();
+   }
+
+   public static void a(dcv $$0, jb $$1, String $$2, jl<fcb> $$3) {
+      dfq.a $$4 = new dfq.a($$3, $$1.u(), $$1.w(), 180.0F);
+      $$0.a(kq.N, dfq.a, $$2x -> $$2x.a($$2, $$4));
+      if ($$3.a().a()) {
+         $$0.b(kq.L, new dfr($$3.a().d()));
+      }
+   }
+
+   private void a(jl<fcb> $$0, @Nullable dmv $$1, String $$2, double $$3, double $$4, double $$5, @Nullable xo $$6) {
+      int $$7 = 1 << this.g;
+      float $$8 = (float)($$3 - this.d) / $$7;
+      float $$9 = (float)($$4 - this.e) / $$7;
+      fcg.b $$10 = this.a($$0, $$1, $$5, $$8, $$9);
+      if ($$10 == null) {
+         this.a($$2);
+      } else {
+         fca $$11 = new fca($$10.a(), $$10.b(), $$10.c(), $$10.d(), Optional.ofNullable($$6));
+         fca $$12 = this.s.put($$2, $$11);
+         if (!$$11.equals($$12)) {
+            if ($$12 != null && $$12.c().a().f()) {
+               this.u--;
+            }
+
+            if ($$10.a().a().f()) {
+               this.u++;
+            }
+
+            this.h();
+         }
+      }
+   }
+
+   @Nullable
+   private fcg.b a(jl<fcb> $$0, @Nullable dmv $$1, double $$2, float $$3, float $$4) {
+      byte $$5 = a($$3);
+      byte $$6 = a($$4);
+      if ($$0.a(fcc.a)) {
+         Pair<jl<fcb>, Byte> $$7 = this.b($$0, $$1, $$2, $$3, $$4);
+         return $$7 == null ? null : new fcg.b((jl<fcb>)$$7.getFirst(), $$5, $$6, (Byte)$$7.getSecond());
+      } else {
+         return !a($$3, $$4) && !this.o ? null : new fcg.b($$0, $$5, $$6, this.a($$1, $$2));
+      }
+   }
+
+   @Nullable
+   private Pair<jl<fcb>, Byte> b(jl<fcb> $$0, @Nullable dmv $$1, double $$2, float $$3, float $$4) {
+      if (a($$3, $$4)) {
+         return Pair.of($$0, this.a($$1, $$2));
+      } else {
+         jl<fcb> $$5 = this.b($$3, $$4);
+         return $$5 == null ? null : Pair.of($$5, (byte)0);
+      }
+   }
+
+   private byte a(@Nullable dmv $$0, double $$1) {
+      if (this.f == dmu.j && $$0 != null) {
+         int $$2 = (int)($$0.D_().d() / 10L);
+         return (byte)($$2 * $$2 * 34187121 + $$2 * 121 >> 15 & 15);
+      } else {
+         double $$3 = $$1 < 0.0 ? $$1 - 8.0 : $$1 + 8.0;
+         return (byte)($$3 * 16.0 / 360.0);
+      }
+   }
+
+   private static boolean a(float $$0, float $$1) {
+      int $$2 = 63;
+      return $$0 >= -63.0F && $$1 >= -63.0F && $$0 <= 63.0F && $$1 <= 63.0F;
+   }
+
+   @Nullable
+   private jl<fcb> b(float $$0, float $$1) {
+      int $$2 = 320;
+      boolean $$3 = Math.abs($$0) < 320.0F && Math.abs($$1) < 320.0F;
+      if ($$3) {
+         return fcc.g;
+      } else {
+         return this.o ? fcc.h : null;
+      }
+   }
+
+   private static byte a(float $$0) {
+      int $$1 = 63;
+      if ($$0 <= -63.0F) {
+         return -128;
+      } else {
+         return $$0 >= 63.0F ? 127 : (byte)($$0 * 2.0F + 0.5);
+      }
+   }
+
+   @Nullable
+   public zw<?> a(fce $$0, cut $$1) {
+      fcg.a $$2 = this.q.get($$1);
+      return $$2 == null ? null : $$2.a($$0);
+   }
+
+   private void a(int $$0, int $$1) {
+      this.e();
+
+      for (fcg.a $$2 : this.p) {
+         $$2.a($$0, $$1);
+      }
+   }
+
+   private void h() {
+      this.p.forEach(fcg.a::b);
+   }
+
+   public fcg.a a(cut $$0) {
+      fcg.a $$1 = this.q.get($$0);
+      if ($$1 == null) {
+         $$1 = new fcg.a($$0);
+         this.q.put($$0, $$1);
+         this.p.add($$1);
+      }
+
+      return $$1;
+   }
+
+   public boolean a(dmv $$0, jb $$1) {
+      double $$2 = $$1.u() + 0.5;
+      double $$3 = $$1.w() + 0.5;
+      int $$4 = 1 << this.g;
+      double $$5 = ($$2 - this.d) / $$4;
+      double $$6 = ($$3 - this.e) / $$4;
+      int $$7 = 63;
+      if ($$5 >= -63.0 && $$6 >= -63.0 && $$5 <= 63.0 && $$6 <= 63.0) {
+         fbz $$8 = fbz.a($$0, $$1);
+         if ($$8 == null) {
+            return false;
+         }
+
+         if (this.r.remove($$8.b(), $$8)) {
+            this.a($$8.b());
+            this.e();
+            return true;
+         }
+
+         if (!this.a(256)) {
+            this.r.put($$8.b(), $$8);
+            this.a($$8.a(), $$0, $$8.b(), $$2, $$3, 180.0, $$8.e().orElse(null));
+            this.e();
+            return true;
+         }
+      }
+
+      return false;
+   }
+
+   public void a(dly $$0, int $$1, int $$2) {
+      Iterator<fbz> $$3 = this.r.values().iterator();
+
+      while ($$3.hasNext()) {
+         fbz $$4 = $$3.next();
+         if ($$4.c().u() == $$1 && $$4.c().w() == $$2) {
+            fbz $$5 = fbz.a($$0, $$4.c());
+            if (!$$4.equals($$5)) {
+               $$3.remove();
+               this.a($$4.b());
+               this.e();
+            }
+         }
+      }
+   }
+
+   public Collection<fbz> c() {
+      return this.r.values();
+   }
+
+   public void a(jb $$0, int $$1) {
+      this.a(b($$1));
+      this.t.remove(fcd.a($$0));
+      this.e();
+   }
+
+   public boolean a(int $$0, int $$1, byte $$2) {
+      byte $$3 = this.h[$$0 + $$1 * 128];
+      if ($$3 != $$2) {
+         this.b($$0, $$1, $$2);
+         return true;
+      } else {
+         return false;
+      }
+   }
+
+   public void b(int $$0, int $$1, byte $$2) {
+      this.h[$$0 + $$1 * 128] = $$2;
+      this.a($$0, $$1);
+   }
+
+   public boolean d() {
+      for (fca $$0 : this.s.values()) {
+         if ($$0.c().a().e()) {
+            return true;
+         }
+      }
+
+      return false;
+   }
+
+   public void a(List<fca> $$0) {
+      this.s.clear();
+      this.u = 0;
+
+      for (int $$1 = 0; $$1 < $$0.size(); $$1++) {
+         fca $$2 = $$0.get($$1);
+         this.s.put("icon-" + $$1, $$2);
+         if ($$2.c().a().f()) {
+            this.u++;
+         }
+      }
+   }
+
+   public Iterable<fca> g() {
+      return this.s.values();
+   }
+
+   public boolean a(int $$0) {
+      return this.u >= $$0;
+   }
+
+   private static String b(int $$0) {
+      return "frame-" + $$0;
+   }
+
+   public class a {
+      public final cut a;
+      private boolean d = true;
+      private int e;
+      private int f;
+      private int g = 127;
+      private int h = 127;
+      private boolean i = true;
+      private int j;
+      public int b;
+
+      a(final cut $$1) {
+         this.a = $$1;
+      }
+
+      private fcg.c a() {
+         int $$0 = this.e;
+         int $$1 = this.f;
+         int $$2 = this.g + 1 - this.e;
+         int $$3 = this.h + 1 - this.f;
+         byte[] $$4 = new byte[$$2 * $$3];
+
+         for (int $$5 = 0; $$5 < $$2; $$5++) {
+            for (int $$6 = 0; $$6 < $$3; $$6++) {
+               $$4[$$5 + $$6 * $$2] = fcg.this.h[$$0 + $$5 + ($$1 + $$6) * 128];
+            }
+         }
+
+         return new fcg.c($$0, $$1, $$2, $$3, $$4);
+      }
+
+      @Nullable
+      zw<?> a(fce $$0) {
+         fcg.c $$1;
+         if (this.d) {
+            this.d = false;
+            $$1 = this.a();
+         } else {
+            $$1 = null;
+         }
+
+         Collection<fca> $$3;
+         if (this.i && this.j++ % 5 == 0) {
+            this.i = false;
+            $$3 = fcg.this.s.values();
+         } else {
+            $$3 = null;
+         }
+
+         return $$3 == null && $$1 == null ? null : new aei($$0, fcg.this.g, fcg.this.i, $$3, $$1);
+      }
+
+      void a(int $$0, int $$1) {
+         if (this.d) {
+            this.e = Math.min(this.e, $$0);
+            this.f = Math.min(this.f, $$1);
+            this.g = Math.max(this.g, $$0);
+            this.h = Math.max(this.h, $$1);
+         } else {
+            this.d = true;
+            this.e = $$0;
+            this.f = $$1;
+            this.g = $$0;
+            this.h = $$1;
+         }
+      }
+
+      private void b() {
+         this.i = true;
+      }
+   }
+
+   record b(jl<fcb> a, byte b, byte c, byte d) {
+   }
+
+   public record c(int b, int c, int d, int e, byte[] f) {
+      public static final zm<ByteBuf, Optional<fcg.c>> a = zm.a(fcg.c::a, fcg.c::a);
+
+      private static void a(ByteBuf $$0, Optional<fcg.c> $$1) {
+         if ($$1.isPresent()) {
+            fcg.c $$2 = $$1.get();
+            $$0.writeByte($$2.d);
+            $$0.writeByte($$2.e);
+            $$0.writeByte($$2.b);
+            $$0.writeByte($$2.c);
+            wg.a($$0, $$2.f);
+         } else {
+            $$0.writeByte(0);
+         }
+      }
+
+      private static Optional<fcg.c> a(ByteBuf $$0) {
+         int $$1 = $$0.readUnsignedByte();
+         if ($$1 > 0) {
+            int $$2 = $$0.readUnsignedByte();
+            int $$3 = $$0.readUnsignedByte();
+            int $$4 = $$0.readUnsignedByte();
+            byte[] $$5 = wg.a($$0);
+            return Optional.of(new fcg.c($$3, $$4, $$1, $$2, $$5));
+         } else {
+            return Optional.empty();
+         }
+      }
+
+      public void a(fcg $$0) {
+         for (int $$1 = 0; $$1 < this.d; $$1++) {
+            for (int $$2 = 0; $$2 < this.e; $$2++) {
+               $$0.b(this.b + $$1, this.c + $$2, this.f[$$1 + $$2 * this.d]);
+            }
+         }
+      }
+
+      public int a() {
+         return this.b;
+      }
+
+      public int b() {
+         return this.c;
+      }
+
+      public int c() {
+         return this.d;
+      }
+
+      public int d() {
+         return this.e;
+      }
+
+      public byte[] e() {
+         return this.f;
+      }
+   }
+}

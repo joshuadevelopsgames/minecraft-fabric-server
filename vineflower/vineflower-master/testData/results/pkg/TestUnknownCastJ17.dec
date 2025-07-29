@@ -1,0 +1,171 @@
+package pkg;
+
+import java.lang.annotation.ElementType;
+
+public class TestUnknownCastJ17 {
+   public void test() {
+      ElementType vvv1 = ElementType.METHOD;// 8
+      synchronized (this) {// 9
+         System.out.println(vvv1);// 10
+      }
+
+      try {
+         throw new RuntimeException();// 28
+      } catch (Exception var14) {// 29
+      }
+   }// 31
+
+   public void test2() {
+      ElementType vvv1 = ElementType.METHOD;// 34
+      synchronized (this) {// 35
+         System.out.println(vvv1);// 36
+         System.out.println(vvv1);// 37
+
+         for (int var9 = switch (new Object()) {// 38
+            default -> {
+               ElementType var5 = ElementType.METHOD;// 40
+               System.out.println(vvv1);// 42
+               yield 140;
+            }
+         }; --var9 <= 395; var9 -= 6) {// 43
+            int vvv6 = -91;// 44
+            System.out.println(vvv1);// 45
+         }
+      }
+
+      try {
+         throw new RuntimeException();// 51
+      } catch (Exception var7) {// 52
+      }
+   }// 54
+}
+
+class 'pkg/TestUnknownCastJ17' {
+   method 'test ()V' {
+      0      6
+      1      6
+      2      6
+      3      6
+      4      7
+      7      7
+      8      8
+      9      8
+      a      8
+      b      8
+      c      8
+      d      8
+      e      8
+      a8      12
+      a9      13
+      aa      15
+   }
+
+   method 'test2 ()V' {
+      0      18
+      1      18
+      2      18
+      3      18
+      4      19
+      7      19
+      8      20
+      9      20
+      a      20
+      b      20
+      c      20
+      d      20
+      e      20
+      f      21
+      10      21
+      11      21
+      12      21
+      13      21
+      14      21
+      15      21
+      2e      23
+      2f      23
+      30      23
+      31      23
+      32      23
+      33      23
+      34      23
+      35      23
+      36      23
+      37      23
+      38      25
+      39      25
+      3a      25
+      3b      25
+      3c      25
+      3d      26
+      3e      26
+      3f      26
+      40      26
+      41      26
+      42      26
+      43      26
+      44      27
+      45      27
+      46      27
+      48      29
+      49      29
+      4a      29
+      4b      29
+      4c      29
+      4d      29
+      4e      29
+      4f      29
+      50      29
+      51      29
+      52      30
+      53      30
+      54      30
+      55      30
+      56      31
+      57      31
+      58      31
+      59      31
+      5a      31
+      5b      31
+      5c      31
+      5d      29
+      5e      29
+      5f      29
+      76      36
+      77      37
+      78      39
+   }
+}
+
+Lines mapping:
+8 <-> 7
+9 <-> 8
+10 <-> 9
+28 <-> 13
+29 <-> 14
+31 <-> 16
+34 <-> 19
+35 <-> 20
+36 <-> 21
+37 <-> 22
+38 <-> 24
+40 <-> 26
+42 <-> 27
+43 <-> 30
+44 <-> 31
+45 <-> 32
+51 <-> 37
+52 <-> 38
+54 <-> 40
+Not mapped:
+11
+13
+15
+16
+17
+18
+19
+20
+21
+22
+26
+49

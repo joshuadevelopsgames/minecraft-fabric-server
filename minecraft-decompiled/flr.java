@@ -1,0 +1,37 @@
+import com.mojang.blaze3d.textures.GpuTexture;
+
+public interface flr {
+   int a();
+
+   int b();
+
+   void a(int var1, int var2, GpuTexture var3);
+
+   boolean c();
+
+   float d();
+
+   default float e() {
+      return this.i();
+   }
+
+   default float f() {
+      return this.e() + this.a() / this.d();
+   }
+
+   default float g() {
+      return 7.0F - this.j();
+   }
+
+   default float h() {
+      return this.g() + this.b() / this.d();
+   }
+
+   default float i() {
+      return 0.0F;
+   }
+
+   default float j() {
+      return 7.0F;
+   }
+}
