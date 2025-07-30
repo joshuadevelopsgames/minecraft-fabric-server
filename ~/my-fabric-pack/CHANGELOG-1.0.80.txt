@@ -1,0 +1,33 @@
+Greek Mythology Modpack - Version 1.0.80
+============================================
+
+💥 NEW FEATURES:
+• Added /soul clear command to reset Hades Scythe soul count
+• Command works with scythe in hand or anywhere in inventory
+• Visual feedback shows reset progress (0/12) and damage return to base
+
+🔧 INFERNO PEARL FIXES:
+• Fixed throwing mechanics - pearls now properly arc through air like ender pearls
+• Added visual trajectory on client side for proper projectile physics
+• Maintained area corruption and portal transformation features
+• Fixed cooldown system to work correctly
+
+🎯 ENHANCED FEATURES:
+• Soul cap remains at balanced 12 souls maximum (reduced from 20)
+• Live damage display continues to show real combat values
+• Dynamic tooltip system works perfectly with soul clear command
+• NBT-based soul storage ensures per-scythe tracking
+
+🎮 QUALITY OF LIFE:
+• /soul clear provides instant reset for testing and gameplay balance
+• Clear visual feedback with colors and progress indicators
+• Works from any inventory slot - no need to hold scythe
+• Preserves all other scythe functionality and abilities
+
+🔨 TECHNICAL IMPROVEMENTS:
+• Fixed entity spawning for proper client-server synchronization
+• Improved projectile physics matching vanilla ender pearls
+• Enhanced command system with better error handling
+• Optimized NBT storage and retrieval systems
+
+This update completes the soul system rework with full management tools and fixes the Inferno Pearl mechanics! 

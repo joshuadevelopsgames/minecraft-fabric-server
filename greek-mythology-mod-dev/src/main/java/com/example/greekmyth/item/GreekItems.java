@@ -261,9 +261,78 @@ public class GreekItems {
             .fireproof()
             .rarity(rarity)
             .registryKey(RegistryKey.of(RegistryKeys.ITEM, id));
+        
+        // Map soul name to entity type
+        net.minecraft.entity.EntityType<?> entityType = getEntityTypeFromSoulName(name);
             
-        Item soulItem = Registry.register(Registries.ITEM, id, new SoulItem(settings, name));
-        GreekMythologyMod.LOGGER.info("Registered soul item: {}", name);
+        Item soulItem = Registry.register(Registries.ITEM, id, new SoulItem(settings, name, entityType));
+        GreekMythologyMod.LOGGER.info("Registered soul item: {} for entity: {}", name, entityType);
         return soulItem;
+    }
+    
+    private static net.minecraft.entity.EntityType<?> getEntityTypeFromSoulName(String soulName) {
+        // Remove " Soul" suffix and convert to entity type
+        String entityName = soulName.replace(" Soul", "").toLowerCase();
+        
+        // Map soul names to entity types
+        switch (entityName) {
+            case "zombie": return net.minecraft.entity.EntityType.ZOMBIE;
+            case "skeleton": return net.minecraft.entity.EntityType.SKELETON;
+            case "spider": return net.minecraft.entity.EntityType.SPIDER;
+            case "creeper": return net.minecraft.entity.EntityType.CREEPER;
+            case "enderman": return net.minecraft.entity.EntityType.ENDERMAN;
+            case "witch": return net.minecraft.entity.EntityType.WITCH;
+            case "slime": return net.minecraft.entity.EntityType.SLIME;
+            case "blaze": return net.minecraft.entity.EntityType.BLAZE;
+            case "ghast": return net.minecraft.entity.EntityType.GHAST;
+            case "piglin": return net.minecraft.entity.EntityType.PIGLIN;
+            case "hoglin": return net.minecraft.entity.EntityType.HOGLIN;
+            case "zombified piglin": return net.minecraft.entity.EntityType.ZOMBIFIED_PIGLIN;
+            case "magma cube": return net.minecraft.entity.EntityType.MAGMA_CUBE;
+            case "warden": return net.minecraft.entity.EntityType.WARDEN;
+            case "elder guardian": return net.minecraft.entity.EntityType.ELDER_GUARDIAN;
+            case "wither skeleton": return net.minecraft.entity.EntityType.WITHER_SKELETON;
+            case "drowned": return net.minecraft.entity.EntityType.DROWNED;
+            case "husk": return net.minecraft.entity.EntityType.HUSK;
+            case "stray": return net.minecraft.entity.EntityType.STRAY;
+            case "cave spider": return net.minecraft.entity.EntityType.CAVE_SPIDER;
+            case "phantom": return net.minecraft.entity.EntityType.PHANTOM;
+            case "vindicator": return net.minecraft.entity.EntityType.VINDICATOR;
+            case "evoker": return net.minecraft.entity.EntityType.EVOKER;
+            case "pillager": return net.minecraft.entity.EntityType.PILLAGER;
+            case "ravager": return net.minecraft.entity.EntityType.RAVAGER;
+            case "shulker": return net.minecraft.entity.EntityType.SHULKER;
+            case "silverfish": return net.minecraft.entity.EntityType.SILVERFISH;
+            case "endermite": return net.minecraft.entity.EntityType.ENDERMITE;
+            case "guardian": return net.minecraft.entity.EntityType.GUARDIAN;
+            case "dolphin": return net.minecraft.entity.EntityType.DOLPHIN;
+            case "pig": return net.minecraft.entity.EntityType.PIG;
+            case "cow": return net.minecraft.entity.EntityType.COW;
+            case "sheep": return net.minecraft.entity.EntityType.SHEEP;
+            case "chicken": return net.minecraft.entity.EntityType.CHICKEN;
+            case "horse": return net.minecraft.entity.EntityType.HORSE;
+            case "wolf": return net.minecraft.entity.EntityType.WOLF;
+            case "cat": return net.minecraft.entity.EntityType.CAT;
+            case "fox": return net.minecraft.entity.EntityType.FOX;
+            case "rabbit": return net.minecraft.entity.EntityType.RABBIT;
+            case "panda": return net.minecraft.entity.EntityType.PANDA;
+            case "bee": return net.minecraft.entity.EntityType.BEE;
+            case "llama": return net.minecraft.entity.EntityType.LLAMA;
+            case "trader llama": return net.minecraft.entity.EntityType.TRADER_LLAMA;
+            case "donkey": return net.minecraft.entity.EntityType.DONKEY;
+            case "mule": return net.minecraft.entity.EntityType.MULE;
+            case "parrot": return net.minecraft.entity.EntityType.PARROT;
+            case "turtle": return net.minecraft.entity.EntityType.TURTLE;
+            case "axolotl": return net.minecraft.entity.EntityType.AXOLOTL;
+            case "goat": return net.minecraft.entity.EntityType.GOAT;
+            case "frog": return net.minecraft.entity.EntityType.FROG;
+            case "tadpole": return net.minecraft.entity.EntityType.TADPOLE;
+            case "allay": return net.minecraft.entity.EntityType.ALLAY;
+            case "camel": return net.minecraft.entity.EntityType.CAMEL;
+            case "sniffer": return net.minecraft.entity.EntityType.SNIFFER;
+            case "armadillo": return net.minecraft.entity.EntityType.ARMADILLO;
+            case "breeze": return net.minecraft.entity.EntityType.BREEZE;
+            default: return net.minecraft.entity.EntityType.ZOMBIE; // Fallback
+        }
     }
 } 

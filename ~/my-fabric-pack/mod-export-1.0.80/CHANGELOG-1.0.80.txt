@@ -1,0 +1,44 @@
+Greek Mythology Mod - Version 1.0.80
+======================================
+
+💥 NEW FEATURES:
+• Added /soul clear command to reset Hades Scythe soul count instantly
+• Command scans entire inventory for Hades Scythe (works from any slot)
+• Visual feedback shows soul count reset and damage return to base
+
+🔧 BUG FIXES:
+• FIXED: Inferno Pearl throwing mechanics now work properly like ender pearls
+• FIXED: Client-server synchronization for projectile visual trajectory
+• FIXED: Cooldown system now applies correctly to thrown pearls
+• FIXED: Entity spawning for proper physics simulation
+
+⚔️ HADES SCYTHE IMPROVEMENTS:
+• Reduced soul cap from 20 to 12 for better game balance
+• Live damage display shows actual combat damage in tooltip
+• Dynamic soul progress indicator with color coding
+• [MAX] indicator when reaching 12/12 soul capacity
+• NBT-based soul storage for per-scythe tracking
+
+🎯 ENHANCED SYSTEMS:
+• Soul bonus damage calculation uses NBT-stored values for accuracy
+• Tooltip damage now matches exact combat damage output
+• Enhanced visual feedback for soul consumption progress
+• Improved error handling and logging for debugging
+
+🎮 QUALITY OF LIFE:
+• /soul clear works from any inventory slot (no need to hold scythe)
+• Clear visual progress indicators with Gold/Purple color coding
+• Instant reset capability for testing and gameplay balance
+• Preserved all existing scythe abilities and portal mechanics
+
+TECHNICAL REQUIREMENTS:
+• Minecraft: 1.21.8
+• Fabric Loader: Latest
+• Fabric API: 0.129.0+
+• Java: 17 or higher
+
+INSTALLATION:
+1. Install Fabric Loader for Minecraft 1.21.8
+2. Download and install Fabric API
+3. Place greek-mythology-1.0.80.jar in your mods folder
+4. Launch the game and enjoy! 

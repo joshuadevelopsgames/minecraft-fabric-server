@@ -7,18 +7,51 @@ import com.example.greekmyth.event.UndeadWarriorSoundEvents;
 import com.example.greekmyth.favor.FavorManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.command.argument.EntityArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class GreekMythologyMod implements ModInitializer {
     public static final String MOD_ID = "greekmyth";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    
+    // Soul counting system
+    private static final Map<UUID, Integer> playerSoulCounts = new HashMap<>();
+    
+    public static void incrementSoulCount(UUID playerUuid) {
+        int currentCount = playerSoulCounts.getOrDefault(playerUuid, 0);
+        playerSoulCounts.put(playerUuid, currentCount + 1);
+        LOGGER.info("SOUL COUNT: Player {} now has {} souls", playerUuid, currentCount + 1);
+    }
+    
+    public static int getSoulCount(UUID playerUuid) {
+        return playerSoulCounts.getOrDefault(playerUuid, 0);
+    }
+    
+    public static void resetSoulCount(UUID playerUuid) {
+        playerSoulCounts.put(playerUuid, 0);
+        LOGGER.info("SOUL COUNT: Reset soul count for player {}", playerUuid);
+    }
 
     @Override
     public void onInitialize() {
         LOGGER.info("Greek Mythology Mod initialized!");
 
         GreekItems.init();
+        
+        // Register items to creative inventory
+        com.example.greekmyth.item.GreekCreativeInventory.registerCreativeInventoryItems();
+        
+        // Register Inferno Portal system
+        com.example.greekmyth.portal.InfernoPortalManager.register();
+        
         ModEvents.register();
         UndeadWarriorEvents.register();
         UndeadWarriorSoundEvents.register();
@@ -41,8 +74,168 @@ public class GreekMythologyMod implements ModInitializer {
             // Register favor commands
             com.example.greekmyth.command.FavorCommands.register(dispatcher);
             
-            // Register discreet commands
-            com.example.greekmyth.command.DiscreetCommands.register(dispatcher);
+            // Register the /jail command
+            dispatcher.register(net.minecraft.server.command.CommandManager.literal("jail")
+                .requires(source -> source.hasPermissionLevel(4))
+                .then(net.minecraft.server.command.CommandManager.argument("player", EntityArgumentType.player())
+                    .then(net.minecraft.server.command.CommandManager.argument("cell_number", IntegerArgumentType.integer())
+                        .executes(context -> {
+                            ServerPlayerEntity player = EntityArgumentType.getPlayer(context, "player");
+                            int cellNumber = IntegerArgumentType.getInteger(context, "cell_number");
+                            com.example.greekmyth.jail.TartarusJailManager.jailPlayer(player, cellNumber);
+                            return 1;
+                        }))));
+
+            // Register the /setjail command
+            dispatcher.register(net.minecraft.server.command.CommandManager.literal("setjail")
+                .requires(source -> source.hasPermissionLevel(4))
+                .then(net.minecraft.server.command.CommandManager.argument("cell_number", IntegerArgumentType.integer())
+                    .executes(context -> {
+                        ServerPlayerEntity player = context.getSource().getPlayer();
+                        if (player == null) {
+                            context.getSource().sendError(net.minecraft.text.Text.literal("This command can only be used by a player."));
+                            return 0;
+                        }
+                        int cellNumber = IntegerArgumentType.getInteger(context, "cell_number");
+                        com.example.greekmyth.jail.TartarusJailManager.setJailCell(player, cellNumber);
+                        context.getSource().sendMessage(net.minecraft.text.Text.literal("§aJail cell " + cellNumber + " set to your current location."));
+                        GreekMythologyMod.LOGGER.info("JAIL: Player {} set jail cell {} to {}", player.getName().getString(), cellNumber, player.getBlockPos().toShortString());
+                        return 1;
+                    })));
+
+            // Register the /escape command
+            dispatcher.register(net.minecraft.server.command.CommandManager.literal("escape")
+                .executes(context -> {
+                    ServerPlayerEntity player = context.getSource().getPlayer();
+                    if (player == null) {
+                        context.getSource().sendError(net.minecraft.text.Text.literal("This command can only be used by a player."));
+                        return 0;
+                    }
+                    executeEscape(player);
+                    return 1;
+                })
+                .then(net.minecraft.server.command.CommandManager.argument("player", EntityArgumentType.player())
+                    .requires(source -> source.hasPermissionLevel(4)) // Only ops can free others
+                    .executes(context -> {
+                        ServerPlayerEntity targetPlayer = EntityArgumentType.getPlayer(context, "player");
+                        executeEscape(targetPlayer);
+                        context.getSource().sendMessage(net.minecraft.text.Text.literal("§aSuccessfully freed " + targetPlayer.getName().getString() + " from jail."));
+                        return 1;
+                    })));
+
+            // Register the /visit command
+            dispatcher.register(net.minecraft.server.command.CommandManager.literal("visit")
+                .requires(source -> source.hasPermissionLevel(4))
+                .then(net.minecraft.server.command.CommandManager.argument("dimension", StringArgumentType.word())
+                    .executes(context -> {
+                        ServerPlayerEntity player = context.getSource().getPlayer();
+                        if (player == null) {
+                            context.getSource().sendError(net.minecraft.text.Text.literal("This command can only be used by a player."));
+                            return 0;
+                        }
+                        String dimension = StringArgumentType.getString(context, "dimension");
+                        switch (dimension.toLowerCase()) {
+                            case "jail":
+                            case "tartarus":
+                                ServerWorld jailWorld = player.getServer().getWorld(com.example.greekmyth.jail.TartarusJailManager.JAIL_DIMENSION_KEY);
+                                if (jailWorld != null) {
+                                    // Teleport to the admin room in the jail dimension
+                                    player.teleport(jailWorld, 11, 20, -19, java.util.Set.of(), player.getYaw(), player.getPitch(), false);
+                                    player.sendMessage(net.minecraft.text.Text.literal("§aTeleported to the Jail dimension."));
+                                    GreekMythologyMod.LOGGER.info("VISIT COMMAND: Player {} teleported to Jail dimension.", player.getName().getString());
+                                } else {
+                                    player.sendMessage(net.minecraft.text.Text.literal("§cJail dimension not found!"));
+                                    GreekMythologyMod.LOGGER.warn("VISIT COMMAND: Jail dimension not found for player {}.", player.getName().getString());
+                                }
+                                break;
+                            case "overworld":
+                            case "world":
+                                ServerWorld overworld = player.getServer().getOverworld();
+                                if (overworld != null) {
+                                    // Teleport to world spawn (0.5, 64, 0.5)
+                                    player.teleport(overworld, 0.5, 64, 0.5, java.util.Set.of(), player.getYaw(), player.getPitch(), false);
+                                    player.sendMessage(net.minecraft.text.Text.literal("§aTeleported to the Overworld spawn."));
+                                    GreekMythologyMod.LOGGER.info("VISIT COMMAND: Player {} teleported to Overworld spawn.", player.getName().getString());
+                                } else {
+                                    player.sendMessage(net.minecraft.text.Text.literal("§cOverworld not found!"));
+                                    GreekMythologyMod.LOGGER.warn("VISIT COMMAND: Overworld not found for player {}.", player.getName().getString());
+                                }
+                                break;
+                            case "nether":
+                                ServerWorld netherWorld = player.getServer().getWorld(net.minecraft.world.World.NETHER);
+                                if (netherWorld != null) {
+                                    player.teleport(netherWorld, 0, 64, 0, java.util.Set.of(), player.getYaw(), player.getPitch(), false);
+                                    player.sendMessage(net.minecraft.text.Text.literal("§aTeleported to the Nether dimension."));
+                                    GreekMythologyMod.LOGGER.info("VISIT COMMAND: Player {} teleported to Nether dimension.", player.getName().getString());
+                                } else {
+                                    player.sendMessage(net.minecraft.text.Text.literal("§cNether dimension not found!"));
+                                    GreekMythologyMod.LOGGER.warn("VISIT COMMAND: Nether dimension not found for player {}.", player.getName().getString());
+                                }
+                                break;
+                            case "end":
+                                ServerWorld endWorld = player.getServer().getWorld(net.minecraft.world.World.END);
+                                if (endWorld != null) {
+                                    // Teleport to a safe spot in the End (e.g., 4, 64, 0)
+                                    player.teleport(endWorld, 4, 64, 0, java.util.Set.of(), player.getYaw(), player.getPitch(), false);
+                                    player.sendMessage(net.minecraft.text.Text.literal("§aTeleported to the End dimension."));
+                                    GreekMythologyMod.LOGGER.info("VISIT COMMAND: Player {} teleported to End dimension.", player.getName().getString());
+                                } else {
+                                    player.sendMessage(net.minecraft.text.Text.literal("§cEnd dimension not found!"));
+                                    GreekMythologyMod.LOGGER.warn("VISIT COMMAND: End dimension not found for player {}.", player.getName().getString());
+                                }
+                                break;
+                            default:
+                                player.sendMessage(net.minecraft.text.Text.literal("§cInvalid dimension. Choose from: jail, overworld, nether, end."));
+                                break;
+                        }
+                        return 1;
+                    })));
+
+            // Register the /spawnenhanced command (for testing enhanced wither skeleton)
+            dispatcher.register(net.minecraft.server.command.CommandManager.literal("spawnenhanced")
+                .requires(source -> source.hasPermissionLevel(4))
+                .executes(context -> {
+                    ServerWorld world = context.getSource().getWorld();
+                    net.minecraft.util.math.BlockPos pos = net.minecraft.util.math.BlockPos.ofFloored(context.getSource().getPosition());
+                    
+                    // Spawn a vanilla Wither Skeleton
+                    net.minecraft.entity.mob.WitherSkeletonEntity witherSkeleton = 
+                        new net.minecraft.entity.mob.WitherSkeletonEntity(net.minecraft.entity.EntityType.WITHER_SKELETON, world);
+                    
+                    witherSkeleton.setPos(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
+                    
+                    // Set custom health (e.g., 30.0f)
+                    witherSkeleton.setHealth(30.0f); 
+                    
+                    // Make it persistent so it doesn't despawn
+                    witherSkeleton.setPersistent();
+                    
+                    // Set a custom name
+                    witherSkeleton.setCustomName(net.minecraft.text.Text.literal("§6Enhanced Wither Skeleton"));
+                    witherSkeleton.setCustomNameVisible(true);
+                    
+                    // Add command tags for datapack integration
+                    witherSkeleton.addCommandTag("GreekPet.Pet");
+                    witherSkeleton.addCommandTag("GreekPet.WitherSkeleton");
+
+                    world.spawnEntity(witherSkeleton);
+                    
+                    context.getSource().sendMessage(net.minecraft.text.Text.literal("§aSpawned an enhanced Wither Skeleton at " + pos.toShortString()));
+                    GreekMythologyMod.LOGGER.info("SPAWNENHANCED: Player {} spawned an enhanced Wither Skeleton at {}.", context.getSource().getPlayer().getName().getString(), pos.toShortString());
+                    return 1;
+                }));
+
+            // Register the /soul command with clear subcommand
+            dispatcher.register(net.minecraft.server.command.CommandManager.literal("soul")
+                .then(net.minecraft.server.command.CommandManager.literal("clear")
+                    .executes(context -> {
+                        ServerPlayerEntity player = context.getSource().getPlayer();
+                        if (player == null) {
+                            context.getSource().sendError(net.minecraft.text.Text.literal("This command can only be used by a player."));
+                            return 0;
+                        }
+                        return clearSoulCount(player);
+                    })));
             
             LOGGER.info("Greek Mythology commands registered successfully!");
         });
@@ -160,5 +353,79 @@ public class GreekMythologyMod implements ModInitializer {
         source.sendMessage(net.minecraft.text.Text.literal("").formatted(net.minecraft.util.Formatting.GOLD));
         
         return 1;
+    }
+    
+    /**
+     * Helper method to execute escape logic for both self-escape and admin-free
+     */
+    private static void executeEscape(ServerPlayerEntity player) {
+        // Get the cell number the player is jailed in
+        Integer cellNumber = com.example.greekmyth.jail.TartarusJailManager.getJailedCell(player.getUuid());
+        if (cellNumber == null) {
+            player.sendMessage(net.minecraft.text.Text.literal("§cYou are not currently jailed!"));
+            return;
+        }
+        
+        // Clear all status effects
+        player.clearStatusEffects();
+        
+        // Reset level unless they are Level 4 (Owner)
+        if (player.experienceLevel != 4) {
+            player.setExperienceLevel(1);
+            player.setExperiencePoints(0);
+        }
+        
+        // Set gamemode to survival
+        player.changeGameMode(net.minecraft.world.GameMode.SURVIVAL);
+        
+        // Return items from jail chest and teleport to spawn
+        com.example.greekmyth.jail.TartarusJailManager.returnPlayerItems(player, cellNumber);
+        
+        // Release player from jail tracking
+        com.example.greekmyth.jail.TartarusJailManager.releasePlayer(player.getUuid());
+        
+        // Teleport to overworld spawn
+        ServerWorld overworld = player.getServer().getOverworld();
+        if (overworld != null) {
+            player.teleport(overworld, 0.5, 64, 0.5, java.util.Set.of(), player.getYaw(), player.getPitch(), false);
+        }
+        
+        player.sendMessage(net.minecraft.text.Text.literal("§aYou have been freed from jail!"));
+        GreekMythologyMod.LOGGER.info("ESCAPE: Player {} escaped from jail", player.getName().getString());
+    }
+
+    /**
+     * Helper method to clear the soul count for the Hades Scythe.
+     */
+    private static int clearSoulCount(ServerPlayerEntity player) {
+        // Check if player is holding Hades Scythe
+        net.minecraft.item.ItemStack heldStack = player.getMainHandStack();
+        if (heldStack.getItem() == com.example.greekmyth.item.GreekItems.HADES_SCYTHE) {
+            // Reset the NBT-stored soul count (damage value back to 0)
+            heldStack.setDamage(0);
+            
+            LOGGER.info("SOUL CLEAR: Player {} cleared their Hades Scythe soul count.", player.getName().getString());
+            player.sendMessage(net.minecraft.text.Text.literal("§6💀 Your Hades Scythe soul count has been reset to 0/12!"));
+            player.sendMessage(net.minecraft.text.Text.literal("§7Damage bonus cleared - scythe is back to base 4.0 damage."));
+            return 1;
+        } 
+        
+        // Check inventory for Hades Scythe if not in main hand
+        for (int i = 0; i < player.getInventory().size(); i++) {
+            net.minecraft.item.ItemStack stack = player.getInventory().getStack(i);
+            if (stack.getItem() == com.example.greekmyth.item.GreekItems.HADES_SCYTHE) {
+                // Reset the NBT-stored soul count for scythe in inventory
+                stack.setDamage(0);
+                
+                LOGGER.info("SOUL CLEAR: Player {} cleared soul count for Hades Scythe in inventory slot {}.", player.getName().getString(), i);
+                player.sendMessage(net.minecraft.text.Text.literal("§6💀 Found Hades Scythe in your inventory - soul count reset to 0/12!"));
+                player.sendMessage(net.minecraft.text.Text.literal("§7Damage bonus cleared - scythe is back to base 4.0 damage."));
+                return 1;
+            }
+        }
+        
+        // No Hades Scythe found
+        player.sendMessage(net.minecraft.text.Text.literal("§cYou need a Hades Scythe in your inventory to use this command."));
+        return 0;
     }
 } 

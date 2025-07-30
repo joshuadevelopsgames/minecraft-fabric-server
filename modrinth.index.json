@@ -1,7 +1,7 @@
 {
   "formatVersion": 1,
   "game": "minecraft",
-  "versionId": "1.0.69",
+  "versionId": "1.0.76",
   "name": "Greek Mythology Modpack",
   "summary": "Greek Mythology mod with Poseidon Trident Riptide III underwater sprinting",
   "files": [
@@ -19,6 +19,19 @@
         "https://cdn.modrinth.com/data/P7dR8mSH/versions/X2hTodix/fabric-api-0.129.0%2B1.21.8.jar"
       ],
       "fileSize": 2212412
+    },
+    {
+      "path": "mods/greek-mythology-1.0.76.jar",
+      "hashes": {
+        "sha1": "843778aa01060e1259b28ab47201c3292a2509a3",
+        "sha512": "5af4da4abf9c101768fe850044f15eacb9157e3a278f187c44c843f741736b75247a1f861d5959cbecf891da59e371d116ba22fc037ed60b0bf57b37a3b4a354"
+      },
+      "env": {
+        "client": "required",
+        "server": "required"
+      },
+      "downloads": [],
+      "fileSize": 1812934
     }
   ],
   "dependencies": {

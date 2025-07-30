@@ -1,0 +1,27 @@
+{
+  "roles": {
+    "Owner": {
+      "prefix": "[Owner]",
+      "color": "gold",
+      "permission_level": 4
+    },
+    "Admin": {
+      "prefix": "[Admin]",
+      "color": "dark_red",
+      "permission_level": 3
+    },
+    "Moderator": {
+      "prefix": "[Mod]",
+      "color": "blue",
+      "permission_level": 2
+    },
+    "Member": {
+      "prefix": "",
+      "color": "white",
+      "permission_level": 1
+    }
+  },
+  "assignments": {
+    "Kangarude": "Owner"
+  }
+} 

@@ -3,6 +3,114 @@
 
 ---
 
+## Version 1.0.76 (2025-01-28)
+### 💀 **SOUL DROP RATES NERFED - 10X RARER**
+- **Dramatically Reduced Drop Rates**: All soul drop chances divided by 10 for much higher rarity
+- **Hostile Mobs**: Now 2.0-8.0% chance (was 20-80%)
+- **Passive Mobs**: Now 1.0-2.0% chance (was 10-20%)
+- **Rarest Souls**: Warden (8.0%), Elder Guardian (7.0%), Evoker (6.0%)
+- **Common Souls**: Zombie/Skeleton (2.5%), Spider/Slime (2.0%)
+- **Passive Souls**: Most farm animals now 1.0% chance
+
+### 📝 **TECHNICAL CHANGES**
+- **Drop Rate Calculation**: All DROP_CHANCES values divided by 10
+- **Balanced Progression**: Souls now require significant farming effort
+- **Maintained Rarity Tiers**: Hostile mobs still drop more frequently than passive mobs
+- **Version**: `greek-mythology-1.0.76.jar` with nerfed soul drop rates
+
+---
+
+## Version 1.0.75 (2025-01-28)
+### 🎨 **SOUL ITEM TEXTURE UPDATE**
+- **New Soul Texture**: Updated all soul item textures to use new Soul.png design
+- **Missing Redirect Files**: Created redirect files for all 56 soul items (fixes purple/black blocks)
+- **Texture Naming Fix**: Fixed texture file naming to match model references (soul.png)
+- **Visual Consistency**: All soul items now display the new soul texture correctly
+- **Complete Texture System**: All soul items now have proper redirect, model, and texture files
+
+### 📝 **TECHNICAL CHANGES**
+- **Redirect File Creation**: Added 56 missing redirect files in `assets/greekmyth/items/`
+- **Texture File Rename**: Renamed Soul.png to soul.png for case-sensitive compatibility
+- **Model Reference Fix**: Ensured all model files reference correct texture path
+- **JAR Verification**: Confirmed all texture files properly included in mod JAR
+- **Version**: `greek-mythology-1.0.76.jar` with updated soul item textures
+
+---
+
+## Version 1.0.74 (2025-01-28)
+### 🔧 **SOUL ENHANCEMENT SYSTEM - FIXED DAMAGE STORAGE CONFLICT**
+- **Fixed Damage Storage Conflict**: Changed soul bonus storage to avoid charge system conflicts
+- **New Storage Method**: Soul bonus now stored in range 1000-1020 (instead of negative values)
+- **Working Damage Calculation**: Soul bonus no longer overwritten by charge system
+- **Persistent Damage Bonus**: Soul absorption now correctly increases and maintains damage
+- **Tooltip Accuracy**: Tooltip now shows correct total damage including soul bonus
+
+### 📝 **TECHNICAL CHANGES**
+- **Storage Range Change**: Soul bonus now uses 1000+ range to avoid charge system (0-4)
+- **Conflict Resolution**: Eliminated interference between soul bonus and charge system
+- **Damage Persistence**: Soul bonus survives all charge operations and cooldown resets
+- **Cross-Item Compatibility**: Both SoulItem and HadesScytheItem use same storage method
+- **Version**: `greek-mythology-1.0.74.jar` with fully working soul damage system
+
+---
+
+## Version 1.0.72 (2025-01-28)
+### 🔧 **SOUL ENHANCEMENT SYSTEM - FIXED CHARGE CONFLICT**
+- **Fixed Charge System Conflict**: Soul damage bonus now preserved when scythe charges reset
+- **Working Damage Persistence**: Soul bonus survives charge consumption and cooldown resets
+- **Enhanced Logging**: Added detailed logging for soul bonus preservation during charge operations
+- **Charge Integration**: Soul bonus properly integrated with existing charge system
+- **Attack Damage**: Soul bonus now correctly applied in combat damage calculations
+
+### 📝 **TECHNICAL CHANGES**
+- **Charge Preservation**: Modified `consumeCharge()` to preserve soul damage bonus
+- **Cooldown Protection**: Soul bonus preserved during charge reset operations
+- **Damage Calculation**: `postHit()` now correctly reads preserved soul bonus values
+- **Cross-System Compatibility**: Soul system works alongside existing charge system
+- **Version**: `greek-mythology-1.0.72.jar` with fully working soul damage system
+
+---
+
+## Version 1.0.71 (2025-01-28)
+### 🔧 **SOUL ENHANCEMENT SYSTEM - FIXED DAMAGE TRACKING**
+- **Fixed Damage Bonus Storage**: Now properly stores soul damage bonus using item damage values
+- **Working Damage Calculation**: Soul absorption now correctly increases Hades Scythe damage
+- **Updated Tooltips**: Tooltip now shows current total damage including soul bonus
+- **Proper Data Persistence**: Soul damage bonus persists between game sessions
+- **Debug Logging**: Added logging to track soul bonus application and damage calculations
+- **Damage Value Encoding**: Uses negative damage values (-1000 to -1020) to store soul bonus
+- **ZeusBolt-Style Implementation**: Follows same pattern as ZeusBolt charge system
+
+### 📝 **TECHNICAL CHANGES**
+- **Damage Storage Method**: Changed from NBT to damage value encoding for compatibility
+- **Soul Bonus Calculation**: `getSoulDamageBonus()` now reads from damage values
+- **Tooltip Enhancement**: Shows total damage (base + soul bonus) in real-time
+- **Cross-Item Compatibility**: Both SoulItem and HadesScytheItem use same damage encoding
+- **Version**: `greek-mythology-1.0.71.jar` with working soul damage tracking
+
+---
+
+## Version 1.0.70 (2025-01-28)
+### 💀 **SOUL ENHANCEMENT SYSTEM - HADES SCYTHE DAMAGE BOOST**
+- **Right-Click Soul Absorption**: Souls can now be right-clicked to absorb into Hades' Scythe
+- **Damage Enhancement**: Each soul consumed increases scythe damage by +1 (up to +20 maximum)
+- **Inventory Check**: Requires Hades' Scythe to be in player's inventory for absorption
+- **Visual Effects**: Soul absorption creates soul particles and smoke effects around player
+- **Sound Effects**: Plays wither ambient sound during soul absorption
+- **Feedback Messages**: Shows absorption success and current damage bonus
+- **Tooltip Updates**: Soul items now show right-click instructions and damage bonus info
+- **Placeholder Implementation**: Basic framework in place for future NBT-based damage tracking
+
+### 📝 **TECHNICAL CHANGES**
+- **SoulItem Enhancement**: Added `use()` method for right-click functionality
+- **Damage Bonus System**: Framework for tracking and applying soul damage bonuses
+- **HadesScytheItem Integration**: Modified `postHit()` to include soul damage bonus calculation
+- **Visual Feedback**: Particle effects and sound during soul absorption
+- **Error Handling**: Graceful handling of missing scythe or max damage scenarios
+- **Version**: `greek-mythology-1.0.70.jar` with soul enhancement system framework
+
+---
+
 ## Version 1.0.69 (2025-01-28)
 ### 🎨 **POSEIDON TRIDENT RIPTIDE III**
 - Added Riptide III underwater sprinting to Poseidon Trident
@@ -565,3 +673,10 @@
 - **Technical Details**: Code-level changes
 - **Breaking Changes**: Any incompatible changes
 - **Known Issues**: Current problems or limitations 
+## Version 1.0.77 (Latest)
+- **Feature**: Implemented dynamic color system for soul items
+- **Feature**: Souls now only drop when entities die from wither damage (Hades Scythe only)
+- **Feature**: Each soul item has unique color based on source entity characteristics
+- **Feature**: Enhanced tooltips show RGB color values for each soul
+- **Feature**: Added SoulDeathEvents for death-based soul harvesting
+- **Fix**: Fixed soul harvesting to be exclusive to Hades Scythe wither effects

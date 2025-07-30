@@ -1,0 +1,27 @@
+Greek Mythology Modpack - Version 1.0.79
+============================================
+
+🔢 SOUL SYSTEM REBALANCING:
+• Reduced Hades Scythe soul cap from 20 to 12 souls maximum
+• Better progression balance - max damage now 16.0 (4.0 base + 12.0 soul bonus)
+• Updated all soul absorption messages to show (X/12) format
+
+⚔️ LIVE DAMAGE DISPLAY:
+• Fixed tooltip to show actual combat damage instead of just base damage
+• Hades Scythe tooltip now displays real-time damage that matches combat
+• Shows "⚡ LIVE DAMAGE: X.X (actual combat damage)" in tooltip
+• Soul bonus calculation now uses NBT-stored values for accuracy
+
+🎯 VISUAL IMPROVEMENTS:
+• Enhanced soul progress indicators with color coding
+• Gold color and [MAX] indicator when scythe reaches 12/12 souls
+• Clear visual feedback for soul consumption progress
+• Updated max power messages to reflect new 12-soul limit
+
+🔧 TECHNICAL FIXES:
+• Fixed damage calculation sync between tooltip and combat
+• Improved NBT storage reliability for soul counts
+• Better per-scythe soul tracking (each scythe has its own count)
+• Enhanced logging for soul absorption debugging
+
+This update provides a more balanced soul system while ensuring the tooltip accurately reflects your actual combat damage! 

@@ -38,64 +38,41 @@ public class InfernoPearlItem extends Item implements FabricItem {
         
         // Only allow throwing in the Overworld
         if (world.getRegistryKey().getValue().getPath().equals("overworld")) {
-            // Create and throw the Inferno Pearl entity
-            if (!world.isClient()) {
-                EnderPearlEntity pearlEntity = new EnderPearlEntity(world, user, itemStack) {
-                    @Override
-                    protected void onCollision(HitResult hitResult) {
-                        // Don't call super.onCollision(hitResult) to disable teleportation
-                        
-                        // Instead of teleporting, corrupt the area
-                        if (!this.getWorld().isClient) {
-                            Vec3d landingPos = this.getPos();
-                            corruptArea(this.getWorld(), new BlockPos((int)landingPos.x, (int)landingPos.y, (int)landingPos.z));
-                            
-                            // Play corruption sound
-                            this.getWorld().playSound(null, landingPos.x, landingPos.y, landingPos.z, 
-                                SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.NEUTRAL, 1.0F, 0.8F);
-                            
-                            // Spawn particles at landing location
-                            if (this.getWorld() instanceof net.minecraft.server.world.ServerWorld) {
-                                ((net.minecraft.server.world.ServerWorld) this.getWorld()).spawnParticles(ParticleTypes.SOUL_FIRE_FLAME, 
-                                    landingPos.x, landingPos.y, landingPos.z, 20, 0.5, 0.5, 0.5, 0.1);
-                            }
-                            
-                            GreekMythologyMod.LOGGER.info("INFERNO PEARL: Corrupted area at ({}, {}, {})", 
-                                landingPos.x, landingPos.y, landingPos.z);
-                        }
-                        
-                        // Discard the entity without teleporting
-                        this.discard();
-                    }
-                };
-                
-                pearlEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
-                
-                if (!world.spawnEntity(pearlEntity)) {
-                    return ActionResult.FAIL;
-                }
-            }
-            
-            // Play throw sound
+            // Play throw sound first (like vanilla ender pearl)
             world.playSound(null, user.getX(), user.getY(), user.getZ(), 
                 SoundEvents.ENTITY_ENDER_PEARL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
             
-            // Consume the pearl
+            // Increment stats (like vanilla ender pearl)
+            user.incrementStat(Stats.USED.getOrCreateStat(this));
+            
+            // Create and throw a standard ender pearl - simpler approach
+            if (!world.isClient()) {
+                net.minecraft.entity.projectile.thrown.EnderPearlEntity pearlEntity = 
+                    new net.minecraft.entity.projectile.thrown.EnderPearlEntity(net.minecraft.entity.EntityType.ENDER_PEARL, world);
+                
+                // Set the owner and velocity exactly like a normal ender pearl
+                pearlEntity.setOwner(user);
+                pearlEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
+                
+                // Spawn the entity on server
+                world.spawnEntity(pearlEntity);
+                
+                GreekMythologyMod.LOGGER.info("INFERNO PEARL: Thrown by player {}", user.getName().getString());
+            }
+            
+            // Consume the pearl (like vanilla ender pearl)
             if (!user.getAbilities().creativeMode) {
                 itemStack.decrement(1);
             }
             
-            user.getItemCooldownManager().set(itemStack, 20); // 1 second cooldown
-            user.incrementStat(Stats.USED.getOrCreateStat(this));
-            
-            GreekMythologyMod.LOGGER.info("INFERNO PEARL: Thrown by {} at position ({}, {}, {})", 
-                user.getName().getString(), user.getX(), user.getY(), user.getZ());
+            // Set cooldown (like vanilla ender pearl)
+            user.getItemCooldownManager().set(itemStack, 20);
             
             return ActionResult.SUCCESS;
         } else {
-            // Not in Overworld - show message and don't allow throwing
-            if (!world.isClient()) {
-                user.sendMessage(Text.literal("§cThe pearl refuses to be thrown here — it only works in the Overworld."), false);
+            // Not in Overworld - show message and don't throw
+            if (!world.isClient) {
+                user.sendMessage(Text.literal("§cInferno Pearls can only be used in the Overworld!"), false);
             }
             return ActionResult.FAIL;
         }

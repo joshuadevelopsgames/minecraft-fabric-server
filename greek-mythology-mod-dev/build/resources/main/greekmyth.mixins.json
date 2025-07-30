@@ -9,8 +9,7 @@
     "PlayerEntityMixin",
     "FluidBlockMixin",
     "StriderEntityMixin"
-  ],
-  "injectors": {
+  ],  "injectors": {
     "defaultRequire": 1
   }
 } 

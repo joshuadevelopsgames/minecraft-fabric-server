@@ -12,6 +12,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -24,17 +25,10 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.minecraft.block.BlockState;
-import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.component.type.TooltipDisplayComponent;
-import java.util.List;
 import java.util.function.Consumer;
 import net.fabricmc.fabric.api.item.v1.FabricItem;
 
@@ -68,26 +62,44 @@ public class HadesScytheItem extends Item implements FabricItem {
     @Override
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (attacker.getWorld() instanceof ServerWorld serverWorld) {
-            // Base damage for Hades Scythe
-            float damage = 4.0f;
+            // Calculate soul-enhanced damage using NBT-stored values from the scythe
+            float baseDamage = 4.0f;
+            int soulBonus = getSoulDamageBonus(stack); // Use NBT-stored soul count from this scythe
             
-            GreekMythologyMod.LOGGER.info("HADES SCYTHE ATTACK: Damage: {}", damage);
+            float totalDamage = baseDamage + soulBonus;
             
-            target.damage(serverWorld, serverWorld.getDamageSources().generic(), damage);
+            GreekMythologyMod.LOGGER.info("HADES SCYTHE ATTACK: Base Damage: {}, Soul Bonus: {} (from NBT), Total Damage: {}", 
+                baseDamage, soulBonus, totalDamage);
             
-            // Add wither effect on hit (death magic)
-            if (target instanceof PlayerEntity) {
-                target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 60, 1)); // 3 seconds of Wither II
+            target.damage(serverWorld, serverWorld.getDamageSources().generic(), totalDamage);
+            
+            // Check if this was a critical hit (player falling and not on ground)
+            boolean isCriticalHit = false;
+            if (attacker instanceof PlayerEntity player) {
+                // Critical hit conditions: falling, not on ground, not in water, not climbing, not riding
+                isCriticalHit = player.getVelocity().y < 0.0 && 
+                               !player.isOnGround() && 
+                               !player.isTouchingWater() && 
+                               !player.isClimbing() && 
+                               !player.hasVehicle();
             }
             
-            // Transform skeletons into wither skeletons when hit with wither effect
-            if (target.getType() == EntityType.SKELETON && attacker instanceof ServerPlayerEntity) {
-                // Check if skeleton already has wither effect or apply it
-                boolean hasWither = target.hasStatusEffect(StatusEffects.WITHER);
-                if (!hasWither) {
-                    target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 60, 1)); // 3 seconds of Wither II
-                }
+            // Only add wither effect on critical hits
+            if (isCriticalHit) {
+                target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 60, 1)); // 3 seconds of Wither II on crit
+                GreekMythologyMod.LOGGER.info("HADES SCYTHE: Critical hit! Applied wither effect");
                 
+                // Spawn special critical hit particles
+                for (int i = 0; i < 10; i++) {
+                    double x = target.getX() + (serverWorld.random.nextDouble() - 0.5) * 1.5;
+                    double y = target.getY() + serverWorld.random.nextDouble() * 1.5;
+                    double z = target.getZ() + (serverWorld.random.nextDouble() - 0.5) * 1.5;
+                    serverWorld.spawnParticles(ParticleTypes.SOUL_FIRE_FLAME, x, y, z, 1, 0, 0, 0, 0.1);
+                }
+            }
+            
+            // Transform skeletons into wither skeletons when hit with wither effect (only on critical hits now)
+            if (target.getType() == EntityType.SKELETON && attacker instanceof ServerPlayerEntity && isCriticalHit) {
                 // Transform skeleton into wither skeleton pet
                 transformSkeletonToWitherSkeleton(serverWorld, target, (ServerPlayerEntity) attacker);
             }
@@ -137,8 +149,8 @@ public class HadesScytheItem extends Item implements FabricItem {
     }
     
     private void makeWitherSkeletonPet(net.minecraft.entity.mob.WitherSkeletonEntity witherSkeleton, ServerPlayerEntity owner) {
-        // Set custom name
-        witherSkeleton.setCustomName(Text.literal("§6" + owner.getName().getString() + "'s Undead Warrior"));
+        // Set custom name that's easy to identify
+        witherSkeleton.setCustomName(Text.literal("§6" + owner.getName().getString() + "'s Enhanced Wither Skeleton"));
         witherSkeleton.setCustomNameVisible(true);
         
         // Clear current target and attacking state
@@ -148,10 +160,14 @@ public class HadesScytheItem extends Item implements FabricItem {
         // Make the wither skeleton persistent so it doesn't despawn
         witherSkeleton.setPersistent();
         
-        // Set the wither skeleton to peaceful mode (won't attack players)
+        // TEMPORARY: Make it peaceful until we get proper targeting working
         witherSkeleton.setSilent(true);
         
-        GreekMythologyMod.LOGGER.info("HADES SCYTHE: Created pet wither skeleton for player {} with enhanced protection", owner.getName().getString());
+        // Tag the wither skeleton as a pet for the datapack system
+        witherSkeleton.addCommandTag("GreekPet.Pet");
+        witherSkeleton.addCommandTag("GreekPet.WitherSkeleton");
+        
+        GreekMythologyMod.LOGGER.info("HADES SCYTHE: Created enhanced wither skeleton pet for player {} (peaceful mode)", owner.getName().getString());
     }
     
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
@@ -512,23 +528,52 @@ public class HadesScytheItem extends Item implements FabricItem {
         }
     }
 
+    private int getSoulDamageBonus(ItemStack scytheStack) {
+        // Use the same method as SoulItem - read bonus from damage value
+        int currentDamage = scytheStack.getDamage();
+        
+        // If damage is in the soul bonus range (1000-1012), extract the bonus
+        // Format: 1000 + soulBonus (e.g., 1001 = 1 soul bonus, 1012 = 12 soul bonus)
+        if (currentDamage >= 1000 && currentDamage <= 1012) {
+            return currentDamage - 1000;
+        }
+        
+        return 0;
+    }
+
     @Override
-    public void appendTooltip(ItemStack stack, Item.TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> tooltip, TooltipType type) {
+    public void appendTooltip(ItemStack stack, Item.TooltipContext context, net.minecraft.component.type.TooltipDisplayComponent displayComponent, java.util.function.Consumer<Text> tooltip, net.minecraft.item.tooltip.TooltipType type) {
         super.appendTooltip(stack, context, displayComponent, tooltip, type);
         
-        tooltip.accept(Text.literal("").formatted(Formatting.GOLD));
-        tooltip.accept(Text.literal("💀 The scythe of the Lord of the Underworld").formatted(Formatting.GOLD, Formatting.BOLD));
-        tooltip.accept(Text.literal("").formatted(Formatting.GOLD));
-        tooltip.accept(Text.literal("Right-click to harvest souls and create death mist").formatted(Formatting.YELLOW));
-        tooltip.accept(Text.literal("Sneak + Right-click to open underworld portal").formatted(Formatting.YELLOW));
-        tooltip.accept(Text.literal("").formatted(Formatting.GOLD));
-        tooltip.accept(Text.literal("Harvests specific soul items from mobs").formatted(Formatting.AQUA));
-        tooltip.accept(Text.literal("Death mist blinds and weakens enemies").formatted(Formatting.AQUA));
-        tooltip.accept(Text.literal("").formatted(Formatting.GOLD));
-        tooltip.accept(Text.literal("⚔️ BASE DAMAGE: 4.0").formatted(Formatting.RED, Formatting.BOLD));
-        tooltip.accept(Text.literal("Soul items drop based on mob type").formatted(Formatting.LIGHT_PURPLE));
-        tooltip.accept(Text.literal("Portal to underworld dimensions").formatted(Formatting.RED));
-        tooltip.accept(Text.literal("").formatted(Formatting.GOLD));
-        tooltip.accept(Text.literal("Legendary Weapon").formatted(Formatting.LIGHT_PURPLE, Formatting.BOLD));
+        float baseDamage = 4.0f;
+        int currentSoulBonus = getSoulDamageBonus(stack);
+        float totalDamage = baseDamage + currentSoulBonus;
+        
+        tooltip.accept(Text.literal(""));
+        tooltip.accept(Text.literal("💀 The scythe of the Lord of the Underworld").formatted(net.minecraft.util.Formatting.GOLD, net.minecraft.util.Formatting.BOLD));
+        tooltip.accept(Text.literal(""));
+        
+        // Live damage display showing actual combat values
+        tooltip.accept(Text.literal("⚔️ BASE DAMAGE: " + String.format("%.1f", baseDamage)).formatted(net.minecraft.util.Formatting.RED, net.minecraft.util.Formatting.BOLD));
+        
+        // Soul consumption progress with visual indicator
+        String soulProgressColor = currentSoulBonus >= 12 ? "§6" : "§5"; // Gold if maxed, Purple if not
+        String maxIndicator = currentSoulBonus >= 12 ? " §6§l[MAX]" : "";
+        tooltip.accept(Text.literal("💀 SOULS CONSUMED: " + soulProgressColor + currentSoulBonus + "/12" + maxIndicator).formatted(net.minecraft.util.Formatting.DARK_PURPLE, net.minecraft.util.Formatting.BOLD));
+        
+        tooltip.accept(Text.literal("💙 SOUL BONUS: +" + String.format("%.1f", (float)currentSoulBonus)).formatted(net.minecraft.util.Formatting.AQUA, net.minecraft.util.Formatting.BOLD));
+        tooltip.accept(Text.literal("⚡ LIVE DAMAGE: " + String.format("%.1f", totalDamage) + " (actual combat damage)").formatted(net.minecraft.util.Formatting.GREEN, net.minecraft.util.Formatting.BOLD));
+        tooltip.accept(Text.literal(""));
+        tooltip.accept(Text.literal("Right-click to harvest souls from nearby entities").formatted(net.minecraft.util.Formatting.YELLOW));
+        tooltip.accept(Text.literal("Sneak + Right-click to open underworld portal").formatted(net.minecraft.util.Formatting.YELLOW));
+        tooltip.accept(Text.literal(""));
+        tooltip.accept(Text.literal("💥 Critical hits apply Wither II").formatted(net.minecraft.util.Formatting.DARK_PURPLE));
+        tooltip.accept(Text.literal("🐺 Critical hits transform skeletons into pets").formatted(net.minecraft.util.Formatting.GREEN));
+        tooltip.accept(Text.literal(""));
+        tooltip.accept(Text.literal("🍽️ Consume soul items to increase damage permanently").formatted(net.minecraft.util.Formatting.LIGHT_PURPLE));
+        tooltip.accept(Text.literal("Infinite abilities near lava or in the Nether").formatted(net.minecraft.util.Formatting.RED));
+        tooltip.accept(Text.literal(""));
+        tooltip.accept(Text.literal("Legendary Weapon").formatted(net.minecraft.util.Formatting.LIGHT_PURPLE, net.minecraft.util.Formatting.BOLD));
     }
+
 } 

@@ -1,0 +1,572 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2822
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\froman\fcharset0 Times-Bold;\f1\froman\fcharset0 Times-Roman;\f2\froman\fcharset0 Times-Italic;
+\f3\fmodern\fcharset0 Courier;\f4\fnil\fcharset0 HelveticaNeue;\f5\froman\fcharset0 Times-BoldItalic;
+\f6\fmodern\fcharset0 Courier-Bold;\f7\fmodern\fcharset0 Courier-Oblique;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue233;\red0\green0\blue0;
+\red179\green179\blue179;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c0\c0\c93333;\cssrgb\c0\c0\c0\c84706;
+\cssrgb\c75294\c75294\c75294;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid201\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid3}
+{\list\listtemplateid4\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid301\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid4}
+{\list\listtemplateid5\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid401\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid5}
+{\list\listtemplateid6\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid501\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid6}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}{\listoverride\listid4\listoverridecount0\ls4}{\listoverride\listid5\listoverridecount0\ls5}{\listoverride\listid6\listoverridecount0\ls6}}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\sa321\partightenfactor0
+
+\f0\b\fs48 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Creating a Custom Dimension in Fabric (1.21.16+)\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\fs36 \cf0 1. Defining a Custom Dimension Type and Dimension (Data Pack vs. Code)\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\fs24 \cf0 Dimension Type:
+\f1\b0  Every dimension needs a 
+\f2\i Dimension Type
+\f1\i0  specifying environment properties \'96 e.g. sky light, bed behavior, world height, time cycle, etc. In modern Minecraft (1.16+), you can define these via a JSON data file. For example, a 
+\f3\fs26 dimension_type
+\f1\fs24  JSON might set flags like 
+\f3\fs26 "ultrawarm"
+\f1\fs24  (Nether-like heat effects), 
+\f3\fs26 "has_skylight"
+\f1\fs24 , 
+\f3\fs26 "bed_works"
+\f1\fs24  (whether beds function or explode), and so on{\field{\*\fldinst{HYPERLINK "https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric#:~:text=The%C2%A0,and%20a%20bit%20more"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 github.com}}. For instance, the Overworld\'92s type has 
+\f3\fs26 ambient_light:0.0
+\f1\fs24 , 
+\f3\fs26 has_skylight:true
+\f1\fs24 , 
+\f3\fs26 bed_works:true
+\f1\fs24 , 
+\f3\fs26 min_y:-64
+\f1\fs24 , 
+\f3\fs26 height:384
+\f1\fs24  etc{\field{\*\fldinst{HYPERLINK "https://mcasset.cloud/1.20.3/data/minecraft/dimension_type/overworld.json#:~:text=,minecraft%3Ainfiniburn_overworld%22%2C%20%22logical_height%22%3A%20384"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 mcasset.cloud}}{\field{\*\fldinst{HYPERLINK "https://mcasset.cloud/1.20.3/data/minecraft/dimension_type/overworld.json#:~:text=,"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 mcasset.cloud}}. You can create your own dimension type JSON (e.g. 
+\f3\fs26 data/<modid>/dimension_type/<dim>.json
+\f1\fs24 ) with customized settings \'96 such as fixed time (e.g. 
+\f3\fs26 "fixed_time": 18000
+\f1\fs24  for eternal night) or different world height \'96 to suit your dimension{\field{\*\fldinst{HYPERLINK "https://www.reddit.com/r/fabricmc/comments/zst4na/dimension_json_files_not_working/#:~:text=%7B%20,false"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 reddit.com}}. If you omit a custom type, you can also reuse an existing one (e.g. 
+\f3\fs26 "minecraft:overworld"
+\f1\fs24  or 
+\f3\fs26 "minecraft:the_nether"
+\f1\fs24 ) in your dimension definition.\
+
+\f0\b Dimension Definition:
+\f1\b0  Once you have a Dimension Type, define the dimension itself via a JSON in 
+\f3\fs26 data/<modid>/dimension/<dim>.json
+\f1\fs24 . This file links the dimension type and the world generation settings. At minimum it includes a 
+\f3\fs26 "type"
+\f1\fs24  field (referring to the dimension type ID) and a 
+\f3\fs26 "generator"
+\f1\fs24  object that defines how terrain is generated{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:chunkgenerator#:~:text=%2F%2F%20resources%2Fdata%2Fwiki,%2F%2F%20etc"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}. For example, a simple custom dimension JSON could be:\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs26 \cf0 json\
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs22 \cf4 \cb5 \strokec4 CopyEdit
+\f3\fs26 \cf0 \cb1 \strokec2 \
+\{\
+  "type": "<namespace>:<your_dimension_type>",\
+  "generator": \{\
+    "type": "minecraft:noise",\
+    "seed":  <some_seed>,\
+    "settings": "minecraft:overworld",\
+    "biome_source": \{\
+      "type": "minecraft:fixed",\
+      "biome": "<namespace>:<your_biome>"\
+    \}\
+  \}\
+\}\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f1\fs24 \cf0 In this example, we used Minecraft\'92s built-in noise generator with default Overworld settings and a fixed biome. You could swap 
+\f3\fs26 "settings": "minecraft:overworld"
+\f1\fs24  for other presets like 
+\f3\fs26 "minecraft:amplified"
+\f1\fs24  or provide a full inline noise settings object for fine control{\field{\*\fldinst{HYPERLINK "https://minecraft.fandom.com/wiki/Custom_world_generation#:~:text=Custom%20world%20generation%20,normal%20Overworld%20generation%2C%20minecraft%3Aamplified"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 minecraft.fandom.com}}. The 
+\f3\fs26 biome_source
+\f1\fs24  here is 
+\f3\fs26 "fixed"
+\f1\fs24  to use a single biome, but you can choose others (see 
+\f0\b Custom Biomes
+\f1\b0  below).\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0\b \cf0 Data-Driven vs Code:
+\f1\b0  Vanilla\'92s data-driven worldgen is powerful and 
+\f0\b it\'92s recommended to use JSON for dimensions in modern versions
+\f1\b0 . In fact, after 1.18, custom biomes and dimensions are defined \'93completely using JSON\'94 rather than code{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:biomes_old#:~:text=,Wiki%20page%20for%20more%20information"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}. Using a datapack (or your mod\'92s included data) is the easiest way to add a dimension{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:dimensionconcepts#:~:text=Creating%20a%20new%20dimension%20using,useful%20concepts%20for%20this%20process"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}. Only resort to code for worldgen when you need capabilities that JSON can\'92t provide (e.g. non-noise terrain generation or dynamic behavior){\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:chunkgenerator#:~:text=,surface%20building%2C%20and%20biome%20placement"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}. In Fabric, you can ship those JSON files in 
+\f3\fs26 src/main/resources/data
+\f1\fs24  so they load with the mod. This ensures that when a new world is created with your mod, the game includes your dimension in the world\'92s registry. 
+\f2\i (\uc0\u55357 \u56481  
+\f5\b Pitfall:
+\f2\b0  If you add a dimension to an 
+\f5\b existing
+\f2\b0  world, you may need to manually add the datapack or use commands to load it, since dimensions are normally initialized at world creation.)
+\f1\i0 \
+If you do need finer control via code (custom generators, special loading logic, etc.), you can still register dimensions programmatically using Fabric API. Fabric\'92s 
+\f3\fs26 FabricDimensions
+\f1\fs24  API allows direct teleportation and creation of dimension instances in code, but the recommended approach is to use data when possible and use code only to 
+\f2\i register
+\f1\i0  custom worldgen components or handle teleportation logic.\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\b\fs36 \cf0 2. Custom Terrain Generation (Chunk Generators and Noise Settings)\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\fs24 \cf0 Using Vanilla Noise Settings:
+\f1\b0  The simplest way to get terrain is to leverage Minecraft\'92s built-in 
+\f3\fs26 minecraft:noise
+\f1\fs24  chunk generator with a custom noise setting. You can reference a preset noise setting (like the overworld or nether) or inline your own noise values in the dimension JSON. For example, using 
+\f3\fs26 "settings": "minecraft:overworld"
+\f1\fs24  gives you standard overworld terrain, whereas 
+\f3\fs26 "minecraft:the_nether"
+\f1\fs24  or 
+\f3\fs26 "minecraft:the_end"
+\f1\fs24  use those climates. Mojang\'92s engine allows extensive tweaks via JSON \'96 you can adjust sea level, disable caves/aquifers, choose the default block/fluid, and even supply custom noise density functions. In fact, 
+\f0\b the vanilla noise generator is extremely powerful and data-driven
+\f1\b0  \'96 most terrain styles can be achieved without writing code{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:chunkgenerator#:~:text=,surface%20building%2C%20and%20biome%20placement"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}. For instance, you can create an \'93all desert night world\'94 by setting your biome to desert and using a noise config with no rivers and flat terrain, entirely via JSON. 
+\f2\i (Ensure your noise JSON is valid \'96 a common pitfall is messing up the noise ranges or leaving required fields at invalid values, which can prevent world creation.)
+\f1\i0 \
+
+\f0\b Implementing a Custom ChunkGenerator (Advanced):
+\f1\b0  If your dimension\'92s terrain cannot be achieved with the data-driven noise (for example, you want a completely custom generation algorithm like sky islands arranged in a grid, or integration with an external terrain library), you can create a custom 
+\f3\fs26 ChunkGenerator
+\f1\fs24  in code. This involves subclassing 
+\f3\fs26 ChunkGenerator
+\f1\fs24  and overriding its methods for core terrain steps: 
+\f3\fs26 populateNoise
+\f1\fs24  (shapes terrain height), 
+\f3\fs26 buildSurface
+\f1\fs24  (applies top blocks like grass or sand), 
+\f3\fs26 carve
+\f1\fs24  (optional cave carving), 
+\f3\fs26 populateEntities
+\f1\fs24 , etc. You also must handle biome assignment in 
+\f3\fs26 populateBiomes
+\f1\fs24  (or via a BiomeSource). Writing a ChunkGenerator is complex \'96 you may copy logic from 
+\f3\fs26 NoiseChunkGenerator
+\f1\fs24  or other vanilla generators as a starting point{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:chunkgenerator#:~:text=Pretty%20much%20all%20of%20these,is%20not%20multithreaded%20by%20default"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:chunkgenerator#:~:text=%40Override%20protected%20Codec,"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}. 
+\f0\b Every custom ChunkGenerator needs a 
+\f6\fs26 Codec
+\f0\fs24  for serialization
+\f1\b0  so it can be referenced by JSON{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:chunkgenerator#:~:text=%40Override%20protected%20Codec,"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:chunkgenerator#:~:text=,Here%27s%20an%20example%20codec"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}. You can use 
+\f3\fs26 RecordCodecBuilder
+\f1\fs24  to define how your generator\'92s parameters (biome source, any custom settings like world height or a special block) are encoded{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:chunkgenerator#:~:text=public%20static%20final%20Codec,instance.group%28%20BiomeSource.CODEC.fieldOf%28%22biome_source%22%29.forGetter%28ExampleC%20hunkGenerator%3A%3AgetBiomeSource"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:chunkgenerator#:~:text=private%20final%20BiomeSource%20biomeSource%3B%20public,same%20for%20the%20other%20fields"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}. After coding the generator, 
+\f0\b register its codec in the Chunk Generator registry
+\f1\b0  in your mod\'92s initialization, or the game won\'92t recognize your generator type in JSON{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:chunkgenerator#:~:text=Registry.register%28Registry.CHUNK_G%20ENERATOR%2C%20new%20Identifier%28%22wiki,CODEC"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}. For example:\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs26 \cf0 java\
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs22 \cf4 \cb5 \strokec4 CopyEdit
+\f3\fs26 \cf0 \cb1 \strokec2 \
+// Register the custom chunk generator codec\
+Registry.register(Registries.CHUNK_GENERATOR, new Identifier("my_mod","my_generator"), MyChunkGenerator.CODEC);\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f1\fs24 \cf0 This makes it available for use in your dimension JSON. Then your dimension file\'92s generator section would use 
+\f3\fs26 "type": "my_mod:my_generator"
+\f1\fs24  and include any fields your codec defined (e.g. 
+\f3\fs26 "custom_block": "minecraft:dirt", "world_height": 256
+\f1\fs24 , etc){\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:chunkgenerator#:~:text=%2F%2F%20resources%2Fdata%2Fwiki,%2F%2F%20etc"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}.\
+When designing your ChunkGenerator, consider using composition: you might still use vanilla noise for parts of it. For example, you can supply a custom 
+\f3\fs26 BiomeSource
+\f1\fs24  or tweak the noise eval functions via code if needed. However, 
+\f0\b avoid custom generators unless necessary
+\f1\b0  \'96 data-driven noise covers most cases and is automatically optimized. A custom generator must implement multithreading carefully (vanilla offloads 
+\f3\fs26 populateNoise
+\f1\fs24  to background threads \'96 you should do similarly for performance{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:chunkgenerator#:~:text=Pretty%20much%20all%20of%20these,is%20not%20multithreaded%20by%20default"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}). Forgetting to parallelize or to override critical methods (like 
+\f3\fs26 getHeight()
+\f1\fs24  used for structure placement) can lead to poor performance or broken features{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:chunkgenerator#:~:text=%2F,return%200%3B"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}. In summary, prefer tweaking JSON noise settings, and only if you 
+\f2\i truly
+\f1\i0  need a bespoke algorithm, implement a coded generator (and test it thoroughly).\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0\b \cf0 World-Preset (Optional):
+\f1\b0  If you want players to create new worlds using your dimension as a base (similar to single-biome or AMPLIFIED world types), consider adding a 
+\f0\b World Preset
+\f1\b0  JSON. A world preset can wrap your custom ChunkGenerator so that it appears on the world creation screen{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:chunkgenerator#:~:text="}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}. This isn\'92t required for dimensions accessible via portals, but it\'92s useful if you want your dimension playable as an overworld replacement.\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\b\fs36 \cf0 3. Creating and Registering Custom Biomes\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f1\b0\fs24 \cf0 If your dimension uses any new biomes, you\'92ll need to define them. In modern Fabric 
+\f0\b biomes are data-driven
+\f1\b0  (since 1.18+): you create a JSON under 
+\f3\fs26 data/<modid>/worldgen/biome/
+\f1\fs24  for each biome{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:biomes_old#:~:text=,Wiki%20page%20for%20more%20information"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}. A biome JSON includes: climate settings (
+\f3\fs26 precipitation
+\f1\fs24  rain/snow/none, temperature, downfall), surface properties (e.g. depth/scale \'96 though note these terrain shape parameters are ignored if using noise generator with its own noise, or in custom dimensions like UAD as TelepathicGrunt notes{\field{\*\fldinst{HYPERLINK "https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric#:~:text=and%20configured_features%20folders,what%20height%20they%20spawn%20at"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 github.com}}), biome 
+\f0\b effects
+\f1\b0  (sky color, fog color, water color, foliage tint, particle and ambient sound effects, etc.), mob spawn settings, and lists of features/structures that generate in that biome.\
+For example, a \'93Sky Isles\'94 custom biome might have 
+\f3\fs26 "precipitation": "none", "temperature": 0.8, "effects": \{ "sky_color": 0x88CCFF, "fog_color": 0xAADDEE, ... \}
+\f1\fs24 , and then include feature entries for ores, vegetation, etc., and a spawn list for any entities. You can copy vanilla biome JSONs as a template (the Minecraft Wiki or extracted data can be references). Fabric\'92s data-driven approach means you usually 
+\f0\b don\'92t
+\f1\b0  register biomes in code at all \'96 just having the JSON is enough for the game to treat it as a biome in the dynamic registry at world-gen time. 
+\f2\i (Fabric API does have a Biome API if you needed to modify biomes or add via code, but for most cases, JSON is simpler.)
+\f1\i0 \
+Once you\'92ve created custom biomes, you must ensure your dimension\'92s 
+\f0\b biome source
+\f1\b0  knows about them. If your dimension uses a single biome (like a sky dimension all one biome), you can use the 
+\f3\fs26 fixed
+\f1\fs24  biome source in the dimension JSON (as shown above). If you want multiple biomes, you have a few options:\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa240\partightenfactor0
+\ls1\ilvl0
+\f0\b \cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Multi-Noise Biome Source:
+\f1\b0  This is the system the Overworld and Nether use to distribute biomes based on climate parameters (temperature, humidity, altitude, weirdness). You can list each biome with certain noise values so the game blends them. For example, a multi-noise source might include your biomes categorized into groups (e.g. \'93hot biomes\'94, \'93cool biomes\'94, etc.) with weights. The JSON structure allows you to specify parameters for each biome entry. (Manually writing this is complex; tools like Misode\'92s biome generator can help.) If going this route, set 
+\f3\fs26 "biome_source": \{ "type": "minecraft:multi_noise", ... \}
+\f1\fs24  and enumerate your biomes and their noise thresholds. 
+\f2\i (Pitfall: ensure every climate category has at least one biome, or world-gen might complain \'96 e.g. an empty \'93icy_biomes\'94 list would be invalid.)
+\f1\i0 \
+\ls1\ilvl0
+\f0\b \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Checkerboard or The End Biome Source:
+\f1\b0  Minecraft provides others: 
+\f3\fs26 "checkerboard"
+\f1\fs24  (which alternates a set of biomes in a chessboard pattern \'96 mainly for testing) and 
+\f3\fs26 "the_end"
+\f1\fs24  which mimics the End\'92s sparse-island biome distribution. For instance, the End biome source just needs a seed and will place biomes in island patches. (The End\'92s code is somewhat specialized; it might not suit most custom needs unless you want an End-like feel.) In the Reddit example, the user tried using the End biome source for a desert dimension{\field{\*\fldinst{HYPERLINK "https://www.reddit.com/r/fabricmc/comments/zst4na/dimension_json_files_not_working/#:~:text=,"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 reddit.com}}, but if you want specific biomes, 
+\f3\fs26 multi_noise
+\f1\fs24  or a custom source is better. For a simpler approach, you can use a 
+\f0\b single-biome
+\f1\b0  source during development and expand to multi-biome later.\
+\pard\pardeftab720\sa240\partightenfactor0
+\cf0 After defining the biome source in your dimension JSON, your custom biomes will start generating. You should also add your biomes to relevant 
+\f0\b Biome Tags
+\f1\b0  if needed (e.g. if you want your biome to count as \'93overworld\'94 for spawning rules or be recognized by other mods). Fabric API\'92s Biome Selection API can also be used to tweak biome inclusion at runtime, but that\'92s optional.\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0\b \cf0 Biome Registration (Code, optional):
+\f1\b0  If you prefer, you can also register biomes in code (e.g. using a 
+\f3\fs26 Biome.Builder
+\f1\fs24  as in older tutorials), but this is largely outdated for 1.18+ because those biomes won\'92t persist in the world-gen JSON. The game expects biome definitions via data packs so they can be synced and included in world data. The only time you might register a biome in code is if you need to create a biome 
+\f2\i on the fly
+\f1\i0  or modify one dynamically, which is uncommon. Best practice is to stick to the JSON approach for static biome definitions{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:biomes_old#:~:text=,Wiki%20page%20for%20more%20information"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}.\
+
+\f0\b Adding Features/Structures to Biomes:
+\f1\b0  Within your biome JSON, you can list features (by their configured feature ID) that should generate there, and you can also list structure IDs that should spawn in the biome. In 1.19+, structure placement is usually controlled by separate 
+\f2\i structure set
+\f1\i0  definitions at the dimension level, but 
+\f0\b the biome JSON can still include structure features for compatibility
+\f1\b0  (Fabric will merge them into the worldgen if used). TelepathicGrunt\'92s mod, for example, mentions that each custom biome JSON was editable to add or remove features, structures, carvers, and even change colors{\field{\*\fldinst{HYPERLINK "https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric#:~:text=THIS%20is%20the%20BIG%20folder,can%20also%20change%20the%20tallness"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 github.com}}. This means you have full control: you could make a biome that has no lakes, extra ore, custom trees, etc., just by referencing or creating the right configured features and structure definitions in data (see next section).\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f2\i \cf0 (\uc0\u55357 \u56481  
+\f5\b Pitfall:
+\f2\b0  When defining biome JSON, be careful to include 
+\f5\b all required fields
+\f2\b0 . A common mistake is leaving out 
+\f7\fs26 downfall
+\f2\fs24  or using an invalid category string, which can cause JSON parsing errors. Also, if you list a feature or structure that isn\'92t defined anywhere, the game will error \'96 ensure every feature/structure ID exists in your data or vanilla. It\'92s wise to test your biomes by adding them to a superflat world preset or single-biome world first.)
+\f1\i0 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\b\fs36 \cf0 4. Adding Custom Structures to Your Dimension\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\fs24 \cf0 Data-Pack Approach (recommended):
+\f1\b0  Minecraft allows custom structures via data packs, which works in Fabric as well. To add a structure, you typically need to create:\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa240\partightenfactor0
+\ls2\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 A 
+\f0\b structure file
+\f1\b0  (NBT) which defines the layout of the structure (if using the jigsaw system or a single-piece structure). You can use the in-game 
+\f0\b Structure Block
+\f1\b0  to save a build as an NBT file. Place these files under 
+\f3\fs26 data/<modid>/structures/
+\f1\fs24  in your mod. For example, 
+\f3\fs26 my_mod:structures/my_ruin.nbt
+\f1\fs24 .\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 A 
+\f0\b configured structure JSON
+\f1\b0  in 
+\f3\fs26 worldgen/structure/
+\f1\fs24  (for 1.20+, or 
+\f3\fs26 configured_structure_feature/
+\f1\fs24  in 1.18/1.19) that references either your structure NBT or defines how to place it (spacing, offset, etc.). In 1.19+, Mojang introduced 
+\f0\b StructureSet
+\f1\b0  and 
+\f0\b PlacedStructure
+\f1\b0  data JSONs to govern how structures spawn (distance, separation, etc.). You\'92ll want to create those as well, or simpler: include a 
+\f3\fs26 "structures"
+\f1\fs24  section in your dimension\'92s noise settings JSON to directly specify what structures spawn and their frequency.\
+\pard\pardeftab720\sa240\partightenfactor0
+\cf0 In practice, a simple way to handle custom structures is via 
+\f0\b configured features
+\f1\b0 . For example, TelepathicGrunt\'92s Ultra Amplified mod uses a custom feature called an 
+\f3\fs26 nbt_feature
+\f1\fs24  \'96 it allows spawning a given NBT structure piece as a feature in the world{\field{\*\fldinst{HYPERLINK "https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric#:~:text=The%20one%20feature%20I%20would,biome%20knows%20to%20spawn%20it"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 github.com}}. They put all their structure piece NBTs in the 
+\f3\fs26 structures/
+\f1\fs24  folder, then create configured features that point to those NBTs (essentially treating small structures like another ore or tree feature). Those features are then added to biomes so they generate naturally{\field{\*\fldinst{HYPERLINK "https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric#:~:text=The%20one%20feature%20I%20would,biome%20knows%20to%20spawn%20it"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 github.com}}. You can do something similar: write a custom feature class or use the built-in 
+\f3\fs26 minecraft:structure
+\f1\fs24  feature. Alternatively, use the jigsaw structure system to define multi-piece structures (like villages or temples) entirely via JSON (this is more involved, requiring pool files and processors).\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0\b \cf0 Registering Structures via Code:
+\f1\b0  Fabric API doesn\'92t have a full \'93Structure API\'94 like Forge\'92s, but you can still register your structure in code if needed. You\'92d create a subclass of 
+\f3\fs26 StructureFeature
+\f1\fs24  (for older versions) or use the new 
+\f3\fs26 StructureType
+\f1\fs24  registry in 1.19+. You must also register a 
+\f3\fs26 StructurePlacement
+\f1\fs24  (spacing) if doing it in code. However, given that Mojang\'92s move is toward data-driven structures, it\'92s usually easier to register via JSON. If you do code-register, ensure to hook into worldgen init (and use the Fabric 
+\f3\fs26 DynamicRegistrySetupCallback
+\f1\fs24  to add to the dynamic registry properly). This is advanced and beyond the scope of most mods \'96 using data definitions is simpler and future-proof.\
+
+\f0\b Including Structures in Generation:
+\f1\b0  To actually get your structures to spawn, you have to hook them into the dimension\'92s generation. There are two ways:\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa240\partightenfactor0
+\ls3\ilvl0
+\f0\b \cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Dimension\'92s Noise Settings:
+\f1\b0  You can override the structure list at the dimension level. In the dimension JSON, if you provide a full custom noise settings object, you can include a 
+\f3\fs26 "structures"
+\f1\fs24  map listing structure sets. For example, you might list your structure with a spacing setting. TelepathicGrunt notes that in UAD\'92s dimension JSON, \'93at the bottom, there are a bunch of structures listed\'85 you can change how common they are or remove them\'94{\field{\*\fldinst{HYPERLINK "https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric#:~:text=This%20folder%20holds%20the%20,crazy%20or%20wild%20world%20shapes"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 github.com}}. This implies their dimension JSON explicitly enumerates each structure and its frequency (likely leveraging the 
+\f3\fs26 structure_set
+\f1\fs24  system). You can follow a similar pattern: include your custom structures so the game knows to spawn them in that dimension.\
+\ls3\ilvl0
+\f0\b \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Biome Tag/Injection:
+\f1\b0  Alternatively, attach structures to specific biomes (like how villages spawn only in certain biomes). In 1.20, you might use the datapack tag 
+\f3\fs26 minecraft:structure_features/<structure>
+\f1\fs24  to include your biome, or ensure your biome\'92s JSON lists the structure under its 
+\f3\fs26 structures
+\f1\fs24  field (if supported). Since the exact JSON format for structure inclusion can vary by version, consult the Minecraft Wiki for \'93custom structure\'94 in the target version for the proper way.\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f2\i \cf0 (\uc0\u55357 \u56481  
+\f5\b Pitfall:
+\f2\b0  Testing structure generation can be tricky. If you don\'92t see your structure spawning, check that the spawn rate isn\'92t too low (structures by default can be rare; e.g. a spacing of 30 chunks means only ~1 per 30\'d730 chunk area). Also ensure your structure is allowed to spawn in the dimension (vanilla won\'92t spawn Overworld structures in the Nether, etc., unless specified). If needed, use the 
+\f7\fs26 /place
+\f2\fs24  command (e.g. 
+\f7\fs26 /place structure <yourmod:structure_id>
+\f2\fs24 ) to manually verify your structure can generate without errors.
+\f1\i0 )\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0\b \cf0 Example:
+\f1\b0  Suppose you want to add a small temple in your custom biome. You build it and save as 
+\f3\fs26 my_temple.nbt
+\f1\fs24 . You create 
+\f3\fs26 data/my_mod/structures/my_temple.nbt
+\f1\fs24 . Next, create 
+\f3\fs26 data/my_mod/worldgen/structure/my_temple.json
+\f1\fs24  defining the structure (or use a configured feature that references the NBT). Then, in your dimension JSON or biome JSON, include an entry so it spawns. For simplicity, you might treat it as a feature: define a configured feature that places 
+\f3\fs26 my_temple.nbt
+\f1\fs24  with some randomness, and add that feature to your biome\'92s feature list. This way each chunk has a chance to place the structure. For more controlled placement (like one temple per X chunks), define it as a structure with spacing.\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\b\fs36 \cf0 5. Portals \'96 Accessing the Dimension via a Custom Portal Block/Structure\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f1\b0\fs24 \cf0 Once your dimension exists, players need a way to get there. We have two broad approaches:\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0\b \cf0 Option A: Use an existing Portal API (easiest)
+\f1\b0  \'96 The Kyrptonaught Custom Portal API is a widely-used library that simplifies creating Nether-like portals for custom dimensions{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:custom_portals#:~:text=Kyrptonaught%20has%20created%20a%20very,checkout%20the%20library%27s%20github%20here"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}. Include the API as a dependency in your build (it\'92s available for modern MC versions). Then, in your mod\'92s initialization, you can register a portal by specifying the 
+\f0\b frame block
+\f1\b0 , 
+\f0\b ignition item
+\f1\b0 , and the 
+\f0\b destination dimension
+\f1\b0 . For example, to create a portal with Gold Block frame lit by Ender Eyes that goes to your dimension:\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs26 \cf0 java\
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs22 \cf4 \cb5 \strokec4 CopyEdit
+\f3\fs26 \cf0 \cb1 \strokec2 \
+CustomPortalBuilder.beginPortal()\
+    .frameBlock(Blocks.GOLD_BLOCK)               // frame of gold blocks\
+    .lightWithItem(Items.ENDER_EYE)              // use ender eye like flint & steel\
+    .destDimID(new Identifier("my_mod", "my_dim")) // target dimension\
+    .tintColor(234, 183, 8)                      // portal overlay color (RGB)\
+    .registerPortal();\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f1\fs24 \cf0 This single call sets up a functioning portal that players can build in any world (it acts like a Nether portal up to 23\'d723 in size){\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:custom_portals#:~:text=CustomPortalBuilder,.tintColor%28234%2C%20183%2C%208%29%20.registerPortal"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}. The API will handle creating the portal block, lighting it when the item is used, and teleporting entities that collide with it. You can customize multiple aspects: e.g. 
+\f3\fs26 .lightWithFluid(Fluids.WATER)
+\f1\fs24  for water bucket ignition, or even 
+\f3\fs26 .customPortalBlock(...)
+\f1\fs24  to use a custom block texture for the portal interior{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:custom_portals#:~:text=CustomPortalBuilder,.tintColor%28234%2C%20183%2C%208%29%20.registerPortal"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:custom_portals#:~:text=Extras"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}. The Custom Portal API does 
+\f0\b not
+\f1\b0  currently support horizontal (floor) portals, only vertical frames, but it covers most use-cases for Nether-like gates. This approach is great for quick implementation and leverages well-tested code (no need to reinvent portal mechanics).\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0\b \cf0 Option B: Implement a custom portal/block yourself
+\f1\b0  \'96 If you need a unique portal shape or mechanic (or prefer not to add an external library), you can code your own portal system. This usually involves:\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa240\partightenfactor0
+\ls4\ilvl0
+\f0\b \cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Custom Portal Block
+\f1\b0 : Create a block class for your portal (similar to 
+\f3\fs26 NetherPortalBlock
+\f1\fs24 ). It should be non-solid (entities can pass through). Often you\'92ll override methods like 
+\f3\fs26 onEntityCollision
+\f1\fs24  or 
+\f3\fs26 onUse
+\f1\fs24 . For example, you might teleport an entity when they collide or right-click the block. You also need a way to place this block in the world (since players can\'92t obtain it normally).\
+\ls4\ilvl0
+\f0\b \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Portal Frame Detection
+\f1\b0 : Determine how the portal is built. You could mimic the Nether portal (rectangular obsidian frame ignited by flint). This requires scanning the surrounding blocks when an activation condition is met. For instance, in TelepathicGrunt\'92s UAD mod, the portal is a particular multiblock structure: 
+\f2\i 8 Polished Granite blocks + 10 Polished Andesite Slabs + 1 Polished Diorite in a specific arrangement{\field{\*\fldinst{HYPERLINK "https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric#:~:text=to%20build%20this%20portal%20like,to%20the%20Ultra%20Amplified%20Dimension"}}{\fldrslt 
+\f1\i0 \cf3 \ul \ulc3 \strokec3 github.com}}
+\f1\i0 . The player lights the center Diorite with flint-and-steel, which the mod detects and then replaces that Diorite with the custom portal block{\field{\*\fldinst{HYPERLINK "https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric#:~:text=to%20build%20this%20portal%20like,to%20the%20Ultra%20Amplified%20Dimension"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 github.com}}. Once the portal block exists, the player can right-click it (while not sneaking) to teleport{\field{\*\fldinst{HYPERLINK "https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric#:~:text=to%20build%20this%20portal%20like,to%20the%20Ultra%20Amplified%20Dimension"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 github.com}}. You could implement a similar pattern: listen for the player using your activation item on a certain block, check the nearby blocks for the correct frame, then replace or fill the area with your portal block(s). This detection can be done in an event (e.g. use a 
+\f3\fs26 UseBlockCallback
+\f1\fs24  from Fabric API or override the item\'92s usage method).\
+\ls4\ilvl0
+\f0\b \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Teleportation Logic
+\f1\b0 : When an entity interacts with or enters the portal block, you need to transfer them to the target dimension. In vanilla, entering a Nether portal triggers a search for an exit portal and uses a special cooldown. For custom portals, a simpler approach is to teleport instantly. On the 
+\f0\b server side
+\f1\b0 , call Fabric API\'92s teleport function: 
+\f3\fs26 FabricDimensions.teleport(entity, destinationWorld, teleportTarget)
+\f1\fs24 . This bypasses vanilla portal handling and directly moves the entity{\field{\*\fldinst{HYPERLINK "https://maven.fabricmc.net/docs/fabric-api-0.57.1+1.19.1/net/fabricmc/fabric/api/dimension/v1/FabricDimensions.html#:~:text="}}{\fldrslt \cf3 \ul \ulc3 \strokec3 maven.fabricmc.net}}{\field{\*\fldinst{HYPERLINK "https://maven.fabricmc.net/docs/fabric-api-0.57.1+1.19.1/net/fabricmc/fabric/api/dimension/v1/FabricDimensions.html#:~:text=%40Nullable%20public%20static%C2%A0,TeleportTarget%C2%A0target"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 maven.fabricmc.net}}. You must supply a 
+\f3\fs26 TeleportTarget
+\f1\fs24 , which includes the target position, velocity, and yaw/pitch. For example, you might teleport them to a fixed spawn point in your dimension: 
+\f3\fs26 new TeleportTarget(new Vec3d(x, y, z), Vec3d.ZERO, 0.0F, 0.0F)
+\f1\fs24 . If your dimension has multiple possible spawn locations, you\'92d need to calculate one (perhaps the corresponding coordinates or the nearest safe platform). Fabric\'92s API notes that when teleporting between dimensions, the returned entity could be a new copy (for players it isn\'92t, but for other entities it might be){\field{\*\fldinst{HYPERLINK "https://maven.fabricmc.net/docs/fabric-api-0.57.1+1.19.1/net/fabricmc/fabric/api/dimension/v1/FabricDimensions.html#:~:text=destination"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 maven.fabricmc.net}} \'96 usually you can ignore this, but just be aware if you teleport non-player entities.\
+\ls4\ilvl0
+\f0\b \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Return Portal
+\f1\b0 : Decide how players leave your dimension. You could allow building the same portal frame there, or auto-send them back when they use the portal block again. In UAD, the portal block in the mod\'92s dimension sends you back to the Overworld when right-clicked (unless configured otherwise) and the portal can be mined to drop the activation block{\field{\*\fldinst{HYPERLINK "https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric#:~:text=When%20using%C2%A0this%20mod%20and%20want,the%20portal%20will"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 github.com}}. You can implement similar behavior: possibly spawn a return portal automatically at the entry location, or have the portal block remember its origin. Simpler: make the portal item (e.g. flint) work in your dimension too, creating a way back.\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0\b \cf0 Tags & Misc:
+\f1\b0  One great practice illustrated by UAD is using tags to allow flexibility in portal construction{\field{\*\fldinst{HYPERLINK "https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric#:~:text=TAGS"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 github.com}}. They defined item tags for \'93portal_activation_items\'94 and block tags for \'93portal_frame_blocks\'94. This means a modpack or addon could change which items ignite the portal or what blocks can form the frame without altering code \'96 they just override the tags via datapack. Consider doing this if you want customizable portals. For example, you might define a tag for valid frame blocks (default to your chosen block) and check against that in your frame detection logic. This adds mod compatibility (players could use another mod\'92s block as frame if they add it to the tag, etc.).\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f2\i \cf0 (\uc0\u55357 \u56481  
+\f5\b Pitfalls:
+\f2\b0  If writing your own portal, be cautious of a few things. Make sure to only teleport on the 
+\f5\b server
+\f2\b0  (teleporting on client does nothing permanent). Also handle chunk loading \'96 teleporting to a dimension will create the dimension\'92s world on the server if it isn\'92t already loaded; ensure your server has the dimension registered (the JSON data ensures this at world creation). If you manually create the ServerWorld, use MinecraftServer\'92s API to do so properly. Additionally, avoid teleporting to an unsafe location; you may want to spawn players on solid ground \'96 using something like 
+\f7\fs26 getTopPosition(Heightmap.Type.WORLD_SURFACE, spawnPos)
+\f2\fs24  can help find the top terrain{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:dimensions#:~:text=FabricDimensionType"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:dimensions#:~:text=The%20,the%20EntityPlacer%20documentation%20for%20details"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}. Lastly, implement cooldowns or checks if needed to prevent instant re-teleporting back and forth.)
+\f1\i0 \
+In summary, using CustomPortalAPI is the quickest route to link your dimension with a portal, while a custom implementation gives you more control over the shape and behavior. Either way, once set up, survival players can enter your dimension by building the frame and using the ignition item as you\'92ve designed.\
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\b\fs36 \cf0 6. Teleporting via Commands and Other Access\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f1\b0\fs24 \cf0 During testing (and for admin/debug use), you\'92ll want to teleport to your custom dimension with commands. The vanilla command to do this is available as soon as the dimension is registered: for example, 
+\f6\b\fs26 /execute in <modid>:<dimension_id> run tp @p 0 80 0
+\f1\b0\fs24  will send the player to coordinates (0,80,0) in your dimension. You can use any coordinates \'96 if unsure, teleporting to 0, ~, 0 at a mid-height is a safe bet (you might land inside blocks if terrain is there, so be careful). If your dimension has a predefined spawn area, use those coords.\
+Fabric does not override vanilla teleport commands, so the above is the standard way. However, you can also create a 
+\f0\b custom command
+\f1\b0  in your mod for convenience. Using Brigadier (Minecraft\'92s command library), you could register a command like 
+\f3\fs26 /mydimension teleport <player>
+\f1\fs24  that internally calls the teleport logic. In your command handler, you\'92d get the 
+\f3\fs26 ServerWorld
+\f1\fs24  for your dimension (e.g. 
+\f3\fs26 server.getWorld(RegistryKey.of(RegistryKeys.WORLD, new Identifier("my_mod","my_dim")))
+\f1\fs24 ) and then use 
+\f3\fs26 FabricDimensions.teleport(player, targetWorld, teleportTarget)
+\f1\fs24  as discussed{\field{\*\fldinst{HYPERLINK "https://maven.fabricmc.net/docs/fabric-api-0.57.1+1.19.1/net/fabricmc/fabric/api/dimension/v1/FabricDimensions.html#:~:text="}}{\fldrslt \cf3 \ul \ulc3 \strokec3 maven.fabricmc.net}}. This might be wrapped in a Runnable that runs on the main thread if called asynchronously. Ensure the player has permission if it\'92s a cheat command.\
+For one-off teleportation (like an item that sends the player to the dimension), you can similarly invoke the teleport in an item\'92s 
+\f3\fs26 use
+\f1\fs24  method or an event. The Fabric Dimensions API will handle the dimension change without needing an actual portal block present{\field{\*\fldinst{HYPERLINK "https://maven.fabricmc.net/docs/fabric-api-0.57.1+1.19.1/net/fabricmc/fabric/api/dimension/v1/FabricDimensions.html#:~:text=Teleports%20an%20entity%20to%20a,it%20at%20the%20specified%20destination"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 maven.fabricmc.net}}. This is essentially what your portal block does internally.\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f2\i \cf0 (\uc0\u55357 \u56481  
+\f5\b Pitfall:
+\f2\b0  Make sure the dimension ID you use in commands matches exactly the one you registered. Typos in namespace or dimension name are a common reason the 
+\f7\fs26 /execute in
+\f2\fs24  command fails (\'93Unknown dimension\'94). You can verify loaded dimensions with the command 
+\f7\fs26 /execute list dimensions
+\f2\fs24  in recent MC versions, which will list all dimension IDs known to the server. If your dimension isn\'92t listed, then its datapack might not have loaded \'96 possibly due to a JSON error. Check the log for datapack loading errors if so.)
+\f1\i0 \
+\pard\pardeftab720\sa298\partightenfactor0
+
+\f0\b\fs36 \cf0 7. Best Practices and Common Pitfalls\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa240\partightenfactor0
+\ls5\ilvl0
+\fs24 \cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Keep Data and Code in Sync:
+\f1\b0  If you define worldgen via JSON, you usually don\'92t need to register those objects in code (avoid double-registering). Let the datapack system handle it. Use code 
+\f2\i only
+\f1\i0  to register things that JSON cannot, like a custom chunk generator codec or any custom worldgen feature types. And when you do, always register to the proper registry (e.g. use 
+\f3\fs26 RegistryKey
+\f1\fs24  and the Fabric API\'92s 
+\f3\fs26 Registries
+\f1\fs24  constants for 1.19.3+, as shown for chunk generators{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:chunkgenerator#:~:text=Registry.register%28Registry.CHUNK_G%20ENERATOR%2C%20new%20Identifier%28%22wiki,CODEC"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}).\
+\ls5\ilvl0
+\f0\b \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Dimension IDs and Persistence:
+\f1\b0  Once a world is created with your dimension, that dimension is stored in the world save (in level.dat). Removing the mod or altering the dimension JSON later can corrupt the save or orphan data. As a best practice, try not to change a dimension\'92s fundamental properties (like world height or type) after players have started exploring it \'96 it\'92s akin to changing the Nether\'92s height mid-save. If you must, advise players to back up their world. Also, provide a way to get back from your dimension even if the mod is removed (e.g. a failsafe command), to prevent players from getting stranded if they remove the mod.\
+\ls5\ilvl0
+\f0\b \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Worldgen Performance:
+\f1\b0  Custom dimensions can be heavy. Test your world generation with large sample areas (e.g. fly with an Elytra or use a map tool) to ensure it\'92s not significantly slower than vanilla. If you notice slow generation, consider simplifying noise or reducing structure frequency. Running on a dedicated server instance can profile performance better. Also, if you wrote a custom chunk generator, double-check that you utilize multi-threading (the vanilla noise generator offloads heavy terrain work to threads; your custom one should ideally do the same to avoid lag spikes{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:chunkgenerator#:~:text=Pretty%20much%20all%20of%20these,is%20not%20multithreaded%20by%20default"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}).\
+\ls5\ilvl0
+\f0\b \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Portal Safety:
+\f1\b0  If using custom portal mechanics, ensure players can\'92t accidentally trigger it in undesirable locations (e.g. don\'92t allow a portal to open at the world spawn and trap new players). Possibly require a rare item or a deliberate structure to activate. Also consider what happens if a player dies in the custom dimension \'96 do they respawn there (if beds work)? You might want beds to explode (
+\f3\fs26 "bed_works": false
+\f1\fs24 ) to force respawning in overworld{\field{\*\fldinst{HYPERLINK "https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric#:~:text=The%C2%A0,and%20a%20bit%20more"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 github.com}}, unless your dimension is meant to be a full alternative world. Document these behaviors for players.\
+\ls5\ilvl0
+\f0\b \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Testing in Multiplayer:
+\f1\b0  Always test your dimension on a server, not just singleplayer. Fabric mods are usually server/client compatible, but worldgen sync issues can occur if you forget to include your data on the server or if the client doesn\'92t know about a custom dimension type. Because the dimension is mostly data-defined, it should sync to clients automatically when they join a server with the mod, as long as the mod is present on both sides (Fabric is typically required on client for worldgen mods). If you use any client-only code (like custom sky rendering), guard it with environment checks.\
+\ls5\ilvl0
+\f0\b \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Utilize Fabric API features:
+\f1\b0  Fabric API provides useful hooks: e.g., 
+\f0\b Biome Modifications API
+\f1\b0  to add features to biomes (if you wanted to inject vanilla biomes into your dimension or vice versa), 
+\f0\b Lifecycle events
+\f1\b0  for world load (to e.g. log when your dimension is loaded or register a server-side dimension unlock criterion), etc. Also, if writing portal logic, consider using 
+\f3\fs26 ServerTeleportationEvents
+\f1\fs24  (if available) to handle entities post-teleport (to e.g. give them nausea or play a sound).\
+\pard\pardeftab720\sa240\partightenfactor0
+\cf0 By following the above steps, you should be able to create a fully custom dimension with Fabric 1.21+, complete with bespoke terrain, biomes, structures, and a way for players to travel there and back. 
+\f0\b In summary:
+\f1\b0  Define your dimension and worldgen in data packs whenever possible for flexibility, register any custom code pieces (like chunk generators) with codecs, use Fabric API\'92s helpers for teleportation and portals, and thoroughly test the integration. With updated tools like Loom and Yarn mappings, and the robust Fabric API, adding a new dimension has become more data-driven and modular than ever before \'96 allowing you to focus on creativity while the engine handles the heavy lifting of world generation{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:dimensionconcepts#:~:text=Creating%20a%20new%20dimension%20using,useful%20concepts%20for%20this%20process"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:chunkgenerator#:~:text=,surface%20building%2C%20and%20biome%20placement"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}.\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0\b \cf0 Sources:
+\f1\b0 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa240\partightenfactor0
+\ls6\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Fabric Wiki \'96 
+\f2\i Dimension Concepts & WorldGen:
+\f1\i0  Explanation of dimension parts (DimensionType, ChunkGenerator, BiomeSource, etc.){\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:dimensionconcepts#:~:text=Creating%20a%20new%20dimension%20using,useful%20concepts%20for%20this%20process"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:chunkgenerator#:~:text=,surface%20building%2C%20and%20biome%20placement"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}\
+\ls6\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Fabric Wiki \'96 
+\f2\i Custom Chunk Generator Tutorial:
+\f1\i0  How to implement and register a custom ChunkGenerator with Codec{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:chunkgenerator#:~:text=Registry.register%28Registry.CHUNK_G%20ENERATOR%2C%20new%20Identifier%28%22wiki,CODEC"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:chunkgenerator#:~:text=%7B%20,%2F%2F%20etc"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}\
+\ls6\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Minecraft Wiki (data format) \'96 
+\f2\i Dimension Type JSON:
+\f1\i0  Example properties for dimension_type (Overworld){\field{\*\fldinst{HYPERLINK "https://mcasset.cloud/1.20.3/data/minecraft/dimension_type/overworld.json#:~:text=,minecraft%3Ainfiniburn_overworld"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 mcasset.cloud}}{\field{\*\fldinst{HYPERLINK "https://mcasset.cloud/1.20.3/data/minecraft/dimension_type/overworld.json#:~:text=,"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 mcasset.cloud}} and custom settings (e.g. fixed_time){\field{\*\fldinst{HYPERLINK "https://www.reddit.com/r/fabricmc/comments/zst4na/dimension_json_files_not_working/#:~:text=%7B%20,false"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 reddit.com}}\
+\ls6\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Fabric Wiki \'96 
+\f2\i Biomes and Worldgen:
+\f1\i0  Noting that post-1.18, biomes are JSON-defined{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:biomes_old#:~:text=,Wiki%20page%20for%20more%20information"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}} and can include features/structures{\field{\*\fldinst{HYPERLINK "https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric#:~:text=THIS%20is%20the%20BIG%20folder,can%20also%20change%20the%20tallness"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 github.com}}.\
+\ls6\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 TelepathicGrunt\'92s Ultra Amplified Dimension \'96 
+\f2\i README:
+\f1\i0  Illustrative examples of custom dimension data (structures list in dimension JSON{\field{\*\fldinst{HYPERLINK "https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric#:~:text=This%20folder%20holds%20the%20,crazy%20or%20wild%20world%20shapes"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 github.com}}, dimension_type settings{\field{\*\fldinst{HYPERLINK "https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric#:~:text=The%C2%A0,and%20a%20bit%20more"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 github.com}}, portal multi-block design{\field{\*\fldinst{HYPERLINK "https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric#:~:text=to%20build%20this%20portal%20like,to%20the%20Ultra%20Amplified%20Dimension"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 github.com}}, and use of tags for portal frames{\field{\*\fldinst{HYPERLINK "https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric#:~:text=TAGS"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 github.com}}).\
+\ls6\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Fabric API \'96 
+\f2\i Dimensions and Teleportation:
+\f1\i0  FabricDimensions API for cross-dimension teleport without vanilla portals{\field{\*\fldinst{HYPERLINK "https://maven.fabricmc.net/docs/fabric-api-0.57.1+1.19.1/net/fabricmc/fabric/api/dimension/v1/FabricDimensions.html#:~:text="}}{\fldrslt \cf3 \ul \ulc3 \strokec3 maven.fabricmc.net}}{\field{\*\fldinst{HYPERLINK "https://maven.fabricmc.net/docs/fabric-api-0.57.1+1.19.1/net/fabricmc/fabric/api/dimension/v1/FabricDimensions.html#:~:text=%40Nullable%20public%20static%C2%A0,TeleportTarget%C2%A0target"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 maven.fabricmc.net}}.\
+\ls6\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Fabric Wiki \'96 
+\f2\i Custom Portal tutorial:
+\f1\i0  Recommends Kyrptonaught\'92s Custom Portal API for easy portal setup (Gradle setup and usage example){\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:custom_portals#:~:text=Kyrptonaught%20has%20created%20a%20very,checkout%20the%20library%27s%20github%20here"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}{\field{\*\fldinst{HYPERLINK "https://wiki.fabricmc.net/tutorial:custom_portals#:~:text=CustomPortalBuilder,.tintColor%28234%2C%20183%2C%208%29%20.registerPortal"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 wiki.fabricmc.net}}.\
+}

@@ -1,0 +1,44 @@
+Greek Mythology Mod - Version 1.0.77
+====================================
+
+MAJOR NEW FEATURE: Tartarus Dimension System
+--------------------------------------------
+
+✅ NEW: Custom Tartarus Dimension
+- Complete void dimension with custom world generation
+- Custom biome and noise settings for unique environment
+- Accessible via /visit tartarus command (Level 4+ admins)
+
+✅ NEW: Jail System in Tartarus
+- Jail cells built in the Tartarus dimension
+- Admin room with chest storage for player items
+- /jail <player> <cell> command functionality
+
+✅ NEW: Dimension Infrastructure
+- Custom dimension type: greekmyth:tartarus
+- Custom noise settings: greekmyth:tartarus_void
+- Custom biome: greekmyth:tartarus_void
+- Proper dimension registration and loading
+
+TECHNICAL IMPROVEMENTS
+---------------------
+- Imitated working pocket dimension mod structure
+- Complete JSON-based dimension system
+- Proper Fabric 1.21.8 dimension registration
+- Server startup compatibility verified
+
+COMMANDS
+--------
+- /visit tartarus - Teleport to Tartarus dimension (Level 4+)
+- /visit jail - Teleport to jail admin room in overworld
+- /visit overworld - Return to overworld spawn
+
+DIMENSION FEATURES
+-----------------
+- Void-like environment with minimal generation
+- No mob spawning in Tartarus
+- Custom sky and lighting effects
+- Proper coordinate scaling and world limits
+
+This version includes the complete working dimension system
+that has been tested and verified on the production server. 

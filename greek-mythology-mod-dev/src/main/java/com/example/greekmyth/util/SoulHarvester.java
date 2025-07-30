@@ -80,66 +80,66 @@ public class SoulHarvester {
         SOUL_MAP.put(EntityType.SNIFFER, GreekItems.SNIFFER_SOUL);
         SOUL_MAP.put(EntityType.ARMADILLO, GreekItems.ARMADILLO_SOUL);
         
-        // Set drop chances based on mob rarity
+        // Set drop chances based on mob rarity (DIVIDED BY 10 FOR RARITY)
         // Hostile mobs - higher chances
-        DROP_CHANCES.put(EntityType.ZOMBIE, 0.25f);           // 25%
-        DROP_CHANCES.put(EntityType.SKELETON, 0.25f);         // 25%
-        DROP_CHANCES.put(EntityType.SPIDER, 0.20f);           // 20%
-        DROP_CHANCES.put(EntityType.CREEPER, 0.30f);          // 30%
-        DROP_CHANCES.put(EntityType.ENDERMAN, 0.40f);         // 40%
-        DROP_CHANCES.put(EntityType.WITCH, 0.35f);            // 35%
-        DROP_CHANCES.put(EntityType.SLIME, 0.20f);            // 20%
-        DROP_CHANCES.put(EntityType.BLAZE, 0.45f);            // 45%
-        DROP_CHANCES.put(EntityType.GHAST, 0.50f);            // 50%
-        DROP_CHANCES.put(EntityType.PIGLIN, 0.30f);           // 30%
-        DROP_CHANCES.put(EntityType.HOGLIN, 0.35f);           // 35%
-        DROP_CHANCES.put(EntityType.ZOMBIFIED_PIGLIN, 0.25f); // 25%
-        DROP_CHANCES.put(EntityType.MAGMA_CUBE, 0.30f);       // 30%
-        DROP_CHANCES.put(EntityType.WARDEN, 0.80f);           // 80%
-        DROP_CHANCES.put(EntityType.ELDER_GUARDIAN, 0.70f);   // 70%
-        DROP_CHANCES.put(EntityType.WITHER_SKELETON, 0.40f);  // 40%
-        DROP_CHANCES.put(EntityType.DROWNED, 0.25f);          // 25%
-        DROP_CHANCES.put(EntityType.HUSK, 0.25f);             // 25%
-        DROP_CHANCES.put(EntityType.STRAY, 0.25f);            // 25%
-        DROP_CHANCES.put(EntityType.CAVE_SPIDER, 0.30f);      // 30%
-        DROP_CHANCES.put(EntityType.PHANTOM, 0.35f);          // 35%
-        DROP_CHANCES.put(EntityType.VINDICATOR, 0.45f);       // 45%
-        DROP_CHANCES.put(EntityType.EVOKER, 0.60f);           // 60%
-        DROP_CHANCES.put(EntityType.PILLAGER, 0.30f);         // 30%
-        DROP_CHANCES.put(EntityType.RAVAGER, 0.50f);          // 50%
-        DROP_CHANCES.put(EntityType.SHULKER, 0.45f);          // 45%
-        DROP_CHANCES.put(EntityType.SILVERFISH, 0.20f);       // 20%
-        DROP_CHANCES.put(EntityType.ENDERMITE, 0.30f);        // 30%
-        DROP_CHANCES.put(EntityType.GUARDIAN, 0.35f);         // 35%
-        DROP_CHANCES.put(EntityType.BREEZE, 0.55f);           // 55%
+        DROP_CHANCES.put(EntityType.ZOMBIE, 0.025f);          // 2.5%
+        DROP_CHANCES.put(EntityType.SKELETON, 0.025f);        // 2.5%
+        DROP_CHANCES.put(EntityType.SPIDER, 0.02f);           // 2.0%
+        DROP_CHANCES.put(EntityType.CREEPER, 0.03f);          // 3.0%
+        DROP_CHANCES.put(EntityType.ENDERMAN, 0.04f);         // 4.0%
+        DROP_CHANCES.put(EntityType.WITCH, 0.035f);           // 3.5%
+        DROP_CHANCES.put(EntityType.SLIME, 0.02f);            // 2.0%
+        DROP_CHANCES.put(EntityType.BLAZE, 0.045f);           // 4.5%
+        DROP_CHANCES.put(EntityType.GHAST, 0.05f);            // 5.0%
+        DROP_CHANCES.put(EntityType.PIGLIN, 0.03f);           // 3.0%
+        DROP_CHANCES.put(EntityType.HOGLIN, 0.035f);          // 3.5%
+        DROP_CHANCES.put(EntityType.ZOMBIFIED_PIGLIN, 0.025f);// 2.5%
+        DROP_CHANCES.put(EntityType.MAGMA_CUBE, 0.03f);       // 3.0%
+        DROP_CHANCES.put(EntityType.WARDEN, 0.08f);           // 8.0%
+        DROP_CHANCES.put(EntityType.ELDER_GUARDIAN, 0.07f);   // 7.0%
+        DROP_CHANCES.put(EntityType.WITHER_SKELETON, 0.04f);  // 4.0%
+        DROP_CHANCES.put(EntityType.DROWNED, 0.025f);         // 2.5%
+        DROP_CHANCES.put(EntityType.HUSK, 0.025f);            // 2.5%
+        DROP_CHANCES.put(EntityType.STRAY, 0.025f);           // 2.5%
+        DROP_CHANCES.put(EntityType.CAVE_SPIDER, 0.03f);      // 3.0%
+        DROP_CHANCES.put(EntityType.PHANTOM, 0.035f);         // 3.5%
+        DROP_CHANCES.put(EntityType.VINDICATOR, 0.045f);      // 4.5%
+        DROP_CHANCES.put(EntityType.EVOKER, 0.06f);           // 6.0%
+        DROP_CHANCES.put(EntityType.PILLAGER, 0.03f);         // 3.0%
+        DROP_CHANCES.put(EntityType.RAVAGER, 0.05f);          // 5.0%
+        DROP_CHANCES.put(EntityType.SHULKER, 0.045f);         // 4.5%
+        DROP_CHANCES.put(EntityType.SILVERFISH, 0.02f);       // 2.0%
+        DROP_CHANCES.put(EntityType.ENDERMITE, 0.03f);        // 3.0%
+        DROP_CHANCES.put(EntityType.GUARDIAN, 0.035f);        // 3.5%
+        DROP_CHANCES.put(EntityType.BREEZE, 0.055f);          // 5.5%
         
         // Passive mobs - lower chances
-        DROP_CHANCES.put(EntityType.DOLPHIN, 0.15f);          // 15%
-        DROP_CHANCES.put(EntityType.PIG, 0.10f);              // 10%
-        DROP_CHANCES.put(EntityType.COW, 0.10f);              // 10%
-        DROP_CHANCES.put(EntityType.SHEEP, 0.10f);            // 10%
-        DROP_CHANCES.put(EntityType.CHICKEN, 0.10f);          // 10%
-        DROP_CHANCES.put(EntityType.HORSE, 0.15f);            // 15%
-        DROP_CHANCES.put(EntityType.WOLF, 0.15f);             // 15%
-        DROP_CHANCES.put(EntityType.CAT, 0.15f);              // 15%
-        DROP_CHANCES.put(EntityType.FOX, 0.15f);              // 15%
-        DROP_CHANCES.put(EntityType.RABBIT, 0.10f);           // 10%
-        DROP_CHANCES.put(EntityType.PANDA, 0.15f);            // 15%
-        DROP_CHANCES.put(EntityType.BEE, 0.10f);              // 10%
-        DROP_CHANCES.put(EntityType.LLAMA, 0.15f);            // 15%
-        DROP_CHANCES.put(EntityType.TRADER_LLAMA, 0.15f);     // 15%
-        DROP_CHANCES.put(EntityType.DONKEY, 0.15f);           // 15%
-        DROP_CHANCES.put(EntityType.MULE, 0.15f);             // 15%
-        DROP_CHANCES.put(EntityType.PARROT, 0.15f);           // 15%
-        DROP_CHANCES.put(EntityType.TURTLE, 0.10f);           // 10%
-        DROP_CHANCES.put(EntityType.AXOLOTL, 0.15f);          // 15%
-        DROP_CHANCES.put(EntityType.GOAT, 0.15f);             // 15%
-        DROP_CHANCES.put(EntityType.FROG, 0.10f);             // 10%
-        DROP_CHANCES.put(EntityType.TADPOLE, 0.10f);          // 10%
-        DROP_CHANCES.put(EntityType.ALLAY, 0.20f);            // 20%
-        DROP_CHANCES.put(EntityType.CAMEL, 0.15f);            // 15%
-        DROP_CHANCES.put(EntityType.SNIFFER, 0.15f);          // 15%
-        DROP_CHANCES.put(EntityType.ARMADILLO, 0.15f);        // 15%
+        DROP_CHANCES.put(EntityType.DOLPHIN, 0.015f);         // 1.5%
+        DROP_CHANCES.put(EntityType.PIG, 0.01f);              // 1.0%
+        DROP_CHANCES.put(EntityType.COW, 0.01f);              // 1.0%
+        DROP_CHANCES.put(EntityType.SHEEP, 0.01f);            // 1.0%
+        DROP_CHANCES.put(EntityType.CHICKEN, 0.01f);          // 1.0%
+        DROP_CHANCES.put(EntityType.HORSE, 0.015f);           // 1.5%
+        DROP_CHANCES.put(EntityType.WOLF, 0.015f);            // 1.5%
+        DROP_CHANCES.put(EntityType.CAT, 0.015f);             // 1.5%
+        DROP_CHANCES.put(EntityType.FOX, 0.015f);             // 1.5%
+        DROP_CHANCES.put(EntityType.RABBIT, 0.01f);           // 1.0%
+        DROP_CHANCES.put(EntityType.PANDA, 0.015f);           // 1.5%
+        DROP_CHANCES.put(EntityType.BEE, 0.01f);              // 1.0%
+        DROP_CHANCES.put(EntityType.LLAMA, 0.015f);           // 1.5%
+        DROP_CHANCES.put(EntityType.TRADER_LLAMA, 0.015f);    // 1.5%
+        DROP_CHANCES.put(EntityType.DONKEY, 0.015f);          // 1.5%
+        DROP_CHANCES.put(EntityType.MULE, 0.015f);            // 1.5%
+        DROP_CHANCES.put(EntityType.PARROT, 0.015f);          // 1.5%
+        DROP_CHANCES.put(EntityType.TURTLE, 0.01f);           // 1.0%
+        DROP_CHANCES.put(EntityType.AXOLOTL, 0.015f);         // 1.5%
+        DROP_CHANCES.put(EntityType.GOAT, 0.015f);            // 1.5%
+        DROP_CHANCES.put(EntityType.FROG, 0.01f);             // 1.0%
+        DROP_CHANCES.put(EntityType.TADPOLE, 0.01f);          // 1.0%
+        DROP_CHANCES.put(EntityType.ALLAY, 0.02f);            // 2.0%
+        DROP_CHANCES.put(EntityType.CAMEL, 0.015f);           // 1.5%
+        DROP_CHANCES.put(EntityType.SNIFFER, 0.015f);         // 1.5%
+        DROP_CHANCES.put(EntityType.ARMADILLO, 0.015f);       // 1.5%
     }
     
     /**
