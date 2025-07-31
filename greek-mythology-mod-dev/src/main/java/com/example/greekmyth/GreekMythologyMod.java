@@ -1,6 +1,7 @@
 package com.example.greekmyth;
 
 import com.example.greekmyth.item.GreekItems;
+import com.example.greekmyth.entity.GreekEntityTypes;
 import com.example.greekmyth.event.ModEvents;
 import com.example.greekmyth.event.UndeadWarriorEvents;
 import com.example.greekmyth.event.UndeadWarriorSoundEvents;
@@ -45,6 +46,7 @@ public class GreekMythologyMod implements ModInitializer {
         LOGGER.info("Greek Mythology Mod initialized!");
 
         GreekItems.init();
+        GreekEntityTypes.initialize();
         
         // Register items to creative inventory
         com.example.greekmyth.item.GreekCreativeInventory.registerCreativeInventoryItems();
