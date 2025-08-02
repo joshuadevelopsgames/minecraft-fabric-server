@@ -52,7 +52,7 @@ public class SoulItem extends Item {
                     
                     // Increase scythe damage bonus
                     int newDamageBonus = Math.min(currentDamageBonus + DAMAGE_BONUS_PER_SOUL, MAX_DAMAGE_BONUS);
-                    setScytheDamageBonus(scytheStack, newDamageBonus);
+                    com.example.greekmyth.item.HadesScytheItem.updateSoulBonus(scytheStack, newDamageBonus);
                     
                     // Visual and sound effects
                     Vec3d playerPos = user.getPos();
@@ -108,24 +108,16 @@ public class SoulItem extends Item {
     }
     
     private int getScytheDamageBonus(ItemStack scytheStack) {
-        // Use the same method as HadesScytheItem - store bonus in damage value
-        int currentDamage = scytheStack.getDamage();
-        
-        // If damage is in the soul bonus range (1000-1012), extract the bonus
-        // Format: 1000 + soulBonus (e.g., 1001 = 1 soul bonus, 1012 = 12 soul bonus)
-        if (currentDamage >= 1000 && currentDamage <= 1012) {
-            return currentDamage - 1000;
-        }
-        
-        return 0;
+        // Use NBT data to read soul bonus (separate from damage/charge system)
+        net.minecraft.nbt.NbtCompound nbt = scytheStack.getOrCreateNbt();
+        return nbt.getInt("SoulBonus");
     }
     
     private void setScytheDamageBonus(ItemStack scytheStack, int bonus) {
-        // Store soul bonus in a range that doesn't conflict with charges
-        // Format: 1000 + bonus (e.g., 1001 for 1 bonus, 1020 for 20 bonus)
-        int soulDamageValue = 1000 + bonus;
-        scytheStack.setDamage(soulDamageValue);
-        GreekMythologyMod.LOGGER.info("Set soul damage bonus to: {} (damage value: {})", bonus, soulDamageValue);
+        // Store soul bonus in NBT data (not damage value to avoid conflict with charges)
+        net.minecraft.nbt.NbtCompound nbt = scytheStack.getOrCreateNbt();
+        nbt.putInt("SoulBonus", bonus);
+        GreekMythologyMod.LOGGER.info("Set soul damage bonus to: {} (stored in NBT)", bonus);
     }
     
     @Override

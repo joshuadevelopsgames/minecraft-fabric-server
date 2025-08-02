@@ -521,16 +521,23 @@ public class HadesScytheItem extends Item implements FabricItem {
     }
 
     private int getSoulDamageBonus(ItemStack scytheStack) {
-        // Use the same method as SoulItem - read bonus from damage value
-        int currentDamage = scytheStack.getDamage();
-        
-        // If damage is in the soul bonus range (1000-1012), extract the bonus
-        // Format: 1000 + soulBonus (e.g., 1001 = 1 soul bonus, 1012 = 12 soul bonus)
-        if (currentDamage >= 1000 && currentDamage <= 1012) {
-            return currentDamage - 1000;
-        }
-        
-        return 0;
+        // Use NBT data to store soul bonus (separate from damage/charge system)
+        net.minecraft.nbt.NbtCompound nbt = scytheStack.getOrCreateNbt();
+        return nbt.getInt("SoulBonus");
+    }
+    
+    private void setSoulDamageBonus(ItemStack scytheStack, int bonus) {
+        // Store soul bonus in NBT data (not damage value)
+        net.minecraft.nbt.NbtCompound nbt = scytheStack.getOrCreateNbt();
+        nbt.putInt("SoulBonus", bonus);
+        GreekMythologyMod.LOGGER.info("Set soul damage bonus to: {} (stored in NBT)", bonus);
+    }
+    
+    // Public method for SoulItem to update soul bonus
+    public static void updateSoulBonus(ItemStack scytheStack, int bonus) {
+        net.minecraft.nbt.NbtCompound nbt = scytheStack.getOrCreateNbt();
+        nbt.putInt("SoulBonus", bonus);
+        GreekMythologyMod.LOGGER.info("Updated soul damage bonus to: {} (stored in NBT)", bonus);
     }
 
     @Override
