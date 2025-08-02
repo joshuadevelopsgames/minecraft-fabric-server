@@ -252,9 +252,9 @@ public class HadesScytheItem extends Item implements FabricItem {
                 return ActionResult.FAIL;
             }
         } else {
-            // Soul Harvest - Harvest souls from the target area (works anywhere)
+            // Soul Harvest - Apply wither effects to target area (souls drop on death only)
             if (infinite || currentCharges > 0) {
-                GreekMythologyMod.LOGGER.info("SOUL HARVEST: Harvesting souls from target area");
+                GreekMythologyMod.LOGGER.info("SOUL HARVEST: Applying wither effects to target area");
                 harvestSouls(serverWorld, user, user.getPos());
 
                 if (!infinite) {
