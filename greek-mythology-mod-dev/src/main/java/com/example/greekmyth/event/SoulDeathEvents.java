@@ -21,9 +21,9 @@ public class SoulDeathEvents {
             if (damageSource.getTypeRegistryEntry().matchesKey(net.minecraft.entity.damage.DamageTypes.WITHER)) {
                 // Check if this entity can drop a soul
                 if (SoulHarvester.canDropSoul(entity.getType())) {
-                    // Try to harvest a soul from this entity upon death
-                    if (SoulHarvester.harvestSoul(entity, (ServerWorld) entity.getWorld(), entity.getPos())) {
-                        GreekMythologyMod.LOGGER.info("SOUL DEATH: Successfully harvested soul from {} upon wither death", 
+                    // Try to add soul to entity's loot drops
+                    if (SoulHarvester.addSoulToLoot(entity, (ServerWorld) entity.getWorld())) {
+                        GreekMythologyMod.LOGGER.info("SOUL DEATH: Successfully added soul to loot from {} upon wither death", 
                             entity.getName().getString());
                     }
                 }
