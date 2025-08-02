@@ -308,9 +308,9 @@ public class HadesScytheItem extends Item implements FabricItem {
             entity instanceof LivingEntity && entity != user)) {
             LivingEntity livingEntity = (LivingEntity) entity;
             
-            // Apply wither effect and damage
+            // Apply wither effect (damage over time) - souls will drop when mobs die from wither
             livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 120, 2)); // 6 seconds of Wither III
-            livingEntity.damage(world, world.getDamageSources().wither(), 4.0f);
+            // No immediate damage - let the wither effect kill them naturally
 
             // Soul harvesting will happen on death via SoulDeathEvents
             // No need to harvest souls on hit - only on actual death

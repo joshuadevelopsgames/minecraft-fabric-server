@@ -169,8 +169,15 @@ public class SoulHarvester {
             Item soulItem = SOUL_MAP.get(entityType);
             ItemStack soulStack = new ItemStack(soulItem, 1);
             
-            // Drop the soul as proper loot using entity.dropStack()
-            entity.dropStack(world, soulStack);
+            // Drop the soul as loot at the entity's death location
+            Vec3d position = entity.getPos();
+            world.spawnEntity(new net.minecraft.entity.ItemEntity(
+                world, 
+                position.x, 
+                position.y, 
+                position.z, 
+                soulStack
+            ));
             
             // Log the soul harvest
             GreekMythologyMod.LOGGER.info("SOUL LOOT: {} soul added to loot from {} ({}% chance)", 
@@ -196,68 +203,7 @@ public class SoulHarvester {
         return false;
     }
     
-    /**
-     * @deprecated Use addSoulToLoot() instead for proper loot drops
-     * Attempts to harvest a soul from the given entity (old direct spawn method)
-     * @param entity The entity to harvest a soul from
-     * @param world The server world
-     * @param position The position to drop the soul at
-     * @return true if a soul was successfully harvested and dropped
-     */
-    @Deprecated
-    public static boolean harvestSoul(LivingEntity entity, ServerWorld world, Vec3d position) {
-        EntityType<?> entityType = entity.getType();
-        
-        // Check if this entity type has a soul item
-        if (!SOUL_MAP.containsKey(entityType)) {
-            return false;
-        }
-        
-        // Get the drop chance for this entity type
-        Float dropChance = DROP_CHANCES.get(entityType);
-        if (dropChance == null) {
-            dropChance = 0.15f; // Default 15% chance
-        }
-        
-        // Roll for soul drop
-        net.minecraft.util.math.random.Random random = world.getRandom();
-        if (random.nextFloat() < dropChance) {
-            // Drop the soul item
-            Item soulItem = SOUL_MAP.get(entityType);
-            ItemStack soulStack = new ItemStack(soulItem, 1);
-            
-            // Drop the soul at the entity's position
-            world.spawnEntity(new net.minecraft.entity.ItemEntity(
-                world, 
-                position.x, 
-                position.y, 
-                position.z, 
-                soulStack
-            ));
-            
-            // Log the soul harvest
-            GreekMythologyMod.LOGGER.info("SOUL HARVESTED: {} soul dropped from {} at ({}, {}, {})", 
-                soulItem.toString(), entityType.toString(), 
-                position.x, position.y, position.z);
-            
-            // Spawn soul particles
-            for (int i = 0; i < 10; i++) {
-                double x = position.x + (random.nextDouble() - 0.5) * 2;
-                double y = position.y + random.nextDouble() * 2;
-                double z = position.z + (random.nextDouble() - 0.5) * 2;
-                world.spawnParticles(net.minecraft.particle.ParticleTypes.SOUL, x, y, z, 1, 0, 0, 0, 0.1);
-            }
-            
-            // Play soul harvest sound
-            world.playSound(null, position.x, position.y, position.z,
-                net.minecraft.sound.SoundEvents.ENTITY_WITHER_AMBIENT, 
-                net.minecraft.sound.SoundCategory.PLAYERS, 0.5f, 1.5f);
-            
-            return true;
-        }
-        
-        return false;
-    }
+    // OLD METHOD REMOVED - Use addSoulToLoot() for proper loot drops only
     
     /**
      * Gets the soul item for a given entity type
