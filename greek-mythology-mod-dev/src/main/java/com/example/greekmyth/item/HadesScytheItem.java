@@ -304,8 +304,6 @@ public class HadesScytheItem extends Item implements FabricItem {
             targetPos.x + SOUL_HARVEST_RADIUS, targetPos.y + 4, targetPos.z + SOUL_HARVEST_RADIUS
         );
 
-        int soulsHarvested = 0;
-        
         for (net.minecraft.entity.Entity entity : world.getOtherEntities(user, harvestBox, entity ->
             entity instanceof LivingEntity && entity != user)) {
             LivingEntity livingEntity = (LivingEntity) entity;
@@ -314,10 +312,8 @@ public class HadesScytheItem extends Item implements FabricItem {
             livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 120, 2)); // 6 seconds of Wither III
             livingEntity.damage(world, world.getDamageSources().wither(), 4.0f);
 
-            // Try to harvest a soul from this entity
-            if (com.example.greekmyth.util.SoulHarvester.harvestSoul(livingEntity, world, livingEntity.getPos())) {
-                soulsHarvested++;
-            }
+            // Soul harvesting will happen on death via SoulDeathEvents
+            // No need to harvest souls on hit - only on actual death
 
             // Create soul particle effects
             for (int i = 0; i < 10; i++) {
@@ -328,12 +324,8 @@ public class HadesScytheItem extends Item implements FabricItem {
                 world.spawnParticles(ParticleTypes.SMOKE, x, y, z, 1, 0, 0, 0, 0.05);
             }
 
-            GreekMythologyMod.LOGGER.info("SOUL HARVEST: Processed entity {}",
+            GreekMythologyMod.LOGGER.info("SCYTHE WITHER: Applied wither effect to entity {}",
                 livingEntity.getName().getString());
-        }
-        
-        if (soulsHarvested > 0) {
-            GreekMythologyMod.LOGGER.info("SOUL HARVEST: Successfully harvested {} souls from entities", soulsHarvested);
         }
 
         // Play soul harvest sound

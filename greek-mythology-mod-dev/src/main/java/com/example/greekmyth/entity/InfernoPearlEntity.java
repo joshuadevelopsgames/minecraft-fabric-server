@@ -41,7 +41,8 @@ public class InfernoPearlEntity extends ThrownItemEntity {
     
     @Override
     protected void onCollision(HitResult hitResult) {
-        super.onCollision(hitResult);
+        // DO NOT call super.onCollision() - that causes teleportation!
+        // Handle collision completely with our custom logic
         
         if (!this.getWorld().isClient) {
             // Get the impact position
@@ -73,15 +74,15 @@ public class InfernoPearlEntity extends ThrownItemEntity {
     
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
-        super.onEntityHit(entityHitResult);
-        // Trigger collision effects when hitting entities too
+        // DO NOT call super - that causes teleportation!
+        // Just trigger our custom collision effects
         onCollision(entityHitResult);
     }
     
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
-        super.onBlockHit(blockHitResult);
-        // Trigger collision effects when hitting blocks
+        // DO NOT call super - that causes teleportation!
+        // Just trigger our custom collision effects
         onCollision(blockHitResult);
     }
     
