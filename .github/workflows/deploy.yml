@@ -21,7 +21,18 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         script: |
           cd ~/minecraft
-          git pull origin master
+          echo "=== Pre-deployment status ==="
+          git status --porcelain
+          echo "=== Stashing any local changes ==="
+          git stash --include-untracked || echo "Nothing to stash"
+          echo "=== Pulling latest changes ==="
+          git pull origin master || {
+            echo "Pull failed, trying to reset and pull again..."
+            git fetch origin
+            git reset --hard origin/master
+          }
+          echo "=== Post-deployment status ==="
+          git log --oneline -3
           echo "Server updated successfully!"
 
     - name: Restart server
