@@ -2,7 +2,7 @@ package com.example.greekmyth.item;
 
 import com.example.greekmyth.GreekMythologyMod;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
+import net.minecraft.entity.projectile.thrown.SnowballEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
@@ -38,8 +38,8 @@ public class InfernoPearlItem extends Item {
         user.incrementStat(Stats.USED.getOrCreateStat(this));
         
         if (!world.isClient()) {
-            // Create ThrownItemEntity for client-side visibility
-            ThrownItemEntity infernoPearl = new ThrownItemEntity(world, user) {
+            // Create SnowballEntity for client-side visibility
+            SnowballEntity infernoPearl = new SnowballEntity(world, user) {
                 @Override
                 protected void onCollision(HitResult hitResult) {
                     // Custom collision logic for corruption
@@ -71,9 +71,6 @@ public class InfernoPearlItem extends Item {
                     this.discard();
                 }
             };
-            
-            // Set the item to be thrown (this makes it visible)
-            infernoPearl.setItem(itemStack.copy());
             
             // Use ender pearl velocity for proper arc
             infernoPearl.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
