@@ -110,10 +110,10 @@ public class InfernoPearlItem extends Item implements FabricItem {
                     BlockPos pos = center.add(x, y, z);
                     BlockState currentState = world.getBlockState(pos);
                     
-                    // Transform trees into crimson forest
+                    // Transform trees into warped forest
                     if (isTreeBlock(currentState)) {
-                        Block crimsonBlock = getCrimsonForestBlock(currentState, random);
-                        world.setBlockState(pos, crimsonBlock.getDefaultState());
+                        Block warpedBlock = getWarpedForestBlock(currentState, random);
+                        world.setBlockState(pos, warpedBlock.getDefaultState());
                     }
                     // Corrupt other replaceable blocks
                     else if (isReplaceable(currentState)) {
@@ -147,10 +147,10 @@ public class InfernoPearlItem extends Item implements FabricItem {
                block == Blocks.FLOWERING_AZALEA_LEAVES;
     }
     
-    private Block getCrimsonForestBlock(BlockState originalState, Random random) {
+    private Block getWarpedForestBlock(BlockState originalState, Random random) {
         Block originalBlock = originalState.getBlock();
         
-        // Transform logs to crimson stems
+        // Transform logs to warped stems (warped wood)
         if (originalBlock == Blocks.OAK_LOG || 
             originalBlock == Blocks.BIRCH_LOG || 
             originalBlock == Blocks.SPRUCE_LOG || 
@@ -159,10 +159,10 @@ public class InfernoPearlItem extends Item implements FabricItem {
             originalBlock == Blocks.DARK_OAK_LOG ||
             originalBlock == Blocks.MANGROVE_LOG ||
             originalBlock == Blocks.CHERRY_LOG) {
-            return Blocks.CRIMSON_STEM;
+            return Blocks.WARPED_STEM;
         }
         
-        // Transform leaves to nether wart blocks (crimson forest leaves)
+        // Transform leaves to warped wart blocks (warped forest leaves)
         if (originalBlock == Blocks.OAK_LEAVES || 
             originalBlock == Blocks.BIRCH_LEAVES || 
             originalBlock == Blocks.SPRUCE_LEAVES || 
@@ -173,11 +173,11 @@ public class InfernoPearlItem extends Item implements FabricItem {
             originalBlock == Blocks.CHERRY_LEAVES ||
             originalBlock == Blocks.AZALEA_LEAVES ||
             originalBlock == Blocks.FLOWERING_AZALEA_LEAVES) {
-            return Blocks.NETHER_WART_BLOCK;
+            return Blocks.WARPED_WART_BLOCK;
         }
         
-        // Fallback to crimson nylium
-        return Blocks.CRIMSON_NYLIUM;
+        // Fallback to warped nylium
+        return Blocks.WARPED_NYLIUM;
     }
     
     private boolean isReplaceable(BlockState state) {
