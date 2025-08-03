@@ -2,7 +2,7 @@ package com.example.greekmyth.item;
 
 import com.example.greekmyth.GreekMythologyMod;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.thrown.EnderPearlEntity;
+import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
@@ -38,12 +38,11 @@ public class InfernoPearlItem extends Item {
         user.incrementStat(Stats.USED.getOrCreateStat(this));
         
         if (!world.isClient()) {
-            // Create vanilla ender pearl entity but override collision
-            EnderPearlEntity infernoPearl = new EnderPearlEntity(world, user) {
+            // Create ThrownItemEntity for client-side visibility
+            ThrownItemEntity infernoPearl = new ThrownItemEntity(world, user) {
                 @Override
                 protected void onCollision(HitResult hitResult) {
-                    // DON'T call super.onCollision() - that does teleportation!
-                    // Instead, do our custom corruption logic
+                    // Custom collision logic for corruption
                     
                     if (!this.getWorld().isClient) {
                         BlockPos impactPos = BlockPos.ofFloored(hitResult.getPos());
@@ -68,12 +67,15 @@ public class InfernoPearlItem extends Item {
                         GreekMythologyMod.LOGGER.info("INFERNO PEARL: Impact at {} - corrupting area", impactPos);
                     }
                     
-                    // Remove the entity (important: don't call super!)
+                    // Remove the entity
                     this.discard();
                 }
             };
             
-            // Use exact same velocity settings as vanilla ender pearl
+            // Set the item to be thrown (this makes it visible)
+            infernoPearl.setItem(itemStack.copy());
+            
+            // Use ender pearl velocity for proper arc
             infernoPearl.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
             world.spawnEntity(infernoPearl);
             
