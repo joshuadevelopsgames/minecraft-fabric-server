@@ -51,10 +51,19 @@ public class InfernoPearlItem extends Item {
                         this.getWorld().playSound(null, impactPos, SoundEvents.ENTITY_GENERIC_EXPLODE, 
                             SoundCategory.NEUTRAL, 1.0F, 1.0F);
                         
-                        // Create fire particles
+                        // Create massive fire particles for visibility
                         ServerWorld serverWorld = (ServerWorld) this.getWorld();
-                        for (int i = 0; i < 20; i++) {
+                        for (int i = 0; i < 100; i++) {
                             serverWorld.spawnParticles(ParticleTypes.FLAME, 
+                                impactPos.getX() + this.random.nextDouble() - 0.5,
+                                impactPos.getY() + 1 + this.random.nextDouble(),
+                                impactPos.getZ() + this.random.nextDouble() - 0.5,
+                                1, 0, 0, 0, 0.1);
+                        }
+                        
+                        // Create explosion particles
+                        for (int i = 0; i < 50; i++) {
+                            serverWorld.spawnParticles(ParticleTypes.EXPLOSION, 
                                 impactPos.getX() + this.random.nextDouble() - 0.5,
                                 impactPos.getY() + 1 + this.random.nextDouble(),
                                 impactPos.getZ() + this.random.nextDouble() - 0.5,
@@ -90,7 +99,7 @@ public class InfernoPearlItem extends Item {
     
     private void corruptArea(World world, BlockPos center) {
         Random random = world.getRandom();
-        int radius = 4; // Corruption radius
+        int radius = 8; // Much larger corruption radius for visibility
         
         for (int x = -radius; x <= radius; x++) {
             for (int y = -radius; y <= radius; y++) {
