@@ -20,9 +20,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.random.Random;
-import net.fabricmc.fabric.api.item.v1.FabricItem;
-
-public class InfernoPearlItem extends Item implements FabricItem {
+public class InfernoPearlItem extends Item {
     
     public InfernoPearlItem(Item.Settings settings) {
         super(settings);
@@ -33,71 +31,62 @@ public class InfernoPearlItem extends Item implements FabricItem {
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
         
-        // Only allow throwing in the Overworld
-        if (world.getRegistryKey().getValue().getPath().equals("overworld")) {
-            // EXACT copy of vanilla ender pearl mechanics but with custom collision
-            world.playSound(null, user.getX(), user.getY(), user.getZ(), 
-                SoundEvents.ENTITY_ENDER_PEARL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
-            
-            user.incrementStat(Stats.USED.getOrCreateStat(this));
-            
-            if (!world.isClient()) {
-                // Create vanilla ender pearl entity but override its collision behavior
-                EnderPearlEntity enderPearlEntity = new EnderPearlEntity(world, user) {
-                    @Override
-                    protected void onCollision(HitResult hitResult) {
-                        // DON'T call super.onCollision() - that does teleportation!
-                        // Instead, do our custom corruption logic
+        // EXACT copy of vanilla ender pearl use method
+        world.playSound(null, user.getX(), user.getY(), user.getZ(), 
+            SoundEvents.ENTITY_ENDER_PEARL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
+        
+        user.incrementStat(Stats.USED.getOrCreateStat(this));
+        
+        if (!world.isClient()) {
+            // Create vanilla ender pearl entity but override collision
+            EnderPearlEntity infernoPearl = new EnderPearlEntity(world, user) {
+                @Override
+                protected void onCollision(HitResult hitResult) {
+                    // DON'T call super.onCollision() - that does teleportation!
+                    // Instead, do our custom corruption logic
+                    
+                    if (!this.getWorld().isClient) {
+                        BlockPos impactPos = BlockPos.ofFloored(hitResult.getPos());
                         
-                        if (!this.getWorld().isClient) {
-                            BlockPos impactPos = BlockPos.ofFloored(hitResult.getPos());
-                            
-                            // Play impact sound
-                            this.getWorld().playSound(null, impactPos, SoundEvents.ENTITY_GENERIC_EXPLODE, 
-                                SoundCategory.NEUTRAL, 1.0F, 1.0F);
-                            
-                            // Create fire particles
-                            ServerWorld serverWorld = (ServerWorld) this.getWorld();
-                            for (int i = 0; i < 20; i++) {
-                                serverWorld.spawnParticles(ParticleTypes.FLAME, 
-                                    impactPos.getX() + this.random.nextDouble() - 0.5,
-                                    impactPos.getY() + 1 + this.random.nextDouble(),
-                                    impactPos.getZ() + this.random.nextDouble() - 0.5,
-                                    1, 0, 0, 0, 0.1);
-                            }
-                            
-                            // Corrupt the area
-                            corruptArea(this.getWorld(), impactPos);
-                            
-                            GreekMythologyMod.LOGGER.info("INFERNO PEARL: Impact at {} - corrupting area", impactPos);
+                        // Play impact sound
+                        this.getWorld().playSound(null, impactPos, SoundEvents.ENTITY_GENERIC_EXPLODE, 
+                            SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                        
+                        // Create fire particles
+                        ServerWorld serverWorld = (ServerWorld) this.getWorld();
+                        for (int i = 0; i < 20; i++) {
+                            serverWorld.spawnParticles(ParticleTypes.FLAME, 
+                                impactPos.getX() + this.random.nextDouble() - 0.5,
+                                impactPos.getY() + 1 + this.random.nextDouble(),
+                                impactPos.getZ() + this.random.nextDouble() - 0.5,
+                                1, 0, 0, 0, 0.1);
                         }
                         
-                        // Remove the entity (important: don't call super!)
-                        this.discard();
+                        // Corrupt the area with crimson forest
+                        corruptArea(this.getWorld(), impactPos);
+                        
+                        GreekMythologyMod.LOGGER.info("INFERNO PEARL: Impact at {} - corrupting area", impactPos);
                     }
-                };
-                
-                // Use exact same velocity settings as vanilla ender pearl
-                enderPearlEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
-                world.spawnEntity(enderPearlEntity);
-                
-                GreekMythologyMod.LOGGER.info("INFERNO PEARL: Thrown by player {}", user.getName().getString());
-            }
+                    
+                    // Remove the entity (important: don't call super!)
+                    this.discard();
+                }
+            };
             
-            // Exact same consumption and cooldown as vanilla
-            if (!user.getAbilities().creativeMode) {
-                itemStack.decrement(1);
-            }
+            // Use exact same velocity settings as vanilla ender pearl
+            infernoPearl.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
+            world.spawnEntity(infernoPearl);
             
-            user.getItemCooldownManager().set(this, 20);
-            return ActionResult.SUCCESS;
-        } else {
-            // Not in Overworld - show message and don't throw
-            if (!world.isClient) {
-                user.sendMessage(Text.literal("§cInferno Pearls can only be used in the Overworld!"), false);
-            }
-            return ActionResult.FAIL;
+            GreekMythologyMod.LOGGER.info("INFERNO PEARL: Thrown by player {}", user.getName().getString());
         }
+        
+        // Exact same consumption and cooldown as vanilla
+        if (!user.getAbilities().creativeMode) {
+            itemStack.decrement(1);
+        }
+        
+        user.getItemCooldownManager().set(this, 20);
+        return ActionResult.SUCCESS;
     }
     
     private void corruptArea(World world, BlockPos center) {
@@ -112,8 +101,8 @@ public class InfernoPearlItem extends Item implements FabricItem {
                     
                     // Transform trees into warped forest
                     if (isTreeBlock(currentState)) {
-                        Block warpedBlock = getWarpedForestBlock(currentState, random);
-                        world.setBlockState(pos, warpedBlock.getDefaultState());
+                        Block crimsonBlock = getCrimsonForestBlock(currentState, random);
+                        world.setBlockState(pos, crimsonBlock.getDefaultState());
                     }
                     // Corrupt other replaceable blocks
                     else if (isReplaceable(currentState)) {
@@ -147,10 +136,10 @@ public class InfernoPearlItem extends Item implements FabricItem {
                block == Blocks.FLOWERING_AZALEA_LEAVES;
     }
     
-    private Block getWarpedForestBlock(BlockState originalState, Random random) {
+    private Block getCrimsonForestBlock(BlockState originalState, Random random) {
         Block originalBlock = originalState.getBlock();
         
-        // Transform logs to warped stems (warped wood)
+        // Transform logs to crimson stems (crimson wood)
         if (originalBlock == Blocks.OAK_LOG || 
             originalBlock == Blocks.BIRCH_LOG || 
             originalBlock == Blocks.SPRUCE_LOG || 
@@ -159,10 +148,10 @@ public class InfernoPearlItem extends Item implements FabricItem {
             originalBlock == Blocks.DARK_OAK_LOG ||
             originalBlock == Blocks.MANGROVE_LOG ||
             originalBlock == Blocks.CHERRY_LOG) {
-            return Blocks.WARPED_STEM;
+            return Blocks.CRIMSON_STEM;
         }
         
-        // Transform leaves to warped wart blocks (warped forest leaves)
+        // Transform leaves to nether wart blocks (crimson forest leaves)
         if (originalBlock == Blocks.OAK_LEAVES || 
             originalBlock == Blocks.BIRCH_LEAVES || 
             originalBlock == Blocks.SPRUCE_LEAVES || 
@@ -173,11 +162,11 @@ public class InfernoPearlItem extends Item implements FabricItem {
             originalBlock == Blocks.CHERRY_LEAVES ||
             originalBlock == Blocks.AZALEA_LEAVES ||
             originalBlock == Blocks.FLOWERING_AZALEA_LEAVES) {
-            return Blocks.WARPED_WART_BLOCK;
+            return Blocks.NETHER_WART_BLOCK;
         }
         
-        // Fallback to warped nylium
-        return Blocks.WARPED_NYLIUM;
+        // Fallback to crimson nylium
+        return Blocks.CRIMSON_NYLIUM;
     }
     
     private boolean isReplaceable(BlockState state) {
