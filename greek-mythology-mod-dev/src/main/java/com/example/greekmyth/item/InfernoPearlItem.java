@@ -2,7 +2,7 @@ package com.example.greekmyth.item;
 
 import com.example.greekmyth.GreekMythologyMod;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.thrown.EnderPearlEntity;
+import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
@@ -20,6 +20,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.random.Random;
+
 public class InfernoPearlItem extends Item {
     
     public InfernoPearlItem(Item.Settings settings) {
@@ -38,12 +39,11 @@ public class InfernoPearlItem extends Item {
         user.incrementStat(Stats.USED.getOrCreateStat(this));
         
         if (!world.isClient()) {
-            // Create EXACT vanilla ender pearl entity but override collision
-            EnderPearlEntity infernoPearl = new EnderPearlEntity(world, user) {
+            // Create ThrownItemEntity with inferno pearl item for maximum visibility
+            ThrownItemEntity infernoPearl = new ThrownItemEntity(world, user) {
                 @Override
                 protected void onCollision(HitResult hitResult) {
-                    // DON'T call super.onCollision() - that does teleportation!
-                    // Instead, do our custom corruption logic
+                    // Custom collision logic - no teleportation, just corruption
                     
                     if (!this.getWorld().isClient) {
                         BlockPos impactPos = BlockPos.ofFloored(hitResult.getPos());
@@ -68,12 +68,15 @@ public class InfernoPearlItem extends Item {
                         GreekMythologyMod.LOGGER.info("INFERNO PEARL: Impact at {} - corrupting area", impactPos);
                     }
                     
-                    // Remove the entity (important: don't call super!)
+                    // Remove the entity
                     this.discard();
                 }
             };
             
-            // Use exact same velocity settings as vanilla ender pearl
+            // Set the inferno pearl item to be thrown (this makes it visible!)
+            infernoPearl.setItem(itemStack.copy());
+            
+            // Use ender pearl velocity for proper arc
             infernoPearl.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
             world.spawnEntity(infernoPearl);
             
@@ -91,7 +94,7 @@ public class InfernoPearlItem extends Item {
     
     private void corruptArea(World world, BlockPos center) {
         Random random = world.getRandom();
-        int radius = 4; // Normal corruption radius
+        int radius = 4; // Corruption radius
         
         for (int x = -radius; x <= radius; x++) {
             for (int y = -radius; y <= radius; y++) {
@@ -99,7 +102,7 @@ public class InfernoPearlItem extends Item {
                     BlockPos pos = center.add(x, y, z);
                     BlockState currentState = world.getBlockState(pos);
                     
-                    // Transform trees into warped forest
+                    // Transform trees into crimson forest
                     if (isTreeBlock(currentState)) {
                         Block crimsonBlock = getCrimsonForestBlock(currentState, random);
                         world.setBlockState(pos, crimsonBlock.getDefaultState());
