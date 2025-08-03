@@ -2,7 +2,7 @@ package com.example.greekmyth.item;
 
 import com.example.greekmyth.GreekMythologyMod;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.thrown.SnowballEntity;
+import net.minecraft.entity.projectile.thrown.EnderPearlEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
@@ -38,11 +38,12 @@ public class InfernoPearlItem extends Item {
         user.incrementStat(Stats.USED.getOrCreateStat(this));
         
         if (!world.isClient()) {
-            // Create SnowballEntity for client-side visibility
-            SnowballEntity infernoPearl = new SnowballEntity(world, user) {
+            // Create EXACT vanilla ender pearl entity but override collision
+            EnderPearlEntity infernoPearl = new EnderPearlEntity(world, user) {
                 @Override
                 protected void onCollision(HitResult hitResult) {
-                    // Custom collision logic for corruption
+                    // DON'T call super.onCollision() - that does teleportation!
+                    // Instead, do our custom corruption logic
                     
                     if (!this.getWorld().isClient) {
                         BlockPos impactPos = BlockPos.ofFloored(hitResult.getPos());
@@ -51,19 +52,10 @@ public class InfernoPearlItem extends Item {
                         this.getWorld().playSound(null, impactPos, SoundEvents.ENTITY_GENERIC_EXPLODE, 
                             SoundCategory.NEUTRAL, 1.0F, 1.0F);
                         
-                        // Create massive fire particles for visibility
+                        // Create fire particles
                         ServerWorld serverWorld = (ServerWorld) this.getWorld();
-                        for (int i = 0; i < 100; i++) {
+                        for (int i = 0; i < 20; i++) {
                             serverWorld.spawnParticles(ParticleTypes.FLAME, 
-                                impactPos.getX() + this.random.nextDouble() - 0.5,
-                                impactPos.getY() + 1 + this.random.nextDouble(),
-                                impactPos.getZ() + this.random.nextDouble() - 0.5,
-                                1, 0, 0, 0, 0.1);
-                        }
-                        
-                        // Create explosion particles
-                        for (int i = 0; i < 50; i++) {
-                            serverWorld.spawnParticles(ParticleTypes.EXPLOSION, 
                                 impactPos.getX() + this.random.nextDouble() - 0.5,
                                 impactPos.getY() + 1 + this.random.nextDouble(),
                                 impactPos.getZ() + this.random.nextDouble() - 0.5,
@@ -76,12 +68,12 @@ public class InfernoPearlItem extends Item {
                         GreekMythologyMod.LOGGER.info("INFERNO PEARL: Impact at {} - corrupting area", impactPos);
                     }
                     
-                    // Remove the entity
+                    // Remove the entity (important: don't call super!)
                     this.discard();
                 }
             };
             
-            // Use ender pearl velocity for proper arc
+            // Use exact same velocity settings as vanilla ender pearl
             infernoPearl.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
             world.spawnEntity(infernoPearl);
             
@@ -99,7 +91,7 @@ public class InfernoPearlItem extends Item {
     
     private void corruptArea(World world, BlockPos center) {
         Random random = world.getRandom();
-        int radius = 8; // Much larger corruption radius for visibility
+        int radius = 4; // Normal corruption radius
         
         for (int x = -radius; x <= radius; x++) {
             for (int y = -radius; y <= radius; y++) {
