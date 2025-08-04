@@ -20,3 +20,6 @@
 /time set day
 /summon wither
 /kill @e
+/give Player877 minecraft:iron_ore
+/give Player877 minecraft:iron_ingot
+/kill @n

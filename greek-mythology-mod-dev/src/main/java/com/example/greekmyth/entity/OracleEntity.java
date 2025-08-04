@@ -198,7 +198,28 @@ public class OracleEntity extends IllusionerEntity {
             // Check if player has an active quest
             GodQuest activeQuest = activeQuests.get(player);
             
-            if (activeQuest != null && !activeQuest.isCompleted()) {
+            // Check if player is holding an item for quest turn-in
+            if (activeQuest != null && !activeQuest.isCompleted() && hand == Hand.MAIN_HAND) {
+                net.minecraft.item.ItemStack heldItem = player.getMainHandStack();
+                if (!heldItem.isEmpty()) {
+                    String itemId = heldItem.getItem().toString().toLowerCase();
+                    if (itemId.contains("minecraft:")) {
+                        itemId = itemId.replace("minecraft:", "");
+                    }
+                    
+                    // Check if this item is required for the quest
+                    String[] requiredItems = activeQuest.getRequiredItems();
+                    if (requiredItems != null) {
+                        for (String requiredItem : requiredItems) {
+                            if (itemId.contains(requiredItem) || requiredItem.contains(itemId)) {
+                                // Valid item for quest turn-in
+                                handleQuestItemTurnIn(serverPlayer, activeQuest, heldItem, requiredItem);
+                                return ActionResult.SUCCESS;
+                            }
+                        }
+                    }
+                }
+                
                 // Show quest progress with scoreboard info
                 int currentProgress = activeQuest.getCurrentProgress();
                 serverPlayer.sendMessage(Text.literal("§6§l[The Oracle] §r§eYour current quest: " + activeQuest.getTitle()).formatted(Formatting.GOLD), false);
@@ -237,6 +258,45 @@ public class OracleEntity extends IllusionerEntity {
         }
         
         return ActionResult.SUCCESS;
+    }
+    
+    private void handleQuestItemTurnIn(ServerPlayerEntity player, GodQuest quest, net.minecraft.item.ItemStack item, String requiredItem) {
+        // Remove one item from the player's hand
+        item.decrement(1);
+        
+        // Update quest progress
+        quest.updateProgress(1);
+        
+        // Send success message
+        player.sendMessage(Text.literal("§6§l[The Oracle] §r§aYou have offered " + item.getItem().getName().getString() + " to " + quest.getTargetGod().getDisplayName()).formatted(Formatting.GREEN), false);
+        player.sendMessage(Text.literal("§7Quest Progress: " + quest.getCurrentProgress() + "/" + quest.getTargetAmount()).formatted(Formatting.GRAY), false);
+        
+        // Update scoreboard
+        QuestScoreboardManager.updateQuestProgress(player, quest.getCurrentProgress(), quest.getTargetAmount());
+        
+        // Check if quest is completed
+        if (quest.isCompleted()) {
+            // Give rewards
+            FavorManager.addFavor(player.getUuid(), quest.getTargetGod(), quest.getFavorReward());
+            player.addExperience(quest.getXpReward());
+            
+            // Send completion message
+            player.sendMessage(quest.getCompletionText(), false);
+            
+            // Remove quest
+            activeQuests.remove(player);
+            
+            // Remove quest scoreboard
+            QuestScoreboardManager.removeQuestScoreboard(player);
+            
+            GreekMythologyMod.LOGGER.info("Player {} completed {} quest: {}", 
+                player.getName().getString(), quest.getTargetGod().getDisplayName(), quest.getTitle());
+        }
+        
+        // Play success sound
+        this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(), 
+            net.minecraft.sound.SoundEvents.ENTITY_PLAYER_LEVELUP, 
+            net.minecraft.sound.SoundCategory.PLAYERS, 1.0f, 1.2f);
     }
     
     private void changeState() {

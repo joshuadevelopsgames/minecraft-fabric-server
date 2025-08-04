@@ -17,9 +17,10 @@ public class GodQuest {
     private final int favorReward;
     private final int xpReward;
     private boolean completed;
+    private final String[] requiredItems; // Specific items needed for the quest
     
     public GodQuest(String questId, String title, String description, QuestType type, 
-                   int targetAmount, God targetGod, int favorReward, int xpReward) {
+                   int targetAmount, God targetGod, int favorReward, int xpReward, String[] requiredItems) {
         this.questId = questId;
         this.title = title;
         this.description = description;
@@ -30,6 +31,13 @@ public class GodQuest {
         this.favorReward = favorReward;
         this.xpReward = xpReward;
         this.completed = false;
+        this.requiredItems = requiredItems;
+    }
+    
+    // Overloaded constructor for backward compatibility
+    public GodQuest(String questId, String title, String description, QuestType type, 
+                   int targetAmount, God targetGod, int favorReward, int xpReward) {
+        this(questId, title, description, type, targetAmount, targetGod, favorReward, xpReward, new String[0]);
     }
     
     public void updateProgress(int progress) {
@@ -65,6 +73,19 @@ public class GodQuest {
     public int getFavorReward() { return favorReward; }
     public int getXpReward() { return xpReward; }
     public boolean isCompleted() { return completed; }
+    public String[] getRequiredItems() { return requiredItems; }
+    
+    public String getRequiredItemsText() {
+        if (requiredItems == null || requiredItems.length == 0) {
+            return "Any items";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < requiredItems.length; i++) {
+            if (i > 0) sb.append(", ");
+            sb.append(requiredItems[i]);
+        }
+        return sb.toString();
+    }
     
     public enum QuestType {
         KILL_MOBS,
@@ -302,8 +323,9 @@ public class GodQuest {
                     type, 1, God.HEPHAESTUS, 30, 125);
             case COLLECT_ITEMS:
                 return new GodQuest("hephaestus_fire_collector", "Collector of Fire", 
-                    "Collect 12 fire and metal-related items", 
-                    type, 12, God.HEPHAESTUS, 20, 75);
+                    "Collect 12 fire and metal-related items. Right-click the Oracle with these items in hand: Iron Ingot, Gold Ingot, Coal, Blaze Rod, Lava Bucket, Redstone, Diamond, Emerald, Lapis Lazuli, Quartz, Obsidian, Netherite Ingot", 
+                    type, 12, God.HEPHAESTUS, 20, 75,
+                    new String[]{"iron_ingot", "gold_ingot", "coal", "blaze_rod", "lava_bucket", "redstone", "diamond", "emerald", "lapis_lazuli", "quartz", "obsidian", "netherite_ingot"});
             default:
                 return createDefaultQuest(God.HEPHAESTUS, random);
         }
@@ -379,6 +401,7 @@ public class GodQuest {
         return new GodQuest("default_" + god.name().toLowerCase(), 
             god.getDisplayName() + "'s Trial", 
             "Complete a trial to gain " + god.getDisplayName() + "'s favor", 
-            QuestType.KILL_MOBS, 10, god, 15, 50);
+            QuestType.KILL_MOBS, 10, god, 15, 50,
+            new String[]{"zombie_head", "skeleton_skull", "spider_eye", "creeper_head"});
     }
 } 

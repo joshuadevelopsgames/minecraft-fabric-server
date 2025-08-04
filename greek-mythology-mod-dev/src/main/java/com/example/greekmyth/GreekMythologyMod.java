@@ -25,11 +25,11 @@ public class GreekMythologyMod implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     
     // Version tracking system
-    public static final String MOD_VERSION = "1.0.147";
-    public static final String BUILD_VERSION_TITLE = "Oracle Quest Cooldown Fix";
+    public static final String MOD_VERSION = "1.0.148";
+    public static final String BUILD_VERSION_TITLE = "Interactive Quest Item Turn-In System";
     public static final String BUILD_DATE = "2024-08-04";
-    public static final String BUILD_TIME = "13:25";
-    public static final String BUILD_FEATURES = "Oracle Quest Cooldown Fix - Reduced prophecy cooldown to 30 seconds, quests now available even during prophecy cooldown";
+    public static final String BUILD_TIME = "13:35";
+    public static final String BUILD_FEATURES = "Interactive Quest Item Turn-In System - Added specific item requirements for quests, players can now right-click Oracle with items to turn them in one by one";
     
     // Soul counting system
     private static final Map<UUID, Integer> playerSoulCounts = new HashMap<>();
