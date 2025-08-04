@@ -33,3 +33,5 @@
 /jail
 /jail Player446 1
 /escape
+/kill
+/gamemode creative

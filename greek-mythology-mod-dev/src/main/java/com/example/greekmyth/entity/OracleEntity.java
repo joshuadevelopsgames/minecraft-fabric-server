@@ -213,11 +213,23 @@ public class OracleEntity extends IllusionerEntity {
                     if (requiredItems != null && requiredItems.length > 0) {
                         for (String requiredItem : requiredItems) {
                             if (itemId.contains(requiredItem) || requiredItem.contains(itemId)) {
+                                // Check if this specific item has already been turned in
+                                if (activeQuest.hasItemBeenTurnedIn(requiredItem)) {
+                                    serverPlayer.sendMessage(Text.literal("§6§l[The Oracle] §r§cYou have already offered this item to " + activeQuest.getTargetGod().getDisplayName()).formatted(Formatting.RED), false);
+                                    serverPlayer.sendMessage(Text.literal("§7You need to collect different items from the required list.").formatted(Formatting.GRAY), false);
+                                    return ActionResult.SUCCESS;
+                                }
+                                
                                 // Valid item for collection quest turn-in
                                 handleQuestItemTurnIn(serverPlayer, activeQuest, heldItem, requiredItem);
                                 return ActionResult.SUCCESS;
                             }
                         }
+                        
+                        // If we get here, the item is not in the required list
+                        serverPlayer.sendMessage(Text.literal("§6§l[The Oracle] §r§cThis item is not required for your current quest.").formatted(Formatting.RED), false);
+                        serverPlayer.sendMessage(Text.literal("§7Required items: " + activeQuest.getRequiredItemsText()).formatted(Formatting.GRAY), false);
+                        return ActionResult.SUCCESS;
                     }
                     
                     // Check if this item is valid for crafting quests
@@ -271,6 +283,9 @@ public class OracleEntity extends IllusionerEntity {
     private void handleQuestItemTurnIn(ServerPlayerEntity player, GodQuest quest, net.minecraft.item.ItemStack item, String requiredItem) {
         // Remove one item from the player's hand
         item.decrement(1);
+        
+        // Mark this specific item as turned in
+        quest.markItemAsTurnedIn(requiredItem);
         
         // Update quest progress
         quest.updateProgress(1);

@@ -25,11 +25,11 @@ public class GreekMythologyMod implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     
     // Version tracking system
-    public static final String MOD_VERSION = "1.0.151";
-    public static final String BUILD_VERSION_TITLE = "Quest Clear Command";
+    public static final String MOD_VERSION = "1.0.152";
+    public static final String BUILD_VERSION_TITLE = "Fixed Quest Item Exploit";
     public static final String BUILD_DATE = "2024-08-04";
-    public static final String BUILD_TIME = "14:05";
-    public static final String BUILD_FEATURES = "Quest Clear Command - Added /quest clear command to clear current quest and get a new one, useful for testing different quest types";
+    public static final String BUILD_TIME = "14:15";
+    public static final String BUILD_FEATURES = "Fixed Quest Item Exploit - Fixed critical bug where players could turn in the same item multiple times for collection quests, now requires different items from the required list";
     
     // Soul counting system
     private static final Map<UUID, Integer> playerSoulCounts = new HashMap<>();

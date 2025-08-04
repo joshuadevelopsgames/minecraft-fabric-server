@@ -18,6 +18,7 @@ public class GodQuest {
     private final int xpReward;
     private boolean completed;
     private final String[] requiredItems; // Specific items needed for the quest
+    private final java.util.Set<String> turnedInItems; // Track which items have been turned in
     
     public GodQuest(String questId, String title, String description, QuestType type, 
                    int targetAmount, God targetGod, int favorReward, int xpReward, String[] requiredItems) {
@@ -32,6 +33,7 @@ public class GodQuest {
         this.xpReward = xpReward;
         this.completed = false;
         this.requiredItems = requiredItems;
+        this.turnedInItems = new java.util.HashSet<>();
     }
     
     // Overloaded constructor for backward compatibility
@@ -74,6 +76,27 @@ public class GodQuest {
     public int getXpReward() { return xpReward; }
     public boolean isCompleted() { return completed; }
     public String[] getRequiredItems() { return requiredItems; }
+    
+    /**
+     * Check if an item has already been turned in for this quest
+     */
+    public boolean hasItemBeenTurnedIn(String itemId) {
+        return turnedInItems.contains(itemId);
+    }
+    
+    /**
+     * Mark an item as turned in for this quest
+     */
+    public void markItemAsTurnedIn(String itemId) {
+        turnedInItems.add(itemId);
+    }
+    
+    /**
+     * Get the list of items that have been turned in
+     */
+    public java.util.Set<String> getTurnedInItems() {
+        return new java.util.HashSet<>(turnedInItems);
+    }
     
     public String getRequiredItemsText() {
         if (requiredItems == null || requiredItems.length == 0) {
