@@ -1,0 +1,130 @@
+AI MYTHOLOGY MOD - TESTING TUTORIAL
+===================================
+
+🎉 SUCCESS! Version 1.0.11 is working! 🎉
+
+This tutorial will help you test the mod and gradually add back features to identify what was causing the crashes.
+
+CURRENT STATUS:
+==============
+✅ Mod loads without crashes
+✅ Basic initialization works
+✅ No Text-related errors
+✅ No Item-related errors
+
+STEP 1: VERIFY THE MOD IS WORKING
+=================================
+
+1. Start Minecraft with the mod installed
+2. Check the logs for this message:
+   "AI Mythology mod initialized successfully!"
+3. The mod should load without any crash reports
+4. You should be able to join a world normally
+
+STEP 2: TEST BASIC FUNCTIONALITY
+================================
+
+Since this is an ultra-minimal version, there's not much to test yet, but you can:
+
+1. Check that the mod appears in the mod list
+2. Verify no error messages in the logs
+3. Confirm the game runs normally
+
+STEP 3: GRADUAL FEATURE ADDITION PLAN
+=====================================
+
+Now that we know the basic mod structure works, we can gradually add back features:
+
+PHASE 1: Add Item Registration
+- Add back the Zeus Bolt item
+- Test if item registration works
+- Check for any Item-related crashes
+
+PHASE 2: Add Text Usage (Using Oracle Pattern)
+- Add Text import like the Oracle mob
+- Add simple Text.literal calls
+- Test if Text handling works
+
+PHASE 3: Add Command System
+- Add basic commands
+- Test command registration
+- Verify command functionality
+
+PHASE 4: Add Favor System
+- Add favor tracking
+- Test favor persistence
+- Verify favor calculations
+
+PHASE 5: Add Complex Features
+- Add divine interventions
+- Add blessings/curses
+- Add advanced item functionality
+
+STEP 4: TESTING CHECKLIST
+=========================
+
+For each phase, test:
+
+□ Mod loads without crashes
+□ No error messages in logs
+□ Basic functionality works
+□ No performance issues
+□ No conflicts with other mods
+
+STEP 5: REPORTING ISSUES
+========================
+
+If you encounter any issues:
+
+1. Save the crash report
+2. Note what feature was being tested
+3. Check the Minecraft logs
+4. Report the specific error message
+
+STEP 6: NEXT STEPS
+==================
+
+Once you confirm version 1.0.11 is working:
+
+1. Let me know it's working
+2. Tell me what you'd like to add first
+3. I'll create the next version with that feature
+4. We'll test each addition step by step
+
+RECOMMENDED TESTING ORDER:
+=========================
+
+1. ✅ Basic mod loading (COMPLETED)
+2. 🔄 Add item registration (NEXT)
+3. 🔄 Add Text usage (Oracle pattern)
+4. 🔄 Add command system
+5. 🔄 Add favor system
+6. 🔄 Add complex features
+
+TROUBLESHOOTING:
+================
+
+If the mod doesn't work:
+
+1. Check that you're using the correct JAR file
+2. Verify Fabric API is installed
+3. Check for conflicting mods
+4. Look at the Minecraft logs for errors
+5. Try removing other mods temporarily
+
+SUCCESS METRICS:
+================
+
+The mod is working correctly if:
+- No crash reports
+- "AI Mythology mod initialized successfully!" in logs
+- Game runs normally
+- No error messages
+- Mod appears in mod list
+
+READY FOR THE NEXT PHASE?
+=========================
+
+Once you've confirmed version 1.0.11 is working, let me know and I'll create version 1.0.12 with the next feature (item registration).
+
+This gradual approach will help us identify exactly what was causing the crashes and build a stable, working mod step by step! 

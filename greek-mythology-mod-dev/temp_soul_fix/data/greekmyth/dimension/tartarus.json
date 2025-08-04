@@ -1,0 +1,11 @@
+{
+    "type": "greekmyth:tartarus",
+    "generator": {
+        "type": "minecraft:noise",
+        "settings": "greekmyth:tartarus_void",
+        "biome_source": {
+            "type": "minecraft:fixed",
+            "biome": "greekmyth:tartarus_void"
+        }
+    }
+} 

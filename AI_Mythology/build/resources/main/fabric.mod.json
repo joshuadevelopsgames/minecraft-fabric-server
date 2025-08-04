@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "aimyth",
+  "version": "1.0.17",
+  "name": "AI Mythology",
+  "description": "A comprehensive Greek mythology mod with gods, creatures, quests, and divine systems",
+  "authors": [
+    "AI Assistant"
+  ],
+  "contact": {
+    "homepage": "https://github.com/example/ai-mythology",
+    "sources": "https://github.com/example/ai-mythology"
+  },
+  "license": "MIT",
+  "icon": "assets/aimyth/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.example.aimyth.AIMythologyMod"
+    ],
+    "client": [
+      "com.example.aimyth.AIMythologyClientMod"
+    ]
+  },
+  "mixins": [
+    "aimyth.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.14",
+    "minecraft": "~1.21.8",
+    "java": ">=17",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+} 

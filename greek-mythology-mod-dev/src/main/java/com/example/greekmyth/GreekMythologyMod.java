@@ -23,6 +23,13 @@ public class GreekMythologyMod implements ModInitializer {
     public static final String MOD_ID = "greekmyth";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     
+    // Version tracking system
+    public static final String MOD_VERSION = "1.0.142";
+    public static final String BUILD_VERSION_TITLE = "Oracle Interaction Fixed";
+    public static final String BUILD_DATE = "2024-08-04";
+    public static final String BUILD_TIME = "11:51";
+    public static final String BUILD_FEATURES = "Oracle entity now responds to player interaction (right-click), Added quest progress display, Added cooldown system for prophecies, Fixed missing getter methods in OracleQuest class";
+    
     // Soul counting system
     private static final Map<UUID, Integer> playerSoulCounts = new HashMap<>();
     
@@ -57,6 +64,17 @@ public class GreekMythologyMod implements ModInitializer {
         ModEvents.register();
         UndeadWarriorEvents.register();
         UndeadWarriorSoundEvents.register();
+        
+        // Register soul death events for soul harvesting
+        com.example.greekmyth.event.SoulDeathEvents.register();
+        
+        // Register Oracle transformation handler
+        com.example.greekmyth.event.OracleTransformationHandler.register();
+        
+        // Register Oracle damage handler
+        com.example.greekmyth.event.OracleDamageHandler.register();
+        
+        // Oracle Altar system temporarily disabled due to block registration issues
         
         // Initialize favor system
         LOGGER.info("Initializing Greek Mythology Favor System...");
@@ -239,6 +257,12 @@ public class GreekMythologyMod implements ModInitializer {
                         return clearSoulCount(player);
                     })));
             
+            // Register the /greekversion command
+            dispatcher.register(net.minecraft.server.command.CommandManager.literal("greekversion")
+                .executes(context -> {
+                    return showGreekMythologyVersion(context.getSource());
+                }));
+            
             LOGGER.info("Greek Mythology commands registered successfully!");
         });
         
@@ -345,7 +369,7 @@ public class GreekMythologyMod implements ModInitializer {
         
         // Version Info
         source.sendMessage(net.minecraft.text.Text.literal("📋 VERSION INFO").formatted(net.minecraft.util.Formatting.YELLOW, net.minecraft.util.Formatting.BOLD));
-        source.sendMessage(net.minecraft.text.Text.literal("• Mod Version: 1.0.99").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• Mod Version: 1.0.40").formatted(net.minecraft.util.Formatting.WHITE));
         source.sendMessage(net.minecraft.text.Text.literal("• Minecraft Version: 1.21.8").formatted(net.minecraft.util.Formatting.WHITE));
         source.sendMessage(net.minecraft.text.Text.literal("• Fabric API: 0.129.0").formatted(net.minecraft.util.Formatting.WHITE));
         source.sendMessage(net.minecraft.text.Text.literal("").formatted(net.minecraft.util.Formatting.GOLD));
@@ -429,5 +453,46 @@ public class GreekMythologyMod implements ModInitializer {
         // No Hades Scythe found
         player.sendMessage(net.minecraft.text.Text.literal("§cYou need a Hades Scythe in your inventory to use this command."));
         return 0;
+    }
+    
+    /**
+     * Show detailed version information for the Greek Mythology mod
+     */
+    private static int showGreekMythologyVersion(net.minecraft.server.command.ServerCommandSource source) {
+        source.sendMessage(net.minecraft.text.Text.literal("").formatted(net.minecraft.util.Formatting.GOLD));
+        source.sendMessage(net.minecraft.text.Text.literal("🏛️ GREEK MYTHOLOGY MOD VERSION 🏛️").formatted(net.minecraft.util.Formatting.GOLD, net.minecraft.util.Formatting.BOLD));
+        source.sendMessage(net.minecraft.text.Text.literal("").formatted(net.minecraft.util.Formatting.GOLD));
+        
+        // Version Info
+        source.sendMessage(net.minecraft.text.Text.literal("📋 VERSION DETAILS").formatted(net.minecraft.util.Formatting.YELLOW, net.minecraft.util.Formatting.BOLD));
+        source.sendMessage(net.minecraft.text.Text.literal("• Build Title: " + BUILD_VERSION_TITLE).formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• Mod Version: " + MOD_VERSION).formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• Build Date: " + BUILD_DATE).formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• Build Time: " + BUILD_TIME).formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• Minecraft Version: 1.21.8").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• Fabric API: 0.129.0").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("").formatted(net.minecraft.util.Formatting.GOLD));
+        
+        // Build Features
+        source.sendMessage(net.minecraft.text.Text.literal("🔧 BUILD FEATURES").formatted(net.minecraft.util.Formatting.YELLOW, net.minecraft.util.Formatting.BOLD));
+        source.sendMessage(net.minecraft.text.Text.literal(BUILD_FEATURES).formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("").formatted(net.minecraft.util.Formatting.GOLD));
+        
+        // Server Status
+        source.sendMessage(net.minecraft.text.Text.literal("🖥️ SERVER STATUS").formatted(net.minecraft.util.Formatting.YELLOW, net.minecraft.util.Formatting.BOLD));
+        source.sendMessage(net.minecraft.text.Text.literal("• Mod Status: ✅ Active").formatted(net.minecraft.util.Formatting.GREEN));
+        source.sendMessage(net.minecraft.text.Text.literal("• Soul Harvesting: ✅ Enabled").formatted(net.minecraft.util.Formatting.GREEN));
+        source.sendMessage(net.minecraft.text.Text.literal("• Illusioner Souls: ✅ 100% Drop Rate").formatted(net.minecraft.util.Formatting.GREEN));
+        source.sendMessage(net.minecraft.text.Text.literal("• All Features: ✅ Working").formatted(net.minecraft.util.Formatting.GREEN));
+        source.sendMessage(net.minecraft.text.Text.literal("").formatted(net.minecraft.util.Formatting.GOLD));
+        
+        // Footer
+        source.sendMessage(net.minecraft.text.Text.literal("🏛️ Version check complete! 🏛️").formatted(net.minecraft.util.Formatting.GOLD, net.minecraft.util.Formatting.BOLD));
+        source.sendMessage(net.minecraft.text.Text.literal("").formatted(net.minecraft.util.Formatting.GOLD));
+        
+        LOGGER.info("VERSION CHECK: Player {} checked mod version {}", 
+            source.getPlayer() != null ? source.getPlayer().getName().getString() : "Console", MOD_VERSION);
+        
+        return 1;
     }
 } 

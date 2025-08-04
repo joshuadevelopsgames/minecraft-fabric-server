@@ -3,6 +3,23 @@
 
 ---
 
+## Version 1.0.142 - Oracle Interaction Fixed ===
+- FIXED: Oracle entity now responds to player interaction (right-click)
+- ADDED: Oracle interaction method that allows players to get prophecies and quests
+- ADDED: Quest progress display when interacting with Oracle
+- ADDED: Cooldown system for Oracle prophecies (5 minutes between prophecies)
+- ADDED: Proper quest tracking and reward system
+- FIXED: Missing getter methods in OracleQuest class
+- IMPROVED: Oracle interaction provides immediate feedback and sound effects
+
+Players can now right-click on the Oracle to:
+- Get prophecies (with 5-minute cooldown)
+- Receive quests
+- Check quest progress
+- Get cooldown information
+
+The Oracle will now properly respond to player interaction instead of being unresponsive.
+
 ## Version 1.0.76 (2025-01-28)
 ### 💀 **SOUL DROP RATES NERFED - 10X RARER**
 - **Dramatically Reduced Drop Rates**: All soul drop chances divided by 10 for much higher rarity

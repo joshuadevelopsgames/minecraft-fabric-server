@@ -20,8 +20,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
-
 public class InfernoPearlItem extends Item {
     
     public InfernoPearlItem(Item.Settings settings) {
@@ -31,8 +29,6 @@ public class InfernoPearlItem extends Item {
 
     @Override
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
-        GreekMythologyMod.LOGGER.info("INFERNO PEARL DEBUG: use() method called by {} in hand {}", user.getName().getString(), hand.name());
-        
         ItemStack itemStack = user.getStackInHand(hand);
         
         // EXACT copy of vanilla ender pearl use method
@@ -42,10 +38,42 @@ public class InfernoPearlItem extends Item {
         user.incrementStat(Stats.USED.getOrCreateStat(this));
         
         if (!world.isClient()) {
-            // Use EnderPearlEntity for guaranteed client-side visibility
-            EnderPearlEntity infernoPearl = new EnderPearlEntity(world, user, itemStack.copy());
+            // Create vanilla ender pearl entity but override collision
+            EnderPearlEntity infernoPearl = new EnderPearlEntity(world, user, new ItemStack(GreekItems.INFERNO_PEARL)) {
+                @Override
+                protected void onCollision(HitResult hitResult) {
+                    // DON'T call super.onCollision() - that does teleportation!
+                    // Instead, do our custom corruption logic
+                    
+                    if (!this.getWorld().isClient) {
+                        BlockPos impactPos = BlockPos.ofFloored(hitResult.getPos());
+                        
+                        // Play impact sound
+                        this.getWorld().playSound(null, impactPos.getX(), impactPos.getY(), impactPos.getZ(), 
+                            SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                        
+                        // Create fire particles
+                        ServerWorld serverWorld = (ServerWorld) this.getWorld();
+                        for (int i = 0; i < 20; i++) {
+                            serverWorld.spawnParticles(ParticleTypes.FLAME, 
+                                impactPos.getX() + this.random.nextDouble() - 0.5,
+                                impactPos.getY() + 1 + this.random.nextDouble(),
+                                impactPos.getZ() + this.random.nextDouble() - 0.5,
+                                1, 0, 0, 0, 0.1);
+                        }
+                        
+                        // Corrupt the area with crimson forest
+                        corruptArea(this.getWorld(), impactPos);
+                        
+                        GreekMythologyMod.LOGGER.info("INFERNO PEARL: Impact at {} - corrupting area", impactPos);
+                    }
+                    
+                    // Remove the entity (important: don't call super!)
+                    this.discard();
+                }
+            };
             
-            // Override the collision behavior
+            // Use exact same velocity settings as vanilla ender pearl
             infernoPearl.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
             world.spawnEntity(infernoPearl);
             
@@ -57,7 +85,7 @@ public class InfernoPearlItem extends Item {
             itemStack.decrement(1);
         }
         
-        user.getItemCooldownManager().set(this.asItem(), 20);
+        // TEMPORARILY DISABLED: user.getItemCooldownManager().set(this.getRegistryEntry().key().value(), 20);
         return ActionResult.SUCCESS;
     }
     
@@ -71,7 +99,7 @@ public class InfernoPearlItem extends Item {
                     BlockPos pos = center.add(x, y, z);
                     BlockState currentState = world.getBlockState(pos);
                     
-                    // Transform trees into crimson forest
+                    // Transform trees into warped forest
                     if (isTreeBlock(currentState)) {
                         Block crimsonBlock = getCrimsonForestBlock(currentState, random);
                         world.setBlockState(pos, crimsonBlock.getDefaultState());

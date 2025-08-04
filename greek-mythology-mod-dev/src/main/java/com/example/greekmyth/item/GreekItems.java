@@ -74,6 +74,7 @@ public class GreekItems {
     public static final Identifier SNIFFER_SOUL_ID = Identifier.of(GreekMythologyMod.MOD_ID, "sniffer_soul");
     public static final Identifier ARMADILLO_SOUL_ID = Identifier.of(GreekMythologyMod.MOD_ID, "armadillo_soul");
     public static final Identifier BREEZE_SOUL_ID = Identifier.of(GreekMythologyMod.MOD_ID, "breeze_soul");
+    // ILLUSIONER_SOUL_ID removed - now functions as Oracle mob
     
     public static Item ZEUS_BOLT;
     public static Item POSEIDON_TRIDENT;
@@ -137,6 +138,7 @@ public class GreekItems {
     public static Item SNIFFER_SOUL;
     public static Item ARMADILLO_SOUL;
     public static Item BREEZE_SOUL;
+    // ILLUSIONER_SOUL removed - now functions as Oracle mob
     
     // Called from mod initializer to ensure this class is loaded.
     public static void init() {
@@ -251,6 +253,7 @@ public class GreekItems {
         SNIFFER_SOUL = registerSoulItem(SNIFFER_SOUL_ID, "Sniffer Soul", Rarity.COMMON);
         ARMADILLO_SOUL = registerSoulItem(ARMADILLO_SOUL_ID, "Armadillo Soul", Rarity.COMMON);
         BREEZE_SOUL = registerSoulItem(BREEZE_SOUL_ID, "Breeze Soul", Rarity.RARE);
+        // ILLUSIONER_SOUL registration removed - now functions as Oracle mob
         
         GreekMythologyMod.LOGGER.info("Registered {} soul items for Hades Scythe soul harvesting", 50);
     }
@@ -332,6 +335,7 @@ public class GreekItems {
             case "sniffer": return net.minecraft.entity.EntityType.SNIFFER;
             case "armadillo": return net.minecraft.entity.EntityType.ARMADILLO;
             case "breeze": return net.minecraft.entity.EntityType.BREEZE;
+            case "illusioner": return net.minecraft.entity.EntityType.ILLUSIONER;
             default: return net.minecraft.entity.EntityType.ZOMBIE; // Fallback
         }
     }

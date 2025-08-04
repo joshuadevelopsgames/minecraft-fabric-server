@@ -1,0 +1,47 @@
+# Greek Version Update Rule
+
+## 📋 **GREEK VERSION UPDATE RULE**
+
+**Every time I build and deploy a new mod version, I MUST:**
+
+1. **Update MOD_VERSION** - Increment the version number (1.0.135, 1.0.136, etc.)
+2. **Update BUILD_VERSION_TITLE** - Create a descriptive title for the current changes
+3. **Update BUILD_TIME** - Set to the actual current time when the build is created (e.g., "22:01", "14:30", etc.)
+4. **Update BUILD_FEATURES** - List all features/fixes included in this build
+5. **Build and deploy** the updated mod to the server
+6. **Restart the server** to ensure the new version is active
+
+## 📝 **Example Update in `GreekMythologyMod.java`:**
+
+```java
+// Version tracking system
+public static final String MOD_VERSION = "1.0.135";  // Increment this
+public static final String BUILD_VERSION_TITLE = "New Feature Name";  // Update this
+public static final String BUILD_DATE = "2024-08-03";  // Keep current date
+public static final String BUILD_TIME = "22:01";  // Set to current time
+public static final String BUILD_FEATURES = "Feature 1, Feature 2, Feature 3";  // Update this
+```
+
+## ✅ **Purpose:**
+
+This ensures that `/greekversion` always shows the latest information about what's included in each deployment.
+
+## 🎯 **Current Version Details:**
+
+- **MOD_VERSION**: "1.0.134"
+- **BUILD_VERSION_TITLE**: "Illusioner Soul Model Fix"
+- **BUILD_DATE**: "2024-08-03"
+- **BUILD_TIME**: "22:01"
+- **BUILD_FEATURES**: "Soul Harvesting Fixed, Creative Inventory Complete, Illusioner Soul Model & Texture, All Items Searchable"
+
+## 📋 **Rule Status:**
+
+✅ **I will follow this rule for every single build moving forward!**
+
+---
+
+*This rule was established on August 3, 2024, to ensure consistent version tracking across all mod deployments.*
+description:
+globs:
+alwaysApply: false
+---

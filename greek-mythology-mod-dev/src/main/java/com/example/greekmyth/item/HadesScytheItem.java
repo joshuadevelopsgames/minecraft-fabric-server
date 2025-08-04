@@ -62,16 +62,12 @@ public class HadesScytheItem extends Item implements FabricItem {
     @Override
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (attacker.getWorld() instanceof ServerWorld serverWorld) {
-            // Calculate soul-enhanced damage using NBT-stored values from the scythe
-            float baseDamage = 4.0f;
-            int soulBonus = getSoulDamageBonus(stack); // Use NBT-stored soul count from this scythe
+            // Fixed damage for Hades Scythe
+            float damage = 4.0f;
             
-            float totalDamage = baseDamage + soulBonus;
+            GreekMythologyMod.LOGGER.info("HADES SCYTHE ATTACK: Damage: {}", damage);
             
-            GreekMythologyMod.LOGGER.info("HADES SCYTHE ATTACK: Base Damage: {}, Soul Bonus: {} (from NBT), Total Damage: {}", 
-                baseDamage, soulBonus, totalDamage);
-            
-            target.damage(serverWorld, serverWorld.getDamageSources().generic(), totalDamage);
+            target.damage(serverWorld, serverWorld.getDamageSources().generic(), damage);
             
             // Check if this was a critical hit (player falling and not on ground)
             boolean isCriticalHit = false;
@@ -520,48 +516,20 @@ public class HadesScytheItem extends Item implements FabricItem {
         }
     }
 
-    private int getSoulDamageBonus(ItemStack scytheStack) {
-        // Use NBT data to store soul bonus (separate from damage/charge system)
-        net.minecraft.nbt.NbtCompound nbt = scytheStack.getOrCreateNbt();
-        return nbt.getInt("SoulBonus");
-    }
-    
-    private void setSoulDamageBonus(ItemStack scytheStack, int bonus) {
-        // Store soul bonus in NBT data (not damage value)
-        net.minecraft.nbt.NbtCompound nbt = scytheStack.getOrCreateNbt();
-        nbt.putInt("SoulBonus", bonus);
-        GreekMythologyMod.LOGGER.info("Set soul damage bonus to: {} (stored in NBT)", bonus);
-    }
-    
-    // Public method for SoulItem to update soul bonus
-    public static void updateSoulBonus(ItemStack scytheStack, int bonus) {
-        net.minecraft.nbt.NbtCompound nbt = scytheStack.getOrCreateNbt();
-        nbt.putInt("SoulBonus", bonus);
-        GreekMythologyMod.LOGGER.info("Updated soul damage bonus to: {} (stored in NBT)", bonus);
-    }
+
 
     @Override
     public void appendTooltip(ItemStack stack, Item.TooltipContext context, net.minecraft.component.type.TooltipDisplayComponent displayComponent, java.util.function.Consumer<Text> tooltip, net.minecraft.item.tooltip.TooltipType type) {
         super.appendTooltip(stack, context, displayComponent, tooltip, type);
         
-        float baseDamage = 4.0f;
-        int currentSoulBonus = getSoulDamageBonus(stack);
-        float totalDamage = baseDamage + currentSoulBonus;
+        float damage = 4.0f;
         
         tooltip.accept(Text.literal(""));
         tooltip.accept(Text.literal("💀 The scythe of the Lord of the Underworld").formatted(net.minecraft.util.Formatting.GOLD, net.minecraft.util.Formatting.BOLD));
         tooltip.accept(Text.literal(""));
         
-        // Live damage display showing actual combat values
-        tooltip.accept(Text.literal("⚔️ BASE DAMAGE: " + String.format("%.1f", baseDamage)).formatted(net.minecraft.util.Formatting.RED, net.minecraft.util.Formatting.BOLD));
-        
-        // Soul consumption progress with visual indicator
-        String soulProgressColor = currentSoulBonus >= 12 ? "§6" : "§5"; // Gold if maxed, Purple if not
-        String maxIndicator = currentSoulBonus >= 12 ? " §6§l[MAX]" : "";
-        tooltip.accept(Text.literal("💀 SOULS CONSUMED: " + soulProgressColor + currentSoulBonus + "/12" + maxIndicator).formatted(net.minecraft.util.Formatting.DARK_PURPLE, net.minecraft.util.Formatting.BOLD));
-        
-        tooltip.accept(Text.literal("💙 SOUL BONUS: +" + String.format("%.1f", (float)currentSoulBonus)).formatted(net.minecraft.util.Formatting.AQUA, net.minecraft.util.Formatting.BOLD));
-        tooltip.accept(Text.literal("⚡ LIVE DAMAGE: " + String.format("%.1f", totalDamage) + " (actual combat damage)").formatted(net.minecraft.util.Formatting.GREEN, net.minecraft.util.Formatting.BOLD));
+        // Damage display
+        tooltip.accept(Text.literal("⚔️ DAMAGE: " + String.format("%.1f", damage)).formatted(net.minecraft.util.Formatting.RED, net.minecraft.util.Formatting.BOLD));
         tooltip.accept(Text.literal(""));
         tooltip.accept(Text.literal("Right-click to harvest souls from nearby entities").formatted(net.minecraft.util.Formatting.YELLOW));
         tooltip.accept(Text.literal("Sneak + Right-click to open underworld portal").formatted(net.minecraft.util.Formatting.YELLOW));
@@ -569,7 +537,6 @@ public class HadesScytheItem extends Item implements FabricItem {
         tooltip.accept(Text.literal("💥 Critical hits apply Wither II").formatted(net.minecraft.util.Formatting.DARK_PURPLE));
         tooltip.accept(Text.literal("🐺 Critical hits transform skeletons into pets").formatted(net.minecraft.util.Formatting.GREEN));
         tooltip.accept(Text.literal(""));
-        tooltip.accept(Text.literal("🍽️ Consume soul items to increase damage permanently").formatted(net.minecraft.util.Formatting.LIGHT_PURPLE));
         tooltip.accept(Text.literal("Infinite abilities near lava or in the Nether").formatted(net.minecraft.util.Formatting.RED));
         tooltip.accept(Text.literal(""));
         tooltip.accept(Text.literal("Legendary Weapon").formatted(net.minecraft.util.Formatting.LIGHT_PURPLE, net.minecraft.util.Formatting.BOLD));

@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.BlockHitResult;
@@ -27,11 +28,11 @@ public class InfernoPearlEntity extends ThrownItemEntity {
     }
     
     public InfernoPearlEntity(World world, LivingEntity owner) {
-        super(GreekEntityTypes.INFERNO_PEARL, owner, world);
+        super(GreekEntityTypes.INFERNO_PEARL, owner, world, new ItemStack(GreekItems.INFERNO_PEARL));
     }
     
     public InfernoPearlEntity(World world, double x, double y, double z) {
-        super(GreekEntityTypes.INFERNO_PEARL, x, y, z, world);
+        super(GreekEntityTypes.INFERNO_PEARL, x, y, z, world, new ItemStack(GreekItems.INFERNO_PEARL));
     }
     
     @Override
@@ -49,8 +50,8 @@ public class InfernoPearlEntity extends ThrownItemEntity {
             BlockPos impactPos = BlockPos.ofFloored(hitResult.getPos());
             
             // Play impact sound
-            this.getWorld().playSound(null, impactPos, SoundEvents.ENTITY_GENERIC_EXPLODE, 
-                SoundCategory.NEUTRAL, 1.0F, 1.0F);
+            this.getWorld().playSound(null, impactPos.getX(), impactPos.getY(), impactPos.getZ(), 
+                SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.NEUTRAL, 1.0F, 1.0F);
             
             // Create fire particles at impact
             ServerWorld serverWorld = (ServerWorld) this.getWorld();

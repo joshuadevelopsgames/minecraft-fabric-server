@@ -1,0 +1,95 @@
+{
+  "god": "HADES",
+  "displayName": "Hades",
+  "title": "God of the Underworld",
+  "domains": ["Death", "Wealth", "Underground"],
+  "isBigThree": true,
+  "symbol": "💀",
+  
+  "favorSettings": {
+    "baseDecayRate": 2,
+    "decayInterval": 24000,
+    "maxFavor": 2000,
+    "minFavor": -1000
+  },
+  
+  "actions": {
+    "positive": {
+      "deep_mining": {
+        "favor": 8,
+        "description": "Mining deep underground"
+      },
+      "wealth_accumulation": {
+        "favor": 5,
+        "description": "Collecting valuable resources"
+      },
+      "death_respect": {
+        "favor": 3,
+        "description": "Respecting the dead and dying"
+      },
+      "underworld_exploration": {
+        "favor": 10,
+        "description": "Exploring deep caves and the Nether"
+      },
+      "soul_collection": {
+        "favor": 15,
+        "description": "Collecting soul-related items"
+      }
+    },
+    "negative": {
+      "grave_robbing": {
+        "favor": -20,
+        "description": "Disrespecting burial sites"
+      },
+      "wastefulness": {
+        "favor": -10,
+        "description": "Wasting valuable resources"
+      },
+      "surface_dwelling": {
+        "favor": -2,
+        "description": "Spending too much time on the surface"
+      }
+    }
+  },
+  
+  "rewards": {
+    "RESPECTED": {
+      "passiveAbilities": [
+        "Darkness resistance",
+        "Underground sense"
+      ],
+      "activeAbilities": [
+        "Minor soul collection"
+      ]
+    },
+    "CHOSEN": {
+      "passiveAbilities": [
+        "Darkness immunity",
+        "Wealth sense",
+        "Underground mastery"
+      ],
+      "activeAbilities": [
+        "Soul collection",
+        "Underground teleportation"
+      ]
+    },
+    "CHAMPION": {
+      "passiveAbilities": [
+        "Death resistance",
+        "Wealth attraction",
+        "Underworld authority"
+      ],
+      "activeAbilities": [
+        "Soul storm",
+        "Underworld portal",
+        "Divine wealth"
+      ]
+    }
+  },
+  
+  "specialRules": {
+    "bigThreeBonus": true,
+    "undergroundAffinity": true,
+    "wealthMastery": true
+  }
+} 

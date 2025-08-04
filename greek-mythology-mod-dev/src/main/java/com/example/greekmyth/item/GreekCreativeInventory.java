@@ -56,6 +56,7 @@ public class GreekCreativeInventory {
             content.add(new ItemStack(GreekItems.HORSE_SOUL));
             content.add(new ItemStack(GreekItems.WOLF_SOUL));
             content.add(new ItemStack(GreekItems.CAT_SOUL));
+            content.add(new ItemStack(GreekItems.FOX_SOUL));
             content.add(new ItemStack(GreekItems.RABBIT_SOUL));
             content.add(new ItemStack(GreekItems.LLAMA_SOUL));
             content.add(new ItemStack(GreekItems.TRADER_LLAMA_SOUL));
@@ -74,6 +75,7 @@ public class GreekCreativeInventory {
             content.add(new ItemStack(GreekItems.SNIFFER_SOUL));
             content.add(new ItemStack(GreekItems.ARMADILLO_SOUL));
             content.add(new ItemStack(GreekItems.BREEZE_SOUL));
+            // ILLUSIONER_SOUL removed - now functions as Oracle mob
         });
         
         // Also add the main weapons to the "Combat" tab where they belong

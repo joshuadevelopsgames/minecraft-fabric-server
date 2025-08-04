@@ -51,6 +51,7 @@ public class SoulHarvester {
         SOUL_MAP.put(EntityType.ENDERMITE, GreekItems.ENDERMITE_SOUL);
         SOUL_MAP.put(EntityType.GUARDIAN, GreekItems.GUARDIAN_SOUL);
         SOUL_MAP.put(EntityType.BREEZE, GreekItems.BREEZE_SOUL);
+        // ILLUSIONER removed - now functions as Oracle mob
         
         // Passive Mobs - Lower drop rates
         SOUL_MAP.put(EntityType.DOLPHIN, GreekItems.DOLPHIN_SOUL);
@@ -111,7 +112,8 @@ public class SoulHarvester {
         DROP_CHANCES.put(EntityType.SILVERFISH, 0.02f);       // 2.0%
         DROP_CHANCES.put(EntityType.ENDERMITE, 0.03f);        // 3.0%
         DROP_CHANCES.put(EntityType.GUARDIAN, 0.035f);        // 3.5%
-        DROP_CHANCES.put(EntityType.BREEZE, 0.055f);          // 5.5%
+        DROP_CHANCES.put(EntityType.BREEZE, 0.15f);        // 15.0% - Rare mob
+        // ILLUSIONER drop chance removed - now functions as Oracle mob
         
         // Passive mobs - lower chances
         DROP_CHANCES.put(EntityType.DOLPHIN, 0.015f);         // 1.5%

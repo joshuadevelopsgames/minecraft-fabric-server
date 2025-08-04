@@ -498,5 +498,17 @@
     },
     "done": true
   },
+  "minecraft:adventure/overoverkill": {
+    "criteria": {
+      "overoverkill": "2025-08-04 01:15:48 -0700"
+    },
+    "done": true
+  },
+  "minecraft:recipes/brewing/cauldron": {
+    "criteria": {
+      "has_water_bucket": "2025-08-04 01:19:23 -0700"
+    },
+    "done": true
+  },
   "DataVersion": 4440
 }

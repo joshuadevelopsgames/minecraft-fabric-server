@@ -1,0 +1,95 @@
+{
+  "god": "ZEUS",
+  "displayName": "Zeus",
+  "title": "King of the Gods",
+  "domains": ["Lightning", "Weather", "Leadership"],
+  "isBigThree": true,
+  "symbol": "⚡",
+  
+  "favorSettings": {
+    "baseDecayRate": 1,
+    "decayInterval": 24000,
+    "maxFavor": 2000,
+    "minFavor": -1000
+  },
+  
+  "actions": {
+    "positive": {
+      "lightning_strike": {
+        "favor": 10,
+        "description": "Using lightning-based abilities"
+      },
+      "weather_control": {
+        "favor": 5,
+        "description": "Interacting with weather systems"
+      },
+      "leadership": {
+        "favor": 3,
+        "description": "Leading other players or groups"
+      },
+      "thunder_storm": {
+        "favor": 15,
+        "description": "Being active during thunderstorms"
+      },
+      "high_altitude": {
+        "favor": 2,
+        "description": "Activities at high altitudes"
+      }
+    },
+    "negative": {
+      "disrespect": {
+        "favor": -5,
+        "description": "Disrespectful behavior"
+      },
+      "cowardice": {
+        "favor": -10,
+        "description": "Running from challenges"
+      },
+      "dishonesty": {
+        "favor": -15,
+        "description": "Lying or deceiving others"
+      }
+    }
+  },
+  
+  "rewards": {
+    "RESPECTED": {
+      "passiveAbilities": [
+        "Lightning resistance",
+        "Weather prediction"
+      ],
+      "activeAbilities": [
+        "Minor lightning strike"
+      ]
+    },
+    "CHOSEN": {
+      "passiveAbilities": [
+        "Lightning immunity",
+        "Storm sense",
+        "Leadership aura"
+      ],
+      "activeAbilities": [
+        "Lightning bolt",
+        "Weather control"
+      ]
+    },
+    "CHAMPION": {
+      "passiveAbilities": [
+        "Lightning absorption",
+        "Storm creation",
+        "Divine authority"
+      ],
+      "activeAbilities": [
+        "Thunderstorm summon",
+        "Lightning storm",
+        "Divine intervention"
+      ]
+    }
+  },
+  
+  "specialRules": {
+    "bigThreeBonus": true,
+    "lightningAffinity": true,
+    "weatherMastery": true
+  }
+} 
