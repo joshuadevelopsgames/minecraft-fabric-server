@@ -35,3 +35,9 @@
 /escape
 /kill
 /gamemode creative
+/kill
+/quest clear
+/quest select
+/quest clear
+/quest select
+/gamemode creative Player9

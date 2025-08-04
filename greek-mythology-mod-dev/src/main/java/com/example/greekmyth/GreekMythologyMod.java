@@ -25,11 +25,11 @@ public class GreekMythologyMod implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     
     // Version tracking system
-    public static final String MOD_VERSION = "1.0.153";
-    public static final String BUILD_VERSION_TITLE = "Quest Select Command";
+    public static final String MOD_VERSION = "1.0.154";
+    public static final String BUILD_VERSION_TITLE = "Interactive Quest Selection";
     public static final String BUILD_DATE = "2024-08-04";
-    public static final String BUILD_TIME = "14:25";
-    public static final String BUILD_FEATURES = "Quest Select Command - Added /quest select command to cycle through random quests for testing, allows easy testing of different quest types and gods";
+    public static final String BUILD_TIME = "14:35";
+    public static final String BUILD_FEATURES = "Interactive Quest Selection - Enhanced /quest select command to show available gods and allow choosing specific quests, perfect for targeted testing";
     
     // Soul counting system
     private static final Map<UUID, Integer> playerSoulCounts = new HashMap<>();

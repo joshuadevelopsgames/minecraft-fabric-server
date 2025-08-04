@@ -649,6 +649,60 @@ public class OracleEntity extends IllusionerEntity {
     }
     
     /**
+     * Show available quest options to a player
+     */
+    public void showQuestSelection(ServerPlayerEntity player) {
+        player.sendMessage(Text.literal("§6§l═══════════════════════════════════════").formatted(Formatting.GOLD), false);
+        player.sendMessage(Text.literal("§6§l           QUEST SELECTION").formatted(Formatting.GOLD), false);
+        player.sendMessage(Text.literal("§6§l═══════════════════════════════════════").formatted(Formatting.GOLD), false);
+        player.sendMessage(Text.literal("§7Available Gods:").formatted(Formatting.GRAY), false);
+        
+        God[] gods = God.values();
+        for (int i = 0; i < gods.length; i++) {
+            God god = gods[i];
+            player.sendMessage(Text.literal("§e" + (i + 1) + ". §f" + god.getDisplayName()).formatted(Formatting.YELLOW), false);
+        }
+        
+        player.sendMessage(Text.literal("§6§l═══════════════════════════════════════").formatted(Formatting.GOLD), false);
+        player.sendMessage(Text.literal("§7Use: §e/quest select <god_name>").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7Example: §e/quest select zeus").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§6§l═══════════════════════════════════════").formatted(Formatting.GOLD), false);
+    }
+    
+    /**
+     * Give a specific god's quest to a player
+     */
+    public void giveSpecificGodQuest(ServerPlayerEntity player, String godName) {
+        // Clear any existing quest first
+        if (activeQuests.containsKey(player)) {
+            clearQuest(player);
+        }
+        
+        // Find the god by name (case insensitive)
+        God selectedGod = null;
+        for (God god : God.values()) {
+            if (god.name().toLowerCase().equals(godName.toLowerCase()) || 
+                god.getDisplayName().toLowerCase().equals(godName.toLowerCase())) {
+                selectedGod = god;
+                break;
+            }
+        }
+        
+        if (selectedGod == null) {
+            player.sendMessage(Text.literal("§c❌ Unknown god: " + godName).formatted(Formatting.RED), false);
+            player.sendMessage(Text.literal("§7Use §e/quest select §7to see available gods").formatted(Formatting.GRAY), false);
+            return;
+        }
+        
+        // Give the quest
+        giveGodQuest(player, selectedGod);
+        
+        player.sendMessage(Text.literal("§a✅ Selected " + selectedGod.getDisplayName() + " quest!").formatted(Formatting.GREEN), false);
+        
+        GreekMythologyMod.LOGGER.info("Testing: Gave {} quest to player {}", selectedGod.getDisplayName(), player.getName().getString());
+    }
+    
+    /**
      * Give a random quest to a player (for testing)
      */
     public void giveRandomQuest(ServerPlayerEntity player) {
