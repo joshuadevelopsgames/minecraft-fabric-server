@@ -1,5 +1,3 @@
-/help greekmyth
-/summon minecraft:illusioner
 /gamemode creative
 /tp Player210
 /kill
@@ -41,3 +39,12 @@
 /quest clear
 /quest select
 /gamemode creative Player9
+/gamemode creative
+/kill
+/summon minecraft:illusioner
+/gamemode survival
+/quest clear
+/quest select hephaestus
+/gamemode creative
+/gamemode survival
+/gamemode creative

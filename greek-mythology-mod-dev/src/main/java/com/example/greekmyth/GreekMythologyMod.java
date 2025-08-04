@@ -25,11 +25,11 @@ public class GreekMythologyMod implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     
     // Version tracking system
-    public static final String MOD_VERSION = "1.0.154";
-    public static final String BUILD_VERSION_TITLE = "Interactive Quest Selection";
+    public static final String MOD_VERSION = "1.0.155";
+    public static final String BUILD_VERSION_TITLE = "Removed Prophecy Cooldown Spam";
     public static final String BUILD_DATE = "2024-08-04";
-    public static final String BUILD_TIME = "14:35";
-    public static final String BUILD_FEATURES = "Interactive Quest Selection - Enhanced /quest select command to show available gods and allow choosing specific quests, perfect for targeted testing";
+    public static final String BUILD_TIME = "14:45";
+    public static final String BUILD_FEATURES = "Removed Prophecy Cooldown Spam - Removed annoying 'Return in X seconds for another prophecy' messages, Oracle now only offers quests when available without spam";
     
     // Soul counting system
     private static final Map<UUID, Integer> playerSoulCounts = new HashMap<>();
