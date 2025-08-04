@@ -3,6 +3,9 @@ package com.example.greekmyth.entity;
 import com.example.greekmyth.GreekMythologyMod;
 import com.example.greekmyth.quest.OracleQuest;
 import com.example.greekmyth.quest.QuestReward;
+import com.example.greekmyth.quest.GodQuest;
+import com.example.greekmyth.favor.FavorManager;
+import com.example.greekmyth.favor.God;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -53,7 +56,7 @@ public class OracleEntity extends IllusionerEntity {
     private static final int SACRED_GROUND_CHECK_INTERVAL = 100; // Check every 5 seconds
     
     // Quest system
-    private final Map<net.minecraft.entity.player.PlayerEntity, OracleQuest> activeQuests = new HashMap<>();
+    private final Map<net.minecraft.entity.player.PlayerEntity, GodQuest> activeQuests = new HashMap<>();
     private static final int QUEST_COOLDOWN_TICKS = 12000; // 10 minutes between quests
     
     public OracleEntity(EntityType<? extends IllusionerEntity> entityType, World world) {
@@ -154,13 +157,14 @@ public class OracleEntity extends IllusionerEntity {
         
         if (player instanceof ServerPlayerEntity serverPlayer) {
             // Check if player has an active quest
-            OracleQuest activeQuest = activeQuests.get(player);
+            GodQuest activeQuest = activeQuests.get(player);
             
             if (activeQuest != null && !activeQuest.isCompleted()) {
                 // Show quest progress
                 serverPlayer.sendMessage(Text.literal("§6§l[The Oracle] §r§eYour current quest: " + activeQuest.getTitle()).formatted(Formatting.GOLD), false);
                 serverPlayer.sendMessage(Text.literal("§7Progress: " + activeQuest.getCurrentProgress() + "/" + activeQuest.getTargetAmount()).formatted(Formatting.GRAY), false);
                 serverPlayer.sendMessage(Text.literal("§7" + activeQuest.getDescription()).formatted(Formatting.GRAY), false);
+                serverPlayer.sendMessage(Text.literal("§bReward: " + activeQuest.getFavorReward() + " favor with " + activeQuest.getTargetGod().getDisplayName() + " + " + activeQuest.getXpReward() + " XP").formatted(Formatting.AQUA), false);
             } else if (prophecyCooldown <= 0) {
                 // Give a new prophecy
                 giveProphecy(serverPlayer);
@@ -168,7 +172,7 @@ public class OracleEntity extends IllusionerEntity {
                 
                 // Also give a quest if player doesn't have one
                 if (!activeQuests.containsKey(player)) {
-                    giveQuest(serverPlayer);
+                    giveGodQuest(serverPlayer);
                 }
             } else {
                 // Show cooldown message
@@ -270,7 +274,7 @@ public class OracleEntity extends IllusionerEntity {
             if (player instanceof ServerPlayerEntity serverPlayer) {
                 double distance = this.getPos().distanceTo(player.getPos());
                 if (distance <= 6.0 && !activeQuests.containsKey(player)) {
-                    giveQuest(serverPlayer);
+                    giveGodQuest(serverPlayer);
                     return;
                 }
             }
@@ -372,12 +376,21 @@ public class OracleEntity extends IllusionerEntity {
         }
     }
     
-    private void giveQuest(ServerPlayerEntity player) {
-        // Create a random quest
-        OracleQuest quest = createRandomQuest();
+    private void giveGodQuest(ServerPlayerEntity player) {
+        // Get player's favorite god
+        God favoriteGod = FavorManager.getFavoriteGod(player.getUuid());
+        if (favoriteGod == null) {
+            // If no favorite god, choose a random one
+            God[] gods = God.values();
+            favoriteGod = gods[this.getWorld().getRandom().nextInt(gods.length)];
+        }
+        
+        // Create a god-specific quest
+        GodQuest quest = GodQuest.createGodQuest(favoriteGod, this.getWorld().getRandom());
         activeQuests.put(player, quest);
         
-        // Send quest to player
+        // Send quest to player with god-specific message
+        player.sendMessage(Text.literal("§6§l[The Oracle] §r§e" + favoriteGod.getDisplayName() + " calls to you...").formatted(Formatting.GOLD), false);
         player.sendMessage(quest.getQuestText(), false);
         
         // Play quest sound
@@ -385,51 +398,25 @@ public class OracleEntity extends IllusionerEntity {
             net.minecraft.sound.SoundEvents.ENTITY_VILLAGER_YES, 
             net.minecraft.sound.SoundCategory.NEUTRAL, 1.0f, 1.2f);
         
-        GreekMythologyMod.LOGGER.info("Oracle gave quest to player {}: {}", player.getName().getString(), quest.getTitle());
+        GreekMythologyMod.LOGGER.info("Oracle gave {} quest to player {}: {}", favoriteGod.getDisplayName(), player.getName().getString(), quest.getTitle());
     }
     
-    private OracleQuest createRandomQuest() {
-        Random random = this.getWorld().getRandom();
-        OracleQuest.QuestType[] types = OracleQuest.QuestType.values();
-        OracleQuest.QuestType type = types[random.nextInt(types.length)];
-        
-        switch (type) {
-            case KILL_MOBS:
-                return new OracleQuest("kill_zombies", "Slay the Undead", 
-                    "Defeat 10 zombies to prove your worth", type, 10, 
-                    new QuestReward(QuestReward.RewardType.EXPERIENCE, "Gain 50 experience points", 50));
-            case COLLECT_ITEMS:
-                return new OracleQuest("collect_emeralds", "Gather Wealth", 
-                    "Collect 5 emeralds for the Oracle", type, 5, 
-                    new QuestReward(QuestReward.RewardType.GOLDEN_APPLE, "Receive a golden apple", 1));
-            case EXPLORE_AREA:
-                return new OracleQuest("explore_caves", "Explore the Depths", 
-                    "Find and explore 3 cave systems", type, 3, 
-                    new QuestReward(QuestReward.RewardType.DIAMOND, "Receive a diamond", 1));
-            case CRAFT_ITEMS:
-                return new OracleQuest("craft_torch", "Illuminate the Darkness", 
-                    "Craft 20 torches to light the way", type, 20, 
-                    new QuestReward(QuestReward.RewardType.EMERALD, "Receive 3 emeralds", 3));
-            case FIND_STRUCTURES:
-                return new OracleQuest("find_village", "Seek Civilization", 
-                    "Discover a village for the Oracle", type, 1, 
-                    new QuestReward(QuestReward.RewardType.ENCHANTED_GOLDEN_APPLE, "Receive an enchanted golden apple", 1));
-            default:
-                return new OracleQuest("default_quest", "Oracle's Test", 
-                    "Complete a simple task", OracleQuest.QuestType.KILL_MOBS, 5, 
-                    new QuestReward(QuestReward.RewardType.EXPERIENCE, "Gain 25 experience points", 25));
-        }
-    }
+    // Old quest creation method removed - now using GodQuest.createGodQuest()
     
     // Public method to update quest progress (called from event handlers)
-    public void updateQuestProgress(PlayerEntity player, OracleQuest.QuestType type, int progress) {
-        OracleQuest quest = activeQuests.get(player);
+    public void updateQuestProgress(PlayerEntity player, GodQuest.QuestType type, int progress) {
+        GodQuest quest = activeQuests.get(player);
         if (quest != null && quest.getType() == type && !quest.isCompleted()) {
             quest.updateProgress(progress);
             
             if (quest.isCompleted()) {
-                // Give reward
-                quest.getReward().giveReward(player);
+                // Give favor reward
+                FavorManager.addFavor(player.getUuid(), quest.getTargetGod(), quest.getFavorReward());
+                
+                // Give XP reward
+                if (player instanceof ServerPlayerEntity serverPlayer) {
+                    serverPlayer.addExperience(quest.getXpReward());
+                }
                 
                 // Send completion message
                 if (player instanceof ServerPlayerEntity serverPlayer) {
@@ -439,7 +426,8 @@ public class OracleEntity extends IllusionerEntity {
                 // Remove quest
                 activeQuests.remove(player);
                 
-                GreekMythologyMod.LOGGER.info("Player {} completed Oracle quest: {}", player.getName().getString(), quest.getTitle());
+                GreekMythologyMod.LOGGER.info("Player {} completed {} quest: {}", 
+                    player.getName().getString(), quest.getTargetGod().getDisplayName(), quest.getTitle());
             }
         }
     }

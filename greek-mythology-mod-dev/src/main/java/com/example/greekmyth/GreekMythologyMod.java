@@ -5,6 +5,7 @@ import com.example.greekmyth.entity.GreekEntityTypes;
 import com.example.greekmyth.event.ModEvents;
 import com.example.greekmyth.event.UndeadWarriorEvents;
 import com.example.greekmyth.event.UndeadWarriorSoundEvents;
+import com.example.greekmyth.event.QuestProgressEvents;
 import com.example.greekmyth.favor.FavorManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -24,11 +25,11 @@ public class GreekMythologyMod implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     
     // Version tracking system
-    public static final String MOD_VERSION = "1.0.142";
-    public static final String BUILD_VERSION_TITLE = "Oracle Interaction Fixed";
+    public static final String MOD_VERSION = "1.0.143";
+    public static final String BUILD_VERSION_TITLE = "Oracle Favor-Based Quest System";
     public static final String BUILD_DATE = "2024-08-04";
-    public static final String BUILD_TIME = "11:51";
-    public static final String BUILD_FEATURES = "Oracle entity now responds to player interaction (right-click), Added quest progress display, Added cooldown system for prophecies, Fixed missing getter methods in OracleQuest class";
+    public static final String BUILD_TIME = "12:15";
+    public static final String BUILD_FEATURES = "Oracle now checks player's favorite god and gives god-specific quests, Added 12 unique god quest types with favor and XP rewards, Implemented quest progress tracking system, Enhanced Oracle interaction with favor-based quest selection";
     
     // Soul counting system
     private static final Map<UUID, Integer> playerSoulCounts = new HashMap<>();
@@ -64,6 +65,7 @@ public class GreekMythologyMod implements ModInitializer {
         ModEvents.register();
         UndeadWarriorEvents.register();
         UndeadWarriorSoundEvents.register();
+        QuestProgressEvents.register();
         
         // Register soul death events for soul harvesting
         com.example.greekmyth.event.SoulDeathEvents.register();

@@ -3,6 +3,32 @@
 
 ---
 
+## Version 1.0.143 - Oracle Favor-Based Quest System ===
+- ADDED: Oracle now checks player's favorite god and gives god-specific quests
+- ADDED: 12 unique god quest types with thematic objectives for each Olympian
+- ADDED: Favor and XP rewards for completing Oracle quests
+- ADDED: Quest progress tracking system for all quest types
+- ADDED: GodQuest class with comprehensive quest generation system
+- ADDED: QuestProgressEvents for automatic quest progress tracking
+- IMPROVED: Oracle interaction now provides god-specific quest messages
+- ENHANCED: Quest rewards include both favor points and experience points
+
+God-Specific Quest Types:
+- Zeus: Lightning trials, weather mastery, sky journeys
+- Poseidon: Ocean exploration, sea treasures, temple seeking
+- Hades: Undead slaying, underworld journeys, soul collecting
+- Athena: Wisdom crafting, knowledge seeking, library building
+- Ares: Warrior trials, battlefield running, weapon mastery
+- Apollo: Musical crafting, healing collection, sun temple exploration
+- Artemis: Huntress trials, wilderness exploration, nature collection
+- Hermes: Speed trials, traveler collection, speed item usage
+- Hephaestus: Master crafting, forge building, fire collection
+- Aphrodite: Beauty collection, love crafting, garden building
+- Demeter: Harvest crafting, nature collection, farm building
+- Dionysus: Festival crafting, celebration collection, festival building
+
+The Oracle now provides a much more immersive and thematic quest experience!
+
 ## Version 1.0.142 - Oracle Interaction Fixed ===
 - FIXED: Oracle entity now responds to player interaction (right-click)
 - ADDED: Oracle interaction method that allows players to get prophecies and quests
