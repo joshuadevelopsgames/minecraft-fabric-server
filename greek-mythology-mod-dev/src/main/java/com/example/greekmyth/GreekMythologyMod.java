@@ -25,11 +25,11 @@ public class GreekMythologyMod implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     
     // Version tracking system
-    public static final String MOD_VERSION = "1.0.145";
-    public static final String BUILD_VERSION_TITLE = "Oracle Attack Prevention & Scoreboard System";
+    public static final String MOD_VERSION = "1.0.146";
+    public static final String BUILD_VERSION_TITLE = "Real Scoreboard Implementation";
     public static final String BUILD_DATE = "2024-08-04";
-    public static final String BUILD_TIME = "13:00";
-    public static final String BUILD_FEATURES = "Oracle Attack Prevention & Scoreboard System - Prevented Oracle from attacking players, added scoreboard tracking for quest progress, improved Oracle invulnerability";
+    public static final String BUILD_TIME = "13:15";
+    public static final String BUILD_FEATURES = "Real Scoreboard Implementation - Implemented actual Minecraft scoreboard that appears on the right side of the screen for quest tracking";
     
     // Soul counting system
     private static final Map<UUID, Integer> playerSoulCounts = new HashMap<>();

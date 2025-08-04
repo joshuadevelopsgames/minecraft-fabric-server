@@ -10,3 +10,9 @@
 /give Player520 minecraft:short_grass
 /give Player520 minecraft:short_grass 42
 /gamemode creative
+/gamemode survival
+/give Player206 minecraft:netherite_sword
+/give Player206 minecraft:lightning_rod 8
+/gamemode creative
+/weather thunder
+/gamemode survival

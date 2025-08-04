@@ -732,3 +732,10 @@ The Oracle will now properly respond to player interaction instead of being unre
 - **Feature**: Added QuestScoreboardManager for managing quest scoreboards
 - **Feature**: Integrated scoreboard creation, updates, and removal with quest system
 - **Feature**: Enhanced Oracle invulnerability and protection
+
+## Version 1.0.146 (Latest)
+- **Feature**: Implemented real Minecraft scoreboard that appears on the right side of the screen
+- **Feature**: Scoreboard shows quest title and progress in real-time
+- **Feature**: Scoreboard updates automatically as quest progress changes
+- **Feature**: Scoreboard displays in the SIDEBAR slot for maximum visibility
+- **Feature**: Enhanced quest tracking with visual progress indicator
