@@ -25,11 +25,11 @@ public class GreekMythologyMod implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     
     // Version tracking system
-    public static final String MOD_VERSION = "1.0.143";
-    public static final String BUILD_VERSION_TITLE = "Oracle Favor-Based Quest System";
+    public static final String MOD_VERSION = "1.0.145";
+    public static final String BUILD_VERSION_TITLE = "Oracle Attack Prevention & Scoreboard System";
     public static final String BUILD_DATE = "2024-08-04";
-    public static final String BUILD_TIME = "12:15";
-    public static final String BUILD_FEATURES = "Oracle now checks player's favorite god and gives god-specific quests, Added 12 unique god quest types with favor and XP rewards, Implemented quest progress tracking system, Enhanced Oracle interaction with favor-based quest selection";
+    public static final String BUILD_TIME = "13:00";
+    public static final String BUILD_FEATURES = "Oracle Attack Prevention & Scoreboard System - Prevented Oracle from attacking players, added scoreboard tracking for quest progress, improved Oracle invulnerability";
     
     // Soul counting system
     private static final Map<UUID, Integer> playerSoulCounts = new HashMap<>();

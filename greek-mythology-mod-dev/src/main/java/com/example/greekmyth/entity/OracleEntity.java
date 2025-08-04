@@ -4,8 +4,10 @@ import com.example.greekmyth.GreekMythologyMod;
 import com.example.greekmyth.quest.OracleQuest;
 import com.example.greekmyth.quest.QuestReward;
 import com.example.greekmyth.quest.GodQuest;
+import com.example.greekmyth.quest.QuestScoreboardManager;
 import com.example.greekmyth.favor.FavorManager;
 import com.example.greekmyth.favor.God;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -144,10 +146,47 @@ public class OracleEntity extends IllusionerEntity {
     
     @Override
     public boolean isInvulnerable() {
-        return true; // Oracle is invulnerable
+        return true;
     }
     
-    // Oracle is invulnerable to all damage sources
+    // Prevent Oracle from attacking players
+    @Override
+    public boolean canTarget(LivingEntity target) {
+        return false; // Oracle cannot target any entity
+    }
+    
+    public boolean canAttack(LivingEntity target) {
+        return false; // Oracle cannot attack any entity
+    }
+    
+    public boolean isHostile() {
+        return false; // Oracle is not hostile
+    }
+    
+    public void setTarget(LivingEntity target) {
+        // Do nothing - Oracle should never have a target
+    }
+    
+    public boolean tryAttack(Entity target) {
+        return false; // Oracle should never attack
+    }
+    
+    public boolean damage(DamageSource source, float amount) {
+        // Oracle is invulnerable to all damage
+        return false;
+    }
+    
+    public boolean isPushable() {
+        return false; // Oracle cannot be pushed around
+    }
+    
+    public boolean isFireImmune() {
+        return true; // Oracle is immune to fire
+    }
+    
+    public boolean isImmuneToExplosion() {
+        return true; // Oracle is immune to explosions
+    }
     
     @Override
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
@@ -160,19 +199,23 @@ public class OracleEntity extends IllusionerEntity {
             GodQuest activeQuest = activeQuests.get(player);
             
             if (activeQuest != null && !activeQuest.isCompleted()) {
-                // Show quest progress
+                // Show quest progress with scoreboard info
+                int currentProgress = activeQuest.getCurrentProgress();
                 serverPlayer.sendMessage(Text.literal("§6§l[The Oracle] §r§eYour current quest: " + activeQuest.getTitle()).formatted(Formatting.GOLD), false);
-                serverPlayer.sendMessage(Text.literal("§7Progress: " + activeQuest.getCurrentProgress() + "/" + activeQuest.getTargetAmount()).formatted(Formatting.GRAY), false);
+                serverPlayer.sendMessage(Text.literal("§7Progress: " + currentProgress + "/" + activeQuest.getTargetAmount()).formatted(Formatting.GRAY), false);
                 serverPlayer.sendMessage(Text.literal("§7" + activeQuest.getDescription()).formatted(Formatting.GRAY), false);
                 serverPlayer.sendMessage(Text.literal("§bReward: " + activeQuest.getFavorReward() + " favor with " + activeQuest.getTargetGod().getDisplayName() + " + " + activeQuest.getXpReward() + " XP").formatted(Formatting.AQUA), false);
+                
+                // Show quest progress
+                serverPlayer.sendMessage(Text.literal("§aQuest Progress: " + currentProgress + "/" + activeQuest.getTargetAmount()).formatted(Formatting.GREEN), false);
             } else if (prophecyCooldown <= 0) {
                 // Give a new prophecy
                 giveProphecy(serverPlayer);
                 prophecyCooldown = PROPHECY_COOLDOWN_TICKS;
                 
-                // Also give a quest if player doesn't have one
+                // Offer quest selection if player doesn't have one
                 if (!activeQuests.containsKey(player)) {
-                    giveGodQuest(serverPlayer);
+                    offerQuestSelection(serverPlayer);
                 }
             } else {
                 // Show cooldown message
@@ -274,7 +317,10 @@ public class OracleEntity extends IllusionerEntity {
             if (player instanceof ServerPlayerEntity serverPlayer) {
                 double distance = this.getPos().distanceTo(player.getPos());
                 if (distance <= 6.0 && !activeQuests.containsKey(player)) {
-                    giveGodQuest(serverPlayer);
+                    // Give quest for a random god
+                    God[] gods = God.values();
+                    God randomGod = gods[this.getWorld().getRandom().nextInt(gods.length)];
+                    giveGodQuest(serverPlayer, randomGod);
                     return;
                 }
             }
@@ -376,21 +422,16 @@ public class OracleEntity extends IllusionerEntity {
         }
     }
     
-    private void giveGodQuest(ServerPlayerEntity player) {
-        // Get player's favorite god
-        God favoriteGod = FavorManager.getFavoriteGod(player.getUuid());
-        if (favoriteGod == null) {
-            // If no favorite god, choose a random one
-            God[] gods = God.values();
-            favoriteGod = gods[this.getWorld().getRandom().nextInt(gods.length)];
-        }
-        
-        // Create a god-specific quest
-        GodQuest quest = GodQuest.createGodQuest(favoriteGod, this.getWorld().getRandom());
+    private void giveGodQuest(ServerPlayerEntity player, God selectedGod) {
+        // Create a god-specific quest for the selected god
+        GodQuest quest = GodQuest.createGodQuest(selectedGod, this.getWorld().getRandom());
         activeQuests.put(player, quest);
         
+        // Initialize quest tracking with scoreboard
+        QuestScoreboardManager.createQuestScoreboard(player, quest);
+        
         // Send quest to player with god-specific message
-        player.sendMessage(Text.literal("§6§l[The Oracle] §r§e" + favoriteGod.getDisplayName() + " calls to you...").formatted(Formatting.GOLD), false);
+        player.sendMessage(Text.literal("§6§l[The Oracle] §r§e" + selectedGod.getDisplayName() + " calls to you...").formatted(Formatting.GOLD), false);
         player.sendMessage(quest.getQuestText(), false);
         
         // Play quest sound
@@ -398,7 +439,19 @@ public class OracleEntity extends IllusionerEntity {
             net.minecraft.sound.SoundEvents.ENTITY_VILLAGER_YES, 
             net.minecraft.sound.SoundCategory.NEUTRAL, 1.0f, 1.2f);
         
-        GreekMythologyMod.LOGGER.info("Oracle gave {} quest to player {}: {}", favoriteGod.getDisplayName(), player.getName().getString(), quest.getTitle());
+        GreekMythologyMod.LOGGER.info("Oracle gave {} quest to player {}: {}", selectedGod.getDisplayName(), player.getName().getString(), quest.getTitle());
+    }
+    
+    private void offerQuestSelection(ServerPlayerEntity player) {
+        // For now, give a quest for a random god
+        // In the future, this would open a UI for god selection
+        God[] gods = God.values();
+        God randomGod = gods[this.getWorld().getRandom().nextInt(gods.length)];
+        
+        player.sendMessage(Text.literal("§6§l[The Oracle] §r§eChoose a god to pursue...").formatted(Formatting.GOLD), false);
+        player.sendMessage(Text.literal("§7For now, I will give you a quest for " + randomGod.getDisplayName()).formatted(Formatting.GRAY), false);
+        
+        giveGodQuest(player, randomGod);
     }
     
     // Old quest creation method removed - now using GodQuest.createGodQuest()
@@ -409,6 +462,12 @@ public class OracleEntity extends IllusionerEntity {
         if (quest != null && quest.getType() == type && !quest.isCompleted()) {
             quest.updateProgress(progress);
             
+            // Update scoreboard progress
+            if (player instanceof ServerPlayerEntity serverPlayer) {
+                QuestScoreboardManager.updateQuestProgress(serverPlayer, 
+                    quest.getCurrentProgress(), quest.getTargetAmount());
+            }
+            
             if (quest.isCompleted()) {
                 // Give favor reward
                 FavorManager.addFavor(player.getUuid(), quest.getTargetGod(), quest.getFavorReward());
@@ -416,6 +475,11 @@ public class OracleEntity extends IllusionerEntity {
                 // Give XP reward
                 if (player instanceof ServerPlayerEntity serverPlayer) {
                     serverPlayer.addExperience(quest.getXpReward());
+                }
+                
+                // Remove quest scoreboard
+                if (player instanceof ServerPlayerEntity serverPlayer) {
+                    QuestScoreboardManager.removeQuestScoreboard(serverPlayer);
                 }
                 
                 // Send completion message

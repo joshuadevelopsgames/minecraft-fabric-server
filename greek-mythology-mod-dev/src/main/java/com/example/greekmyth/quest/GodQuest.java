@@ -112,14 +112,10 @@ public class GodQuest {
     }
     
     private static GodQuest createZeusQuest(Random random) {
-        QuestType[] types = {QuestType.KILL_MOBS, QuestType.USE_ITEMS, QuestType.TRAVEL_DISTANCE};
+        QuestType[] types = {QuestType.USE_ITEMS, QuestType.TRAVEL_DISTANCE, QuestType.COLLECT_ITEMS};
         QuestType type = types[random.nextInt(types.length)];
         
         switch (type) {
-            case KILL_MOBS:
-                return new GodQuest("zeus_lightning_kills", "Zeus's Lightning Trial", 
-                    "Defeat 15 mobs using lightning-based weapons to prove your worth to the King of Gods", 
-                    type, 15, God.ZEUS, 25, 100);
             case USE_ITEMS:
                 return new GodQuest("zeus_weather_mastery", "Master of Storms", 
                     "Use 10 lightning-related items to demonstrate your control over Zeus's domain", 
@@ -128,6 +124,10 @@ public class GodQuest {
                 return new GodQuest("zeus_sky_journey", "Journey Through the Skies", 
                     "Travel 1000 blocks to show your dedication to Zeus's realm", 
                     type, 1000, God.ZEUS, 15, 50);
+            case COLLECT_ITEMS:
+                return new GodQuest("zeus_lightning_collector", "Collector of Lightning", 
+                    "Collect 8 lightning and storm-related items to honor Zeus", 
+                    type, 8, God.ZEUS, 25, 100);
             default:
                 return createDefaultQuest(God.ZEUS, random);
         }
@@ -156,14 +156,10 @@ public class GodQuest {
     }
     
     private static GodQuest createHadesQuest(Random random) {
-        QuestType[] types = {QuestType.KILL_MOBS, QuestType.EXPLORE_AREA, QuestType.COLLECT_ITEMS};
+        QuestType[] types = {QuestType.EXPLORE_AREA, QuestType.COLLECT_ITEMS, QuestType.CRAFT_ITEMS};
         QuestType type = types[random.nextInt(types.length)];
         
         switch (type) {
-            case KILL_MOBS:
-                return new GodQuest("hades_undead_slayer", "Lord of the Dead", 
-                    "Defeat 20 undead mobs to prove your worth to Hades", 
-                    type, 20, God.HADES, 25, 100);
             case EXPLORE_AREA:
                 return new GodQuest("hades_underworld_journey", "Journey to the Underworld", 
                     "Explore 3 deep cave systems to honor the God of the Underworld", 
@@ -172,6 +168,10 @@ public class GodQuest {
                 return new GodQuest("hades_soul_collector", "Collector of Souls", 
                     "Collect 12 soul-related items to gain Hades's favor", 
                     type, 12, God.HADES, 30, 125);
+            case CRAFT_ITEMS:
+                return new GodQuest("hades_underworld_craftsman", "Craftsman of the Dead", 
+                    "Craft 15 underworld and death-related items", 
+                    type, 15, God.HADES, 25, 100);
             default:
                 return createDefaultQuest(God.HADES, random);
         }
@@ -244,14 +244,10 @@ public class GodQuest {
     }
     
     private static GodQuest createArtemisQuest(Random random) {
-        QuestType[] types = {QuestType.KILL_MOBS, QuestType.EXPLORE_AREA, QuestType.COLLECT_ITEMS};
+        QuestType[] types = {QuestType.EXPLORE_AREA, QuestType.COLLECT_ITEMS, QuestType.CRAFT_ITEMS};
         QuestType type = types[random.nextInt(types.length)];
         
         switch (type) {
-            case KILL_MOBS:
-                return new GodQuest("artemis_huntress_trial", "Trial of the Huntress", 
-                    "Defeat 18 animals to prove your hunting skills to Artemis", 
-                    type, 18, God.ARTEMIS, 25, 100);
             case EXPLORE_AREA:
                 return new GodQuest("artemis_wilderness_explorer", "Explorer of the Wild", 
                     "Explore 6 forest and wilderness areas", 
@@ -260,6 +256,10 @@ public class GodQuest {
                 return new GodQuest("artemis_nature_collector", "Gatherer of Nature", 
                     "Collect 15 nature-related items to honor Artemis", 
                     type, 15, God.ARTEMIS, 30, 125);
+            case CRAFT_ITEMS:
+                return new GodQuest("artemis_huntress_craftsman", "Craftsman of the Hunt", 
+                    "Craft 12 hunting and wilderness-related items", 
+                    type, 12, God.ARTEMIS, 25, 100);
             default:
                 return createDefaultQuest(God.ARTEMIS, random);
         }

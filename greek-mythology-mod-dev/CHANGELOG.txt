@@ -723,3 +723,12 @@ The Oracle will now properly respond to player interaction instead of being unre
 - **Feature**: Enhanced tooltips show RGB color values for each soul
 - **Feature**: Added SoulDeathEvents for death-based soul harvesting
 - **Fix**: Fixed soul harvesting to be exclusive to Hades Scythe wither effects
+
+## Version 1.0.145 (Latest)
+- **Fix**: Prevented Oracle from attacking players in survival mode
+- **Feature**: Added comprehensive attack prevention methods (canTarget, canAttack, isHostile, etc.)
+- **Feature**: Made Oracle completely invulnerable to all damage sources
+- **Feature**: Implemented scoreboard tracking system for quest progress
+- **Feature**: Added QuestScoreboardManager for managing quest scoreboards
+- **Feature**: Integrated scoreboard creation, updates, and removal with quest system
+- **Feature**: Enhanced Oracle invulnerability and protection
