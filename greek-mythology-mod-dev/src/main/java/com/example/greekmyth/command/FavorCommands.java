@@ -107,6 +107,33 @@ public class FavorCommands {
                         source.sendMessage(Text.literal("§c❌ This command can only be used by players!").formatted(Formatting.RED));
                         return 0;
                     }
+                }))
+            .then(CommandManager.literal("select")
+                .executes(context -> {
+                    ServerCommandSource source = context.getSource();
+                    
+                    try {
+                        ServerPlayerEntity player = source.getPlayerOrThrow();
+                        ServerWorld world = (ServerWorld) player.getWorld();
+                        
+                        // Find the Oracle entity
+                        OracleEntity oracle = OracleEntity.getOracleEntity(world);
+                        
+                        if (oracle == null) {
+                            player.sendMessage(Text.literal("§c❌ No Oracle found in this world!").formatted(Formatting.RED), false);
+                            return 0;
+                        }
+                        
+                        // Give player a random quest for testing
+                        oracle.giveRandomQuest(player);
+                        
+                        player.sendMessage(Text.literal("§a✅ New quest selected!").formatted(Formatting.GREEN), false);
+                        
+                        return 1;
+                    } catch (Exception e) {
+                        source.sendMessage(Text.literal("§c❌ This command can only be used by players!").formatted(Formatting.RED));
+                        return 0;
+                    }
                 })));
         
         GreekMythologyMod.LOGGER.info("Greek Mythology commands registered successfully!");

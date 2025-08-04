@@ -649,6 +649,25 @@ public class OracleEntity extends IllusionerEntity {
     }
     
     /**
+     * Give a random quest to a player (for testing)
+     */
+    public void giveRandomQuest(ServerPlayerEntity player) {
+        // Clear any existing quest first
+        if (activeQuests.containsKey(player)) {
+            clearQuest(player);
+        }
+        
+        // Select a random god
+        God[] gods = God.values();
+        God randomGod = gods[this.getWorld().getRandom().nextInt(gods.length)];
+        
+        // Give the quest
+        giveGodQuest(player, randomGod);
+        
+        GreekMythologyMod.LOGGER.info("Testing: Gave random {} quest to player {}", randomGod.getDisplayName(), player.getName().getString());
+    }
+    
+    /**
      * Get the Oracle entity from the world (for command access)
      */
     public static OracleEntity getOracleEntity(ServerWorld world) {
