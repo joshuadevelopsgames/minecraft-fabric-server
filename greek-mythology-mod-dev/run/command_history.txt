@@ -16,3 +16,7 @@
 /gamemode creative
 /weather thunder
 /gamemode survival
+/weather clear
+/time set day
+/summon wither
+/kill @e

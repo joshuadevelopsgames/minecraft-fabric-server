@@ -45,7 +45,7 @@ public class OracleEntity extends IllusionerEntity {
     };
     
     private int prophecyCooldown = 0;
-    private static final int PROPHECY_COOLDOWN_TICKS = 6000; // 5 minutes
+    private static final int PROPHECY_COOLDOWN_TICKS = 600; // 30 seconds for testing
     
     // Oracle behavior states
     private int behaviorTicks = 0;
@@ -218,10 +218,16 @@ public class OracleEntity extends IllusionerEntity {
                     offerQuestSelection(serverPlayer);
                 }
             } else {
-                // Show cooldown message
+                // Show cooldown message but still offer quests
                 int remainingSeconds = prophecyCooldown / 20;
                 serverPlayer.sendMessage(Text.literal("§6§l[The Oracle] §r§eThe divine forces are still gathering...").formatted(Formatting.GOLD), false);
                 serverPlayer.sendMessage(Text.literal("§7Return in " + remainingSeconds + " seconds for another prophecy.").formatted(Formatting.GRAY), false);
+                
+                // Still offer quests even if prophecy is on cooldown
+                if (!activeQuests.containsKey(player)) {
+                    serverPlayer.sendMessage(Text.literal("§6§l[The Oracle] §r§eBut I can still offer you a quest...").formatted(Formatting.GOLD), false);
+                    offerQuestSelection(serverPlayer);
+                }
             }
             
             // Play interaction sound
