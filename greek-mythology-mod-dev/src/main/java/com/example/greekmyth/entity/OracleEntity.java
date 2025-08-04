@@ -207,16 +207,23 @@ public class OracleEntity extends IllusionerEntity {
                         itemId = itemId.replace("minecraft:", "");
                     }
                     
-                    // Check if this item is required for the quest
+                    // Check if this item is required for the quest (collection quests)
                     String[] requiredItems = activeQuest.getRequiredItems();
-                    if (requiredItems != null) {
+                    if (requiredItems != null && requiredItems.length > 0) {
                         for (String requiredItem : requiredItems) {
                             if (itemId.contains(requiredItem) || requiredItem.contains(itemId)) {
-                                // Valid item for quest turn-in
+                                // Valid item for collection quest turn-in
                                 handleQuestItemTurnIn(serverPlayer, activeQuest, heldItem, requiredItem);
                                 return ActionResult.SUCCESS;
                             }
                         }
+                    }
+                    
+                    // Check if this item is valid for crafting quests
+                    if (activeQuest.getType() == GodQuest.QuestType.CRAFT_ITEMS) {
+                        // For crafting quests, accept any item as a "crafted item" turn-in
+                        handleCraftingQuestTurnIn(serverPlayer, activeQuest, heldItem);
+                        return ActionResult.SUCCESS;
                     }
                 }
                 
@@ -269,6 +276,45 @@ public class OracleEntity extends IllusionerEntity {
         
         // Send success message
         player.sendMessage(Text.literal("§6§l[The Oracle] §r§aYou have offered " + item.getItem().getName().getString() + " to " + quest.getTargetGod().getDisplayName()).formatted(Formatting.GREEN), false);
+        player.sendMessage(Text.literal("§7Quest Progress: " + quest.getCurrentProgress() + "/" + quest.getTargetAmount()).formatted(Formatting.GRAY), false);
+        
+        // Update scoreboard
+        QuestScoreboardManager.updateQuestProgress(player, quest.getCurrentProgress(), quest.getTargetAmount());
+        
+        // Check if quest is completed
+        if (quest.isCompleted()) {
+            // Give rewards
+            FavorManager.addFavor(player.getUuid(), quest.getTargetGod(), quest.getFavorReward());
+            player.addExperience(quest.getXpReward());
+            
+            // Send completion message
+            player.sendMessage(quest.getCompletionText(), false);
+            
+            // Remove quest
+            activeQuests.remove(player);
+            
+            // Remove quest scoreboard
+            QuestScoreboardManager.removeQuestScoreboard(player);
+            
+            GreekMythologyMod.LOGGER.info("Player {} completed {} quest: {}", 
+                player.getName().getString(), quest.getTargetGod().getDisplayName(), quest.getTitle());
+        }
+        
+        // Play success sound
+        this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(), 
+            net.minecraft.sound.SoundEvents.ENTITY_PLAYER_LEVELUP, 
+            net.minecraft.sound.SoundCategory.PLAYERS, 1.0f, 1.2f);
+    }
+    
+    private void handleCraftingQuestTurnIn(ServerPlayerEntity player, GodQuest quest, net.minecraft.item.ItemStack item) {
+        // Remove one item from the player's hand
+        item.decrement(1);
+        
+        // Update quest progress
+        quest.updateProgress(1);
+        
+        // Send success message
+        player.sendMessage(Text.literal("§6§l[The Oracle] §r§aYou have offered your crafted " + item.getItem().getName().getString() + " to " + quest.getTargetGod().getDisplayName()).formatted(Formatting.GREEN), false);
         player.sendMessage(Text.literal("§7Quest Progress: " + quest.getCurrentProgress() + "/" + quest.getTargetAmount()).formatted(Formatting.GRAY), false);
         
         // Update scoreboard

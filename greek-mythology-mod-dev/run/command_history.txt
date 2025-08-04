@@ -23,3 +23,6 @@
 /give Player877 minecraft:iron_ore
 /give Player877 minecraft:iron_ingot
 /kill @n
+/give Player619 paper 64
+/give Player619 leather 64
+/give Player619 minecraft:crafting_table
