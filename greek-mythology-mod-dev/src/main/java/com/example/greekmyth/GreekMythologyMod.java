@@ -25,11 +25,11 @@ public class GreekMythologyMod implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     
     // Version tracking system
-    public static final String MOD_VERSION = "1.0.150";
-    public static final String BUILD_VERSION_TITLE = "Crafting Quest Item Turn-In";
+    public static final String MOD_VERSION = "1.0.151";
+    public static final String BUILD_VERSION_TITLE = "Quest Clear Command";
     public static final String BUILD_DATE = "2024-08-04";
-    public static final String BUILD_TIME = "13:55";
-    public static final String BUILD_FEATURES = "Crafting Quest Item Turn-In - Added ability to turn in crafted items to Oracle for crafting quests, players can now right-click Oracle with any crafted item to progress crafting quests";
+    public static final String BUILD_TIME = "14:05";
+    public static final String BUILD_FEATURES = "Quest Clear Command - Added /quest clear command to clear current quest and get a new one, useful for testing different quest types";
     
     // Soul counting system
     private static final Map<UUID, Integer> playerSoulCounts = new HashMap<>();

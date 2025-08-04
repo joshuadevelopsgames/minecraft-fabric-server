@@ -14,6 +14,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.IllusionerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
@@ -606,5 +607,42 @@ public class OracleEntity extends IllusionerEntity {
                     player.getName().getString(), quest.getTargetGod().getDisplayName(), quest.getTitle());
             }
         }
+    }
+    
+    /**
+     * Clear the active quest for a player
+     */
+    public void clearQuest(PlayerEntity player) {
+        if (activeQuests.containsKey(player)) {
+            GodQuest quest = activeQuests.get(player);
+            activeQuests.remove(player);
+            
+            // Remove quest scoreboard
+            if (player instanceof ServerPlayerEntity serverPlayer) {
+                QuestScoreboardManager.removeQuestScoreboard(serverPlayer);
+            }
+            
+            // Send clear message
+            if (player instanceof ServerPlayerEntity serverPlayer) {
+                serverPlayer.sendMessage(Text.literal("§6§l[The Oracle] §r§eYour quest has been cleared.").formatted(Formatting.GOLD), false);
+                serverPlayer.sendMessage(Text.literal("§7You can now request a new quest.").formatted(Formatting.GRAY), false);
+            }
+            
+            GreekMythologyMod.LOGGER.info("Player {} cleared their quest: {}", 
+                player.getName().getString(), quest.getTitle());
+        }
+    }
+    
+    /**
+     * Get the Oracle entity from the world (for command access)
+     */
+    public static OracleEntity getOracleEntity(ServerWorld world) {
+        // Find Oracle entity by iterating through all loaded entities
+        for (net.minecraft.entity.Entity entity : world.iterateEntities()) {
+            if (entity instanceof OracleEntity oracle) {
+                return oracle;
+            }
+        }
+        return null;
     }
 } 

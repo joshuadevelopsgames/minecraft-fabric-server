@@ -26,3 +26,10 @@
 /give Player619 paper 64
 /give Player619 leather 64
 /give Player619 minecraft:crafting_table
+/greekversion
+/favor
+/help greekmyth
+/greekmyth
+/jail
+/jail Player446 1
+/escape

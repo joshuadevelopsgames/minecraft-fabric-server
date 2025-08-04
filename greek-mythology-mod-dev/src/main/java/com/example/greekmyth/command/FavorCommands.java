@@ -1,6 +1,7 @@
 package com.example.greekmyth.command;
 
 import com.example.greekmyth.GreekMythologyMod;
+import com.example.greekmyth.entity.OracleEntity;
 import com.example.greekmyth.item.GreekItems;
 import com.example.greekmyth.util.InfernoCommandTracker;
 import com.mojang.brigadier.CommandDispatcher;
@@ -8,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
@@ -76,6 +78,36 @@ public class FavorCommands {
                     return 0;
                 }
             }));
+        
+        // Register the /quest clear command
+        dispatcher.register(CommandManager.literal("quest")
+            .then(CommandManager.literal("clear")
+                .executes(context -> {
+                    ServerCommandSource source = context.getSource();
+                    
+                    try {
+                        ServerPlayerEntity player = source.getPlayerOrThrow();
+                        ServerWorld world = (ServerWorld) player.getWorld();
+                        
+                        // Find the Oracle entity
+                        OracleEntity oracle = OracleEntity.getOracleEntity(world);
+                        
+                        if (oracle == null) {
+                            player.sendMessage(Text.literal("§c❌ No Oracle found in this world!").formatted(Formatting.RED), false);
+                            return 0;
+                        }
+                        
+                        // Clear the player's quest
+                        oracle.clearQuest(player);
+                        
+                        player.sendMessage(Text.literal("§a✅ Quest cleared successfully!").formatted(Formatting.GREEN), false);
+                        
+                        return 1;
+                    } catch (Exception e) {
+                        source.sendMessage(Text.literal("§c❌ This command can only be used by players!").formatted(Formatting.RED));
+                        return 0;
+                    }
+                })));
         
         GreekMythologyMod.LOGGER.info("Greek Mythology commands registered successfully!");
     }
