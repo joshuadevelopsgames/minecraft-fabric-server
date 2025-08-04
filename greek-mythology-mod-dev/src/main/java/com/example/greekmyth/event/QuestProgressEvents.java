@@ -121,12 +121,7 @@ public class QuestProgressEvents {
         updateQuestProgress(player, GodQuest.QuestType.FIND_STRUCTURES, 1);
     }
     
-    /**
-     * Track building structures
-     */
-    public static void trackStructureBuilt(ServerPlayerEntity player, String structureType) {
-        updateQuestProgress(player, GodQuest.QuestType.BUILD_STRUCTURES, 1);
-    }
+
     
     /**
      * Track crafting items

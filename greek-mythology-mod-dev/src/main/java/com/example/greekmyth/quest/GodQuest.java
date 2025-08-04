@@ -94,8 +94,7 @@ public class GodQuest {
         CRAFT_ITEMS,
         FIND_STRUCTURES,
         USE_ITEMS,
-        TRAVEL_DISTANCE,
-        BUILD_STRUCTURES
+        TRAVEL_DISTANCE
     }
     
     /**
@@ -199,7 +198,7 @@ public class GodQuest {
     }
     
     private static GodQuest createAthenaQuest(Random random) {
-        QuestType[] types = {QuestType.CRAFT_ITEMS, QuestType.COLLECT_ITEMS, QuestType.BUILD_STRUCTURES};
+        QuestType[] types = {QuestType.CRAFT_ITEMS, QuestType.COLLECT_ITEMS};
         QuestType type = types[random.nextInt(types.length)];
         
         switch (type) {
@@ -211,10 +210,6 @@ public class GodQuest {
                 return new GodQuest("athena_knowledge_seeker", "Seeker of Knowledge", 
                     "Collect 10 knowledge-related items to gain Athena's favor", 
                     type, 10, God.ATHENA, 20, 75);
-            case BUILD_STRUCTURES:
-                return new GodQuest("athena_library_builder", "Temple of Wisdom", 
-                    "Build a library structure to honor the Goddess of Wisdom", 
-                    type, 1, God.ATHENA, 30, 125);
             default:
                 return createDefaultQuest(God.ATHENA, random);
         }
@@ -309,7 +304,7 @@ public class GodQuest {
     }
     
     private static GodQuest createHephaestusQuest(Random random) {
-        QuestType[] types = {QuestType.CRAFT_ITEMS, QuestType.BUILD_STRUCTURES, QuestType.COLLECT_ITEMS};
+        QuestType[] types = {QuestType.CRAFT_ITEMS, QuestType.COLLECT_ITEMS};
         QuestType type = types[random.nextInt(types.length)];
         
         switch (type) {
@@ -317,10 +312,6 @@ public class GodQuest {
                 return new GodQuest("hephaestus_master_craftsman", "Master Craftsman", 
                     "Craft 25 metal and fire-related items", 
                     type, 25, God.HEPHAESTUS, 25, 100);
-            case BUILD_STRUCTURES:
-                return new GodQuest("hephaestus_forge_builder", "Forge of the Gods", 
-                    "Build a forge structure to honor Hephaestus", 
-                    type, 1, God.HEPHAESTUS, 30, 125);
             case COLLECT_ITEMS:
                 return new GodQuest("hephaestus_fire_collector", "Collector of Fire", 
                     "Collect 12 fire and metal-related items. Right-click the Oracle with these items in hand: Iron Ingot, Gold Ingot, Coal, Blaze Rod, Lava Bucket, Redstone, Diamond, Emerald, Lapis Lazuli, Quartz, Obsidian, Netherite Ingot", 
@@ -332,7 +323,7 @@ public class GodQuest {
     }
     
     private static GodQuest createAphroditeQuest(Random random) {
-        QuestType[] types = {QuestType.COLLECT_ITEMS, QuestType.CRAFT_ITEMS, QuestType.BUILD_STRUCTURES};
+        QuestType[] types = {QuestType.COLLECT_ITEMS, QuestType.CRAFT_ITEMS};
         QuestType type = types[random.nextInt(types.length)];
         
         switch (type) {
@@ -344,17 +335,13 @@ public class GodQuest {
                 return new GodQuest("aphrodite_love_craftsman", "Craftsman of Love", 
                     "Craft 15 decorative and beautiful items", 
                     type, 15, God.APHRODITE, 20, 75);
-            case BUILD_STRUCTURES:
-                return new GodQuest("aphrodite_garden_builder", "Garden of Love", 
-                    "Build a beautiful garden structure", 
-                    type, 1, God.APHRODITE, 30, 125);
             default:
                 return createDefaultQuest(God.APHRODITE, random);
         }
     }
     
     private static GodQuest createDemeterQuest(Random random) {
-        QuestType[] types = {QuestType.CRAFT_ITEMS, QuestType.COLLECT_ITEMS, QuestType.BUILD_STRUCTURES};
+        QuestType[] types = {QuestType.CRAFT_ITEMS, QuestType.COLLECT_ITEMS};
         QuestType type = types[random.nextInt(types.length)];
         
         switch (type) {
@@ -366,17 +353,13 @@ public class GodQuest {
                 return new GodQuest("demeter_nature_collector", "Collector of Nature's Bounty", 
                     "Collect 15 farming and nature items", 
                     type, 15, God.DEMETER, 20, 75);
-            case BUILD_STRUCTURES:
-                return new GodQuest("demeter_farm_builder", "Temple of the Harvest", 
-                    "Build a large farm structure", 
-                    type, 1, God.DEMETER, 30, 125);
             default:
                 return createDefaultQuest(God.DEMETER, random);
         }
     }
     
     private static GodQuest createDionysusQuest(Random random) {
-        QuestType[] types = {QuestType.CRAFT_ITEMS, QuestType.COLLECT_ITEMS, QuestType.BUILD_STRUCTURES};
+        QuestType[] types = {QuestType.CRAFT_ITEMS, QuestType.COLLECT_ITEMS};
         QuestType type = types[random.nextInt(types.length)];
         
         switch (type) {
@@ -388,10 +371,6 @@ public class GodQuest {
                 return new GodQuest("dionysus_celebration_collector", "Collector of Celebration", 
                     "Collect 10 celebration-related items", 
                     type, 10, God.DIONYSUS, 20, 75);
-            case BUILD_STRUCTURES:
-                return new GodQuest("dionysus_festival_builder", "Festival Grounds", 
-                    "Build a celebration area", 
-                    type, 1, God.DIONYSUS, 30, 125);
             default:
                 return createDefaultQuest(God.DIONYSUS, random);
         }
