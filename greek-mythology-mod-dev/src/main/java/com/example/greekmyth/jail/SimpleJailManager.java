@@ -66,6 +66,11 @@ public class SimpleJailManager {
         
         // Teleport player to cell center
         BlockPos cellPos = CELL_COORDINATES.get(cellNumber);
+        if (cellPos == null) {
+            GreekMythologyMod.LOGGER.error("No jail cell {} found! Use /setjail {} first.", cellNumber, cellNumber);
+            player.sendMessage(net.minecraft.text.Text.literal("§cJail cell " + cellNumber + " not found! Admin must set it with /setjail " + cellNumber + " first."));
+            return false;
+        }
         Vec3d teleportPos = new Vec3d(cellPos.getX() + 0.5, cellPos.getY() + 1, cellPos.getZ() + 0.5);
         player.teleport(teleportPos.x, teleportPos.y, teleportPos.z, false);
         

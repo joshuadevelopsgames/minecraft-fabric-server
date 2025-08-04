@@ -2,7 +2,7 @@ package com.example.greekmyth.item;
 
 import com.example.greekmyth.GreekMythologyMod;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
+import net.minecraft.entity.projectile.thrown.EnderPearlEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
@@ -20,6 +20,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 
 public class InfernoPearlItem extends Item {
     
@@ -30,6 +31,8 @@ public class InfernoPearlItem extends Item {
 
     @Override
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
+        GreekMythologyMod.LOGGER.info("INFERNO PEARL DEBUG: use() method called by {} in hand {}", user.getName().getString(), hand.name());
+        
         ItemStack itemStack = user.getStackInHand(hand);
         
         // EXACT copy of vanilla ender pearl use method
@@ -39,44 +42,10 @@ public class InfernoPearlItem extends Item {
         user.incrementStat(Stats.USED.getOrCreateStat(this));
         
         if (!world.isClient()) {
-            // Create ThrownItemEntity with inferno pearl item for maximum visibility
-            ThrownItemEntity infernoPearl = new ThrownItemEntity(world, user) {
-                @Override
-                protected void onCollision(HitResult hitResult) {
-                    // Custom collision logic - no teleportation, just corruption
-                    
-                    if (!this.getWorld().isClient) {
-                        BlockPos impactPos = BlockPos.ofFloored(hitResult.getPos());
-                        
-                        // Play impact sound
-                        this.getWorld().playSound(null, impactPos, SoundEvents.ENTITY_GENERIC_EXPLODE, 
-                            SoundCategory.NEUTRAL, 1.0F, 1.0F);
-                        
-                        // Create fire particles
-                        ServerWorld serverWorld = (ServerWorld) this.getWorld();
-                        for (int i = 0; i < 20; i++) {
-                            serverWorld.spawnParticles(ParticleTypes.FLAME, 
-                                impactPos.getX() + this.random.nextDouble() - 0.5,
-                                impactPos.getY() + 1 + this.random.nextDouble(),
-                                impactPos.getZ() + this.random.nextDouble() - 0.5,
-                                1, 0, 0, 0, 0.1);
-                        }
-                        
-                        // Corrupt the area with crimson forest
-                        corruptArea(this.getWorld(), impactPos);
-                        
-                        GreekMythologyMod.LOGGER.info("INFERNO PEARL: Impact at {} - corrupting area", impactPos);
-                    }
-                    
-                    // Remove the entity
-                    this.discard();
-                }
-            };
+            // Use EnderPearlEntity for guaranteed client-side visibility
+            EnderPearlEntity infernoPearl = new EnderPearlEntity(world, user, itemStack.copy());
             
-            // Set the inferno pearl item to be thrown (this makes it visible!)
-            infernoPearl.setItem(itemStack.copy());
-            
-            // Use ender pearl velocity for proper arc
+            // Override the collision behavior
             infernoPearl.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
             world.spawnEntity(infernoPearl);
             
@@ -88,7 +57,7 @@ public class InfernoPearlItem extends Item {
             itemStack.decrement(1);
         }
         
-        user.getItemCooldownManager().set(this, 20);
+        user.getItemCooldownManager().set(this.asItem(), 20);
         return ActionResult.SUCCESS;
     }
     

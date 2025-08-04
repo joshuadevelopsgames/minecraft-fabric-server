@@ -92,6 +92,10 @@ public class TartarusJailManager {
         
         // Teleport player to cell center in Tartarus
         BlockPos cellPos = CELL_COORDINATES.get(cellNumber);
+        if (cellPos == null) {
+            GreekMythologyMod.LOGGER.error("No jail cell {} found! Use /setjail {} first.", cellNumber, cellNumber);
+            return false;
+        }
         Vec3d teleportPos = new Vec3d(cellPos.getX() + 0.5, cellPos.getY() + 1, cellPos.getZ() + 0.5);
         player.teleport(tartarus, teleportPos.x, teleportPos.y, teleportPos.z, java.util.Set.of(), player.getYaw(), player.getPitch(), false);
         
@@ -225,7 +229,7 @@ public class TartarusJailManager {
         // Update the cell coordinates
         CELL_COORDINATES.put(cellNumber, playerPos);
         
-        // Create or update admin chest for this cell
+        // Create or update admin chest for this cell in Tartarus
         ServerWorld tartarus = player.getServer().getWorld(TARTARUS_DIMENSION);
         if (tartarus != null) {
             BlockPos chestPos = ADMIN_CHEST_COORDINATES.get(cellNumber);
@@ -235,10 +239,10 @@ public class TartarusJailManager {
                 ADMIN_CHEST_COORDINATES.put(cellNumber, chestPos);
             }
             
-            // Ensure chest exists
+            // Ensure chest exists in Tartarus
             if (tartarus.getBlockState(chestPos).getBlock() != Blocks.CHEST) {
                 tartarus.setBlockState(chestPos, Blocks.CHEST.getDefaultState());
-                GreekMythologyMod.LOGGER.info("Created admin chest for cell {} at {}", cellNumber, chestPos);
+                GreekMythologyMod.LOGGER.info("Created admin chest for cell {} at {} in Tartarus", cellNumber, chestPos);
             }
         }
         

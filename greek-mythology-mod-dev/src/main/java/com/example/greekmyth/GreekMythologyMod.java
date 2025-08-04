@@ -345,7 +345,7 @@ public class GreekMythologyMod implements ModInitializer {
         
         // Version Info
         source.sendMessage(net.minecraft.text.Text.literal("📋 VERSION INFO").formatted(net.minecraft.util.Formatting.YELLOW, net.minecraft.util.Formatting.BOLD));
-        source.sendMessage(net.minecraft.text.Text.literal("• Mod Version: 1.0.40").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• Mod Version: 1.0.99").formatted(net.minecraft.util.Formatting.WHITE));
         source.sendMessage(net.minecraft.text.Text.literal("• Minecraft Version: 1.21.8").formatted(net.minecraft.util.Formatting.WHITE));
         source.sendMessage(net.minecraft.text.Text.literal("• Fabric API: 0.129.0").formatted(net.minecraft.util.Formatting.WHITE));
         source.sendMessage(net.minecraft.text.Text.literal("").formatted(net.minecraft.util.Formatting.GOLD));

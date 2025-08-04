@@ -184,7 +184,6 @@ public class SoulHarvester {
                 soulItem.toString(), entityType.toString(), dropChance * 100);
             
             // Spawn soul particles at entity's position
-            Vec3d position = entity.getPos();
             for (int i = 0; i < 10; i++) {
                 double x = position.x + (random.nextDouble() - 0.5) * 2;
                 double y = position.y + random.nextDouble() * 2;
