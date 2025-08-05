@@ -1,11 +1,3 @@
-/gamemode creative
-/tp Player210
-/kill
-/gamemode survival
-/give Player520 apple
-/give Player520 vine
-/give Player520 minecraft:tall_grass
-/give Player520 minecraft:short_grass
 /give Player520 minecraft:short_grass 42
 /gamemode creative
 /gamemode survival
@@ -48,3 +40,11 @@
 /gamemode creative
 /gamemode survival
 /gamemode creative
+/quest clear
+/visit nether
+/visit world
+/kill
+/clear
+/kill
+/difficulty hard
+/summon minecraft:illusioner
