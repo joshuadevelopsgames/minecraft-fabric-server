@@ -62,6 +62,9 @@ public class OracleEntity extends IllusionerEntity {
     private final Map<net.minecraft.entity.player.PlayerEntity, GodQuest> activeQuests = new HashMap<>();
     private static final int QUEST_COOLDOWN_TICKS = 12000; // 10 minutes between quests
     
+    // Oracle specialization
+    private God specializedGod = null; // null means general Oracle, specific God means specialized
+    
     public OracleEntity(EntityType<? extends IllusionerEntity> entityType, World world) {
         super(entityType, world);
         this.setCustomName(Text.literal("The Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
@@ -196,6 +199,89 @@ public class OracleEntity extends IllusionerEntity {
         }
         
         if (player instanceof ServerPlayerEntity serverPlayer) {
+            // Check if player is holding an Oracle tag item
+            if (hand == Hand.MAIN_HAND) {
+                net.minecraft.item.ItemStack heldItem = player.getMainHandStack();
+                if (!heldItem.isEmpty()) {
+                    String itemId = heldItem.getItem().toString().toLowerCase();
+                    
+                    // Check if it's an Oracle tag item
+                    if (itemId.contains("zeus_oracle_tag")) {
+                        specializedGod = God.ZEUS;
+                        heldItem.decrement(1);
+                        serverPlayer.sendMessage(Text.literal("§e§l[The Oracle] §r§aThis Oracle now serves Zeus!").formatted(Formatting.GREEN), false);
+                        this.setCustomName(Text.literal("§e§lZeus Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
+                        return ActionResult.SUCCESS;
+                    } else if (itemId.contains("poseidon_oracle_tag")) {
+                        specializedGod = God.POSEIDON;
+                        heldItem.decrement(1);
+                        serverPlayer.sendMessage(Text.literal("§b§l[The Oracle] §r§aThis Oracle now serves Poseidon!").formatted(Formatting.GREEN), false);
+                        this.setCustomName(Text.literal("§b§lPoseidon Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
+                        return ActionResult.SUCCESS;
+                    } else if (itemId.contains("hades_oracle_tag")) {
+                        specializedGod = God.HADES;
+                        heldItem.decrement(1);
+                        serverPlayer.sendMessage(Text.literal("§5§l[The Oracle] §r§aThis Oracle now serves Hades!").formatted(Formatting.GREEN), false);
+                        this.setCustomName(Text.literal("§5§lHades Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
+                        return ActionResult.SUCCESS;
+                    } else if (itemId.contains("ares_oracle_tag")) {
+                        specializedGod = God.ARES;
+                        heldItem.decrement(1);
+                        serverPlayer.sendMessage(Text.literal("§c§l[The Oracle] §r§aThis Oracle now serves Ares!").formatted(Formatting.GREEN), false);
+                        this.setCustomName(Text.literal("§c§lAres Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
+                        return ActionResult.SUCCESS;
+                    } else if (itemId.contains("athena_oracle_tag")) {
+                        specializedGod = God.ATHENA;
+                        heldItem.decrement(1);
+                        serverPlayer.sendMessage(Text.literal("§7§l[The Oracle] §r§aThis Oracle now serves Athena!").formatted(Formatting.GREEN), false);
+                        this.setCustomName(Text.literal("§7§lAthena Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
+                        return ActionResult.SUCCESS;
+                    } else if (itemId.contains("hephaestus_oracle_tag")) {
+                        specializedGod = God.HEPHAESTUS;
+                        heldItem.decrement(1);
+                        serverPlayer.sendMessage(Text.literal("§6§l[The Oracle] §r§aThis Oracle now serves Hephaestus!").formatted(Formatting.GREEN), false);
+                        this.setCustomName(Text.literal("§6§lHephaestus Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
+                        return ActionResult.SUCCESS;
+                    } else if (itemId.contains("apollo_oracle_tag")) {
+                        specializedGod = God.APOLLO;
+                        heldItem.decrement(1);
+                        serverPlayer.sendMessage(Text.literal("§e§l[The Oracle] §r§aThis Oracle now serves Apollo!").formatted(Formatting.GREEN), false);
+                        this.setCustomName(Text.literal("§e§lApollo Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
+                        return ActionResult.SUCCESS;
+                    } else if (itemId.contains("artemis_oracle_tag")) {
+                        specializedGod = God.ARTEMIS;
+                        heldItem.decrement(1);
+                        serverPlayer.sendMessage(Text.literal("§a§l[The Oracle] §r§aThis Oracle now serves Artemis!").formatted(Formatting.GREEN), false);
+                        this.setCustomName(Text.literal("§a§lArtemis Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
+                        return ActionResult.SUCCESS;
+                    } else if (itemId.contains("hermes_oracle_tag")) {
+                        specializedGod = God.HERMES;
+                        heldItem.decrement(1);
+                        serverPlayer.sendMessage(Text.literal("§b§l[The Oracle] §r§aThis Oracle now serves Hermes!").formatted(Formatting.GREEN), false);
+                        this.setCustomName(Text.literal("§b§lHermes Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
+                        return ActionResult.SUCCESS;
+                    } else if (itemId.contains("dionysus_oracle_tag")) {
+                        specializedGod = God.DIONYSUS;
+                        heldItem.decrement(1);
+                        serverPlayer.sendMessage(Text.literal("§d§l[The Oracle] §r§aThis Oracle now serves Dionysus!").formatted(Formatting.GREEN), false);
+                        this.setCustomName(Text.literal("§d§lDionysus Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
+                        return ActionResult.SUCCESS;
+                    } else if (itemId.contains("aphrodite_oracle_tag")) {
+                        specializedGod = God.APHRODITE;
+                        heldItem.decrement(1);
+                        serverPlayer.sendMessage(Text.literal("§d§l[The Oracle] §r§aThis Oracle now serves Aphrodite!").formatted(Formatting.GREEN), false);
+                        this.setCustomName(Text.literal("§d§lAphrodite Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
+                        return ActionResult.SUCCESS;
+                    } else if (itemId.contains("demeter_oracle_tag")) {
+                        specializedGod = God.DEMETER;
+                        heldItem.decrement(1);
+                        serverPlayer.sendMessage(Text.literal("§6§l[The Oracle] §r§aThis Oracle now serves Demeter!").formatted(Formatting.GREEN), false);
+                        this.setCustomName(Text.literal("§6§lDemeter Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
+                        return ActionResult.SUCCESS;
+
+                    }
+                }
+            }
             // Check if player has an active quest
             GodQuest activeQuest = activeQuests.get(player);
             
@@ -566,15 +652,30 @@ public class OracleEntity extends IllusionerEntity {
     }
     
     private void offerQuestSelection(ServerPlayerEntity player) {
-        // For now, give a quest for a random god
-        // In the future, this would open a UI for god selection
-        God[] gods = God.values();
-        God randomGod = gods[this.getWorld().getRandom().nextInt(gods.length)];
-        
-        player.sendMessage(Text.literal("§6§l[The Oracle] §r§eChoose a god to pursue...").formatted(Formatting.GOLD), false);
-        player.sendMessage(Text.literal("§7For now, I will give you a quest for " + randomGod.getDisplayName()).formatted(Formatting.GRAY), false);
-        
-        giveGodQuest(player, randomGod);
+        if (specializedGod != null) {
+            // This Oracle is specialized for a specific god
+            player.sendMessage(Text.literal("§6§l[The Oracle] §r§eThis Oracle serves " + specializedGod.getDisplayName() + ".").formatted(Formatting.GOLD), false);
+            player.sendMessage(Text.literal("§7I can offer you quests from " + specializedGod.getDisplayName() + ".").formatted(Formatting.GRAY), false);
+            giveGodQuest(player, specializedGod);
+        } else {
+            // General Oracle - show all options
+            player.sendMessage(Text.literal("§6§l[The Oracle] §r§eChoose your path...").formatted(Formatting.GOLD), false);
+            player.sendMessage(Text.literal("§7Available gods for quests:").formatted(Formatting.GRAY), false);
+            player.sendMessage(Text.literal("§e• Zeus - Lightning and Thunder").formatted(Formatting.YELLOW), false);
+            player.sendMessage(Text.literal("§b• Poseidon - Oceans and Storms").formatted(Formatting.AQUA), false);
+            player.sendMessage(Text.literal("§5• Hades - Underworld and Death").formatted(Formatting.LIGHT_PURPLE), false);
+            player.sendMessage(Text.literal("§c• Ares - War and Battle").formatted(Formatting.RED), false);
+            player.sendMessage(Text.literal("§7• Athena - Wisdom and Strategy").formatted(Formatting.GRAY), false);
+            player.sendMessage(Text.literal("§6• Hephaestus - Fire and Forge").formatted(Formatting.GOLD), false);
+            player.sendMessage(Text.literal("§e• Apollo - Sun and Light").formatted(Formatting.YELLOW), false);
+            player.sendMessage(Text.literal("§a• Artemis - Nature and Hunt").formatted(Formatting.GREEN), false);
+            player.sendMessage(Text.literal("§b• Hermes - Speed and Messenger").formatted(Formatting.AQUA), false);
+            player.sendMessage(Text.literal("§d• Dionysus - Wine and Festival").formatted(Formatting.LIGHT_PURPLE), false);
+            player.sendMessage(Text.literal("§d• Aphrodite - Love and Beauty").formatted(Formatting.LIGHT_PURPLE), false);
+            player.sendMessage(Text.literal("§6• Demeter - Agriculture").formatted(Formatting.GOLD), false);
+
+            player.sendMessage(Text.literal("§7Use /quest select <god> to choose a specific quest.").formatted(Formatting.GRAY), false);
+        }
     }
     
     // Old quest creation method removed - now using GodQuest.createGodQuest()

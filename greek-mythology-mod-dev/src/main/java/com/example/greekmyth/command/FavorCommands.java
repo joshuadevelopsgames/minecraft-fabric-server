@@ -198,6 +198,107 @@ public class FavorCommands {
                 }
             }));
         
+        // Register the /tag command to give Oracle tags
+        dispatcher.register(CommandManager.literal("tag")
+            .then(CommandManager.argument("god", StringArgumentType.string())
+                .executes(context -> {
+                    ServerCommandSource source = context.getSource();
+                    
+                    try {
+                        ServerPlayerEntity player = source.getPlayerOrThrow();
+                        String godName = StringArgumentType.getString(context, "god").toLowerCase();
+                        
+                        ItemStack tagItem = null;
+                        String displayName = "";
+                        String color = "";
+                        
+                        // Determine which tag to give based on god name
+                        switch (godName) {
+                            case "zeus":
+                                tagItem = new ItemStack(GreekItems.ZEUS_ORACLE_TAG);
+                                displayName = "§e§lZeus Oracle Tag";
+                                color = "§e";
+                                break;
+                            case "poseidon":
+                                tagItem = new ItemStack(GreekItems.POSEIDON_ORACLE_TAG);
+                                displayName = "§b§lPoseidon Oracle Tag";
+                                color = "§b";
+                                break;
+                            case "hades":
+                                tagItem = new ItemStack(GreekItems.HADES_ORACLE_TAG);
+                                displayName = "§5§lHades Oracle Tag";
+                                color = "§5";
+                                break;
+                            case "ares":
+                                tagItem = new ItemStack(GreekItems.ARES_ORACLE_TAG);
+                                displayName = "§c§lAres Oracle Tag";
+                                color = "§c";
+                                break;
+                            case "athena":
+                                tagItem = new ItemStack(GreekItems.ATHENA_ORACLE_TAG);
+                                displayName = "§7§lAthena Oracle Tag";
+                                color = "§7";
+                                break;
+                            case "hephaestus":
+                                tagItem = new ItemStack(GreekItems.HEPHAESTUS_ORACLE_TAG);
+                                displayName = "§6§lHephaestus Oracle Tag";
+                                color = "§6";
+                                break;
+                            case "apollo":
+                                tagItem = new ItemStack(GreekItems.APOLLO_ORACLE_TAG);
+                                displayName = "§e§lApollo Oracle Tag";
+                                color = "§e";
+                                break;
+                            case "artemis":
+                                tagItem = new ItemStack(GreekItems.ARTEMIS_ORACLE_TAG);
+                                displayName = "§a§lArtemis Oracle Tag";
+                                color = "§a";
+                                break;
+                            case "hermes":
+                                tagItem = new ItemStack(GreekItems.HERMES_ORACLE_TAG);
+                                displayName = "§b§lHermes Oracle Tag";
+                                color = "§b";
+                                break;
+                            case "dionysus":
+                                tagItem = new ItemStack(GreekItems.DIONYSUS_ORACLE_TAG);
+                                displayName = "§d§lDionysus Oracle Tag";
+                                color = "§d";
+                                break;
+                            case "aphrodite":
+                                tagItem = new ItemStack(GreekItems.APHRODITE_ORACLE_TAG);
+                                displayName = "§d§lAphrodite Oracle Tag";
+                                color = "§d";
+                                break;
+                            case "demeter":
+                                tagItem = new ItemStack(GreekItems.DEMETER_ORACLE_TAG);
+                                displayName = "§6§lDemeter Oracle Tag";
+                                color = "§6";
+                                break;
+
+                            default:
+                                player.sendMessage(Text.literal("§c❌ Unknown god: " + godName).formatted(Formatting.RED), false);
+                                player.sendMessage(Text.literal("§7Available gods: zeus, poseidon, hades, ares, athena, hephaestus, apollo, artemis, hermes, dionysus, aphrodite, demeter").formatted(Formatting.GRAY), false);
+                                return 0;
+                        }
+                        
+                        // Note: Custom name will be set by the item itself
+                        
+                        // Give the item to the player
+                        player.getInventory().insertStack(tagItem);
+                        
+                        player.sendMessage(Text.literal(color + "✅ You received a " + displayName + color + "!").formatted(Formatting.GREEN), false);
+                        player.sendMessage(Text.literal("§7Right-click an Oracle with this tag to make it serve " + godName + ".").formatted(Formatting.GRAY), false);
+                        
+                        GreekMythologyMod.LOGGER.info("TAG COMMAND: Player {} received Oracle tag for god: {}", 
+                            player.getName().getString(), godName);
+                        
+                        return 1;
+                    } catch (Exception e) {
+                        source.sendMessage(Text.literal("§c❌ This command can only be used by players!").formatted(Formatting.RED));
+                        return 0;
+                    }
+                })));
+        
         GreekMythologyMod.LOGGER.info("Greek Mythology commands registered successfully!");
     }
 }

@@ -76,6 +76,21 @@ public class GreekItems {
     public static final Identifier BREEZE_SOUL_ID = Identifier.of(GreekMythologyMod.MOD_ID, "breeze_soul");
     // ILLUSIONER_SOUL_ID removed - now functions as Oracle mob
     
+    // Oracle Tag Items
+    public static final Identifier ZEUS_ORACLE_TAG_ID = Identifier.of(GreekMythologyMod.MOD_ID, "zeus_oracle_tag");
+    public static final Identifier POSEIDON_ORACLE_TAG_ID = Identifier.of(GreekMythologyMod.MOD_ID, "poseidon_oracle_tag");
+    public static final Identifier HADES_ORACLE_TAG_ID = Identifier.of(GreekMythologyMod.MOD_ID, "hades_oracle_tag");
+    public static final Identifier ARES_ORACLE_TAG_ID = Identifier.of(GreekMythologyMod.MOD_ID, "ares_oracle_tag");
+    public static final Identifier ATHENA_ORACLE_TAG_ID = Identifier.of(GreekMythologyMod.MOD_ID, "athena_oracle_tag");
+    public static final Identifier HEPHAESTUS_ORACLE_TAG_ID = Identifier.of(GreekMythologyMod.MOD_ID, "hephaestus_oracle_tag");
+    public static final Identifier APOLLO_ORACLE_TAG_ID = Identifier.of(GreekMythologyMod.MOD_ID, "apollo_oracle_tag");
+    public static final Identifier ARTEMIS_ORACLE_TAG_ID = Identifier.of(GreekMythologyMod.MOD_ID, "artemis_oracle_tag");
+    public static final Identifier HERMES_ORACLE_TAG_ID = Identifier.of(GreekMythologyMod.MOD_ID, "hermes_oracle_tag");
+    public static final Identifier DIONYSUS_ORACLE_TAG_ID = Identifier.of(GreekMythologyMod.MOD_ID, "dionysus_oracle_tag");
+    public static final Identifier APHRODITE_ORACLE_TAG_ID = Identifier.of(GreekMythologyMod.MOD_ID, "aphrodite_oracle_tag");
+    public static final Identifier DEMETER_ORACLE_TAG_ID = Identifier.of(GreekMythologyMod.MOD_ID, "demeter_oracle_tag");
+
+    
     public static Item ZEUS_BOLT;
     public static Item POSEIDON_TRIDENT;
     public static Item HADES_SCYTHE;
@@ -140,6 +155,21 @@ public class GreekItems {
     public static Item BREEZE_SOUL;
     // ILLUSIONER_SOUL removed - now functions as Oracle mob
     
+    // Oracle Tag Items
+    public static Item ZEUS_ORACLE_TAG;
+    public static Item POSEIDON_ORACLE_TAG;
+    public static Item HADES_ORACLE_TAG;
+    public static Item ARES_ORACLE_TAG;
+    public static Item ATHENA_ORACLE_TAG;
+    public static Item HEPHAESTUS_ORACLE_TAG;
+    public static Item APOLLO_ORACLE_TAG;
+    public static Item ARTEMIS_ORACLE_TAG;
+    public static Item HERMES_ORACLE_TAG;
+    public static Item DIONYSUS_ORACLE_TAG;
+    public static Item APHRODITE_ORACLE_TAG;
+    public static Item DEMETER_ORACLE_TAG;
+
+    
     // Called from mod initializer to ensure this class is loaded.
     public static void init() {
         // Zeus Bolt
@@ -191,6 +221,9 @@ public class GreekItems {
         
         // Register Soul Items
         registerSoulItems();
+        
+        // Register Oracle Tag Items
+        registerOracleTagItems();
     }
     
     private static void registerSoulItems() {
@@ -338,5 +371,59 @@ public class GreekItems {
             case "illusioner": return net.minecraft.entity.EntityType.ILLUSIONER;
             default: return net.minecraft.entity.EntityType.ZOMBIE; // Fallback
         }
+    }
+    
+    private static void registerOracleTagItems() {
+        // Zeus Oracle Tag (Yellow - Lightning)
+        ZEUS_ORACLE_TAG = Registry.register(Registries.ITEM, ZEUS_ORACLE_TAG_ID,
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+        
+        // Poseidon Oracle Tag (Blue - Water)
+        POSEIDON_ORACLE_TAG = Registry.register(Registries.ITEM, POSEIDON_ORACLE_TAG_ID,
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+        
+        // Hades Oracle Tag (Purple - Underworld)
+        HADES_ORACLE_TAG = Registry.register(Registries.ITEM, HADES_ORACLE_TAG_ID,
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+        
+        // Ares Oracle Tag (Red - War)
+        ARES_ORACLE_TAG = Registry.register(Registries.ITEM, ARES_ORACLE_TAG_ID,
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+        
+        // Athena Oracle Tag (Gray - Wisdom)
+        ATHENA_ORACLE_TAG = Registry.register(Registries.ITEM, ATHENA_ORACLE_TAG_ID,
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+        
+        // Hephaestus Oracle Tag (Orange - Fire/Forge)
+        HEPHAESTUS_ORACLE_TAG = Registry.register(Registries.ITEM, HEPHAESTUS_ORACLE_TAG_ID,
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+        
+        // Apollo Oracle Tag (Gold - Sun/Light)
+        APOLLO_ORACLE_TAG = Registry.register(Registries.ITEM, APOLLO_ORACLE_TAG_ID,
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+        
+        // Artemis Oracle Tag (Green - Nature/Hunt)
+        ARTEMIS_ORACLE_TAG = Registry.register(Registries.ITEM, ARTEMIS_ORACLE_TAG_ID,
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+        
+        // Hermes Oracle Tag (Cyan - Speed/Messenger)
+        HERMES_ORACLE_TAG = Registry.register(Registries.ITEM, HERMES_ORACLE_TAG_ID,
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+        
+        // Dionysus Oracle Tag (Pink - Wine/Festival)
+        DIONYSUS_ORACLE_TAG = Registry.register(Registries.ITEM, DIONYSUS_ORACLE_TAG_ID,
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+        
+        // Aphrodite Oracle Tag (Magenta - Love/Beauty)
+        APHRODITE_ORACLE_TAG = Registry.register(Registries.ITEM, APHRODITE_ORACLE_TAG_ID,
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+        
+        // Demeter Oracle Tag (Brown - Agriculture)
+        DEMETER_ORACLE_TAG = Registry.register(Registries.ITEM, DEMETER_ORACLE_TAG_ID,
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+        
+
+        
+        GreekMythologyMod.LOGGER.info("Registered 12 Oracle Tag items for god-specific Oracle tagging");
     }
 } 
