@@ -89,6 +89,12 @@ public class GreekItems {
     public static final Identifier DIONYSUS_ORACLE_TAG_ID = Identifier.of(GreekMythologyMod.MOD_ID, "dionysus_oracle_tag");
     public static final Identifier APHRODITE_ORACLE_TAG_ID = Identifier.of(GreekMythologyMod.MOD_ID, "aphrodite_oracle_tag");
     public static final Identifier DEMETER_ORACLE_TAG_ID = Identifier.of(GreekMythologyMod.MOD_ID, "demeter_oracle_tag");
+    
+    // Power Stick for zone protection
+    public static final Identifier POWER_STICK_ID = Identifier.of(GreekMythologyMod.MOD_ID, "power_stick");
+    
+    // No PvP Stick for safe zones
+    public static final Identifier NO_PVP_STICK_ID = Identifier.of(GreekMythologyMod.MOD_ID, "no_pvp_stick");
 
     
     public static Item ZEUS_BOLT;
@@ -168,6 +174,12 @@ public class GreekItems {
     public static Item DIONYSUS_ORACLE_TAG;
     public static Item APHRODITE_ORACLE_TAG;
     public static Item DEMETER_ORACLE_TAG;
+    
+    // Power Stick for zone protection
+    public static Item POWER_STICK;
+    
+    // No PvP Stick for safe zones
+    public static Item NO_PVP_STICK;
 
     
     // Called from mod initializer to ensure this class is loaded.
@@ -224,6 +236,12 @@ public class GreekItems {
         
         // Register Oracle Tag Items
         registerOracleTagItems();
+        
+        // Register Power Stick
+        registerPowerStick();
+        
+        // Register No PvP Stick
+        registerNoPvpStick();
     }
     
     private static void registerSoulItems() {
@@ -376,54 +394,82 @@ public class GreekItems {
     private static void registerOracleTagItems() {
         // Zeus Oracle Tag (Yellow - Lightning)
         ZEUS_ORACLE_TAG = Registry.register(Registries.ITEM, ZEUS_ORACLE_TAG_ID,
-            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)
+                .registryKey(RegistryKey.of(RegistryKeys.ITEM, ZEUS_ORACLE_TAG_ID))));
         
         // Poseidon Oracle Tag (Blue - Water)
         POSEIDON_ORACLE_TAG = Registry.register(Registries.ITEM, POSEIDON_ORACLE_TAG_ID,
-            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)
+                .registryKey(RegistryKey.of(RegistryKeys.ITEM, POSEIDON_ORACLE_TAG_ID))));
         
         // Hades Oracle Tag (Purple - Underworld)
         HADES_ORACLE_TAG = Registry.register(Registries.ITEM, HADES_ORACLE_TAG_ID,
-            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)
+                .registryKey(RegistryKey.of(RegistryKeys.ITEM, HADES_ORACLE_TAG_ID))));
         
         // Ares Oracle Tag (Red - War)
         ARES_ORACLE_TAG = Registry.register(Registries.ITEM, ARES_ORACLE_TAG_ID,
-            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)
+                .registryKey(RegistryKey.of(RegistryKeys.ITEM, ARES_ORACLE_TAG_ID))));
         
         // Athena Oracle Tag (Gray - Wisdom)
         ATHENA_ORACLE_TAG = Registry.register(Registries.ITEM, ATHENA_ORACLE_TAG_ID,
-            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)
+                .registryKey(RegistryKey.of(RegistryKeys.ITEM, ATHENA_ORACLE_TAG_ID))));
         
         // Hephaestus Oracle Tag (Orange - Fire/Forge)
         HEPHAESTUS_ORACLE_TAG = Registry.register(Registries.ITEM, HEPHAESTUS_ORACLE_TAG_ID,
-            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)
+                .registryKey(RegistryKey.of(RegistryKeys.ITEM, HEPHAESTUS_ORACLE_TAG_ID))));
         
         // Apollo Oracle Tag (Gold - Sun/Light)
         APOLLO_ORACLE_TAG = Registry.register(Registries.ITEM, APOLLO_ORACLE_TAG_ID,
-            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)
+                .registryKey(RegistryKey.of(RegistryKeys.ITEM, APOLLO_ORACLE_TAG_ID))));
         
         // Artemis Oracle Tag (Green - Nature/Hunt)
         ARTEMIS_ORACLE_TAG = Registry.register(Registries.ITEM, ARTEMIS_ORACLE_TAG_ID,
-            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)
+                .registryKey(RegistryKey.of(RegistryKeys.ITEM, ARTEMIS_ORACLE_TAG_ID))));
         
         // Hermes Oracle Tag (Cyan - Speed/Messenger)
         HERMES_ORACLE_TAG = Registry.register(Registries.ITEM, HERMES_ORACLE_TAG_ID,
-            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)
+                .registryKey(RegistryKey.of(RegistryKeys.ITEM, HERMES_ORACLE_TAG_ID))));
         
         // Dionysus Oracle Tag (Pink - Wine/Festival)
         DIONYSUS_ORACLE_TAG = Registry.register(Registries.ITEM, DIONYSUS_ORACLE_TAG_ID,
-            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)
+                .registryKey(RegistryKey.of(RegistryKeys.ITEM, DIONYSUS_ORACLE_TAG_ID))));
         
         // Aphrodite Oracle Tag (Magenta - Love/Beauty)
         APHRODITE_ORACLE_TAG = Registry.register(Registries.ITEM, APHRODITE_ORACLE_TAG_ID,
-            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)
+                .registryKey(RegistryKey.of(RegistryKeys.ITEM, APHRODITE_ORACLE_TAG_ID))));
         
         // Demeter Oracle Tag (Brown - Agriculture)
         DEMETER_ORACLE_TAG = Registry.register(Registries.ITEM, DEMETER_ORACLE_TAG_ID,
-            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
-        
-
+            new Item(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)
+                .registryKey(RegistryKey.of(RegistryKeys.ITEM, DEMETER_ORACLE_TAG_ID))));
         
         GreekMythologyMod.LOGGER.info("Registered 12 Oracle Tag items for god-specific Oracle tagging");
+    }
+    
+    private static void registerPowerStick() {
+        // Power Stick for zone protection
+        POWER_STICK = Registry.register(Registries.ITEM, POWER_STICK_ID,
+            new PowerStickItem(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)
+                .registryKey(RegistryKey.of(RegistryKeys.ITEM, POWER_STICK_ID))));
+        
+        GreekMythologyMod.LOGGER.info("Registered Power Stick for zone protection");
+    }
+    
+    private static void registerNoPvpStick() {
+        // No PvP Stick for safe zones
+        NO_PVP_STICK = Registry.register(Registries.ITEM, NO_PVP_STICK_ID,
+            new NoPvpStickItem(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)
+                .registryKey(RegistryKey.of(RegistryKeys.ITEM, NO_PVP_STICK_ID))));
+        
+        GreekMythologyMod.LOGGER.info("Registered No PvP Stick for safe zones");
     }
 } 

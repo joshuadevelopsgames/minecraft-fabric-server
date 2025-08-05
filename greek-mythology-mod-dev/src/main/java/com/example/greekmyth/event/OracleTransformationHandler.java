@@ -2,6 +2,9 @@ package com.example.greekmyth.event;
 
 import com.example.greekmyth.GreekMythologyMod;
 import com.example.greekmyth.entity.OracleEntity;
+import com.example.greekmyth.entity.SpecializedOracleEntity;
+import com.example.greekmyth.entity.OracleRegistry;
+import com.example.greekmyth.favor.God;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -33,18 +36,39 @@ public class OracleTransformationHandler {
         float yaw = illusioner.getYaw();
         float pitch = illusioner.getPitch();
         
+        // Check if there should be a specialized Oracle at this location
+        God specializedGod = OracleRegistry.getSpecializedGodAt(position.x, position.y, position.z);
+        
         // Remove the original illusioner
         illusioner.remove(Entity.RemovalReason.DISCARDED);
         
-        // Create the Oracle entity
-        OracleEntity oracle = new OracleEntity(EntityType.ILLUSIONER, world);
-        oracle.setPosition(position);
-        oracle.setYaw(yaw);
-        oracle.setPitch(pitch);
-        
-        // Spawn the Oracle
-        world.spawnEntity(oracle);
-        
-        GreekMythologyMod.LOGGER.info("Transformed Illusioner into Oracle at position: {}", position);
+        // Create the appropriate Oracle entity
+        if (specializedGod != null) {
+            // Create a specialized Oracle
+            SpecializedOracleEntity specializedOracle = new SpecializedOracleEntity(
+                (EntityType<? extends IllusionerEntity>) EntityType.ILLUSIONER, 
+                world, 
+                specializedGod
+            );
+            specializedOracle.setPosition(position);
+            specializedOracle.setYaw(yaw);
+            specializedOracle.setPitch(pitch);
+            
+            // Spawn the specialized Oracle
+            world.spawnEntity(specializedOracle);
+            
+            GreekMythologyMod.LOGGER.info("Transformed Illusioner into {} Oracle at position: {}", specializedGod.name(), position);
+        } else {
+            // Create a regular Oracle
+            OracleEntity oracle = new OracleEntity(EntityType.ILLUSIONER, world);
+            oracle.setPosition(position);
+            oracle.setYaw(yaw);
+            oracle.setPitch(pitch);
+            
+            // Spawn the Oracle
+            world.spawnEntity(oracle);
+            
+            GreekMythologyMod.LOGGER.info("Transformed Illusioner into Oracle at position: {}", position);
+        }
     }
 } 

@@ -7,8 +7,10 @@ import com.example.greekmyth.event.UndeadWarriorEvents;
 import com.example.greekmyth.event.UndeadWarriorSoundEvents;
 import com.example.greekmyth.event.QuestProgressEvents;
 import com.example.greekmyth.favor.FavorManager;
+import com.example.greekmyth.entity.OracleRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.command.argument.EntityArgumentType;
@@ -25,11 +27,11 @@ public class GreekMythologyMod implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     
     // Version tracking system
-    public static final String MOD_VERSION = "1.0.160";
-    public static final String BUILD_VERSION_TITLE = "Oracle Nametag Command";
+    public static final String MOD_VERSION = "1.0.174";
+    public static final String BUILD_VERSION_TITLE = "Added Comprehensive Command List System";
     public static final String BUILD_DATE = "2024-08-04";
-    public static final String BUILD_TIME = "22:10";
-    public static final String BUILD_FEATURES = "Oracle Nametag Command - Changed /tag to /nametag command for better clarity, specialized Oracles for specific gods, and enhanced Oracle management";
+    public static final String BUILD_TIME = "00:30";
+    public static final String BUILD_FEATURES = "Added /greekmyth list command - Comprehensive command list organized by category (Quest System, Oracle Management, Zone Protection, PvP Zones, Admin Commands, Teleportation, Jail System, Utility, Easter Eggs)";
     
     // Soul counting system
     private static final Map<UUID, Integer> playerSoulCounts = new HashMap<>();
@@ -75,6 +77,26 @@ public class GreekMythologyMod implements ModInitializer {
         
         // Register Oracle damage handler
         com.example.greekmyth.event.OracleDamageHandler.register();
+        
+        // Register zone protection events
+        com.example.greekmyth.event.ZoneProtectionEvents.register();
+        
+        // Register PvP protection events
+        com.example.greekmyth.event.PvpProtectionEvents.register();
+        
+        // Register armor stand PvP events for testing
+        com.example.greekmyth.event.ArmorStandPvpEvents.register();
+        
+        // Initialize Oracle Registry (will be fully initialized when server starts)
+        LOGGER.info("Oracle Registry system ready for initialization");
+        
+        // Register server lifecycle events for Oracle Registry, Zone Manager, and PvP Zone Manager initialization
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+            OracleRegistry.initialize(server);
+            com.example.greekmyth.zone.ZoneManager.initialize(server);
+            com.example.greekmyth.pvp.PvpZoneManager.initialize(server);
+            LOGGER.info("Oracle Registry, Zone Manager, and PvP Zone Manager initialized on server start");
+        });
         
         // Oracle Altar system temporarily disabled due to block registration issues
         
@@ -174,10 +196,16 @@ public class GreekMythologyMod implements ModInitializer {
                             case "world":
                                 ServerWorld overworld = player.getServer().getOverworld();
                                 if (overworld != null) {
-                                    // Teleport to world spawn (0.5, 64, 0.5)
-                                    player.teleport(overworld, 0.5, 64, 0.5, java.util.Set.of(), player.getYaw(), player.getPitch(), false);
-                                    player.sendMessage(net.minecraft.text.Text.literal("§aTeleported to the Overworld spawn."));
-                                    GreekMythologyMod.LOGGER.info("VISIT COMMAND: Player {} teleported to Overworld spawn.", player.getName().getString());
+                                    // Teleport to actual world spawn coordinates
+                                    net.minecraft.util.math.BlockPos spawnPos = overworld.getSpawnPos();
+                                    double spawnX = spawnPos.getX() + 0.5;
+                                    double spawnY = spawnPos.getY() + 1.0; // Add 1 to avoid spawning inside blocks
+                                    double spawnZ = spawnPos.getZ() + 0.5;
+                                    
+                                    player.teleport(overworld, spawnX, spawnY, spawnZ, java.util.Set.of(), player.getYaw(), player.getPitch(), false);
+                                    player.sendMessage(net.minecraft.text.Text.literal("§aTeleported to the Overworld spawn at (" + spawnPos.getX() + ", " + spawnPos.getY() + ", " + spawnPos.getZ() + ")."));
+                                    GreekMythologyMod.LOGGER.info("VISIT COMMAND: Player {} teleported to Overworld spawn at ({}, {}, {}).", 
+                                        player.getName().getString(), spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
                                 } else {
                                     player.sendMessage(net.minecraft.text.Text.literal("§cOverworld not found!"));
                                     GreekMythologyMod.LOGGER.warn("VISIT COMMAND: Overworld not found for player {}.", player.getName().getString());

@@ -7,6 +7,7 @@ import com.example.greekmyth.quest.GodQuest;
 import com.example.greekmyth.quest.QuestScoreboardManager;
 import com.example.greekmyth.favor.FavorManager;
 import com.example.greekmyth.favor.God;
+import com.example.greekmyth.entity.OracleRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -63,7 +64,11 @@ public class OracleEntity extends IllusionerEntity {
     private static final int QUEST_COOLDOWN_TICKS = 12000; // 10 minutes between quests
     
     // Oracle specialization
-    private God specializedGod = null; // null means general Oracle, specific God means specialized
+    protected God specializedGod = null; // null means general Oracle, specific God means specialized
+    
+    public God getSpecializedGod() {
+        return specializedGod;
+    }
     
     public OracleEntity(EntityType<? extends IllusionerEntity> entityType, World world) {
         super(entityType, world);
@@ -73,6 +78,8 @@ public class OracleEntity extends IllusionerEntity {
         this.setInvulnerable(true);
         GreekMythologyMod.LOGGER.info("Oracle Entity created - Illusioner transformed into Oracle");
     }
+    
+
     
     // Oracle Altar AI temporarily disabled due to block registration issues
     
@@ -205,80 +212,95 @@ public class OracleEntity extends IllusionerEntity {
                 if (!heldItem.isEmpty()) {
                     String itemId = heldItem.getItem().toString().toLowerCase();
                     
-                    // Check if it's an Oracle tag item
+                    // Check if it's an Oracle tag item and transform the Oracle
+                    God targetGod = null;
+                    String godName = "";
+                    String color = "";
+                    
                     if (itemId.contains("zeus_oracle_tag")) {
-                        specializedGod = God.ZEUS;
-                        heldItem.decrement(1);
-                        serverPlayer.sendMessage(Text.literal("§e§l[The Oracle] §r§aThis Oracle now serves Zeus!").formatted(Formatting.GREEN), false);
-                        this.setCustomName(Text.literal("§e§lZeus Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
-                        return ActionResult.SUCCESS;
+                        targetGod = God.ZEUS;
+                        godName = "Zeus";
+                        color = "§e";
                     } else if (itemId.contains("poseidon_oracle_tag")) {
-                        specializedGod = God.POSEIDON;
-                        heldItem.decrement(1);
-                        serverPlayer.sendMessage(Text.literal("§b§l[The Oracle] §r§aThis Oracle now serves Poseidon!").formatted(Formatting.GREEN), false);
-                        this.setCustomName(Text.literal("§b§lPoseidon Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
-                        return ActionResult.SUCCESS;
+                        targetGod = God.POSEIDON;
+                        godName = "Poseidon";
+                        color = "§b";
                     } else if (itemId.contains("hades_oracle_tag")) {
-                        specializedGod = God.HADES;
-                        heldItem.decrement(1);
-                        serverPlayer.sendMessage(Text.literal("§5§l[The Oracle] §r§aThis Oracle now serves Hades!").formatted(Formatting.GREEN), false);
-                        this.setCustomName(Text.literal("§5§lHades Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
-                        return ActionResult.SUCCESS;
+                        targetGod = God.HADES;
+                        godName = "Hades";
+                        color = "§5";
                     } else if (itemId.contains("ares_oracle_tag")) {
-                        specializedGod = God.ARES;
-                        heldItem.decrement(1);
-                        serverPlayer.sendMessage(Text.literal("§c§l[The Oracle] §r§aThis Oracle now serves Ares!").formatted(Formatting.GREEN), false);
-                        this.setCustomName(Text.literal("§c§lAres Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
-                        return ActionResult.SUCCESS;
+                        targetGod = God.ARES;
+                        godName = "Ares";
+                        color = "§c";
                     } else if (itemId.contains("athena_oracle_tag")) {
-                        specializedGod = God.ATHENA;
-                        heldItem.decrement(1);
-                        serverPlayer.sendMessage(Text.literal("§7§l[The Oracle] §r§aThis Oracle now serves Athena!").formatted(Formatting.GREEN), false);
-                        this.setCustomName(Text.literal("§7§lAthena Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
-                        return ActionResult.SUCCESS;
+                        targetGod = God.ATHENA;
+                        godName = "Athena";
+                        color = "§7";
                     } else if (itemId.contains("hephaestus_oracle_tag")) {
-                        specializedGod = God.HEPHAESTUS;
-                        heldItem.decrement(1);
-                        serverPlayer.sendMessage(Text.literal("§6§l[The Oracle] §r§aThis Oracle now serves Hephaestus!").formatted(Formatting.GREEN), false);
-                        this.setCustomName(Text.literal("§6§lHephaestus Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
-                        return ActionResult.SUCCESS;
+                        targetGod = God.HEPHAESTUS;
+                        godName = "Hephaestus";
+                        color = "§6";
                     } else if (itemId.contains("apollo_oracle_tag")) {
-                        specializedGod = God.APOLLO;
-                        heldItem.decrement(1);
-                        serverPlayer.sendMessage(Text.literal("§e§l[The Oracle] §r§aThis Oracle now serves Apollo!").formatted(Formatting.GREEN), false);
-                        this.setCustomName(Text.literal("§e§lApollo Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
-                        return ActionResult.SUCCESS;
+                        targetGod = God.APOLLO;
+                        godName = "Apollo";
+                        color = "§e";
                     } else if (itemId.contains("artemis_oracle_tag")) {
-                        specializedGod = God.ARTEMIS;
-                        heldItem.decrement(1);
-                        serverPlayer.sendMessage(Text.literal("§a§l[The Oracle] §r§aThis Oracle now serves Artemis!").formatted(Formatting.GREEN), false);
-                        this.setCustomName(Text.literal("§a§lArtemis Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
-                        return ActionResult.SUCCESS;
+                        targetGod = God.ARTEMIS;
+                        godName = "Artemis";
+                        color = "§a";
                     } else if (itemId.contains("hermes_oracle_tag")) {
-                        specializedGod = God.HERMES;
-                        heldItem.decrement(1);
-                        serverPlayer.sendMessage(Text.literal("§b§l[The Oracle] §r§aThis Oracle now serves Hermes!").formatted(Formatting.GREEN), false);
-                        this.setCustomName(Text.literal("§b§lHermes Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
-                        return ActionResult.SUCCESS;
+                        targetGod = God.HERMES;
+                        godName = "Hermes";
+                        color = "§b";
                     } else if (itemId.contains("dionysus_oracle_tag")) {
-                        specializedGod = God.DIONYSUS;
-                        heldItem.decrement(1);
-                        serverPlayer.sendMessage(Text.literal("§d§l[The Oracle] §r§aThis Oracle now serves Dionysus!").formatted(Formatting.GREEN), false);
-                        this.setCustomName(Text.literal("§d§lDionysus Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
-                        return ActionResult.SUCCESS;
+                        targetGod = God.DIONYSUS;
+                        godName = "Dionysus";
+                        color = "§d";
                     } else if (itemId.contains("aphrodite_oracle_tag")) {
-                        specializedGod = God.APHRODITE;
-                        heldItem.decrement(1);
-                        serverPlayer.sendMessage(Text.literal("§d§l[The Oracle] §r§aThis Oracle now serves Aphrodite!").formatted(Formatting.GREEN), false);
-                        this.setCustomName(Text.literal("§d§lAphrodite Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
-                        return ActionResult.SUCCESS;
+                        targetGod = God.APHRODITE;
+                        godName = "Aphrodite";
+                        color = "§d";
                     } else if (itemId.contains("demeter_oracle_tag")) {
-                        specializedGod = God.DEMETER;
+                        targetGod = God.DEMETER;
+                        godName = "Demeter";
+                        color = "§6";
+                    }
+                    
+                    if (targetGod != null) {
+                        // Consume the item
                         heldItem.decrement(1);
-                        serverPlayer.sendMessage(Text.literal("§6§l[The Oracle] §r§aThis Oracle now serves Demeter!").formatted(Formatting.GREEN), false);
-                        this.setCustomName(Text.literal("§6§lDemeter Oracle").formatted(Formatting.GOLD, Formatting.BOLD));
+                        
+                        // Register this location as a specialized Oracle
+                        OracleRegistry.registerSpecializedOracle(this.getX(), this.getY(), this.getZ(), targetGod);
+                        
+                        // Create a specialized Oracle entity to replace this one
+                        SpecializedOracleEntity specializedOracle = new SpecializedOracleEntity(
+                            (EntityType<? extends IllusionerEntity>) this.getType(), 
+                            this.getWorld(), 
+                            targetGod
+                        );
+                        
+                        // Copy position and other properties
+                        specializedOracle.setPosition(this.getX(), this.getY(), this.getZ());
+                        specializedOracle.setYaw(this.getYaw());
+                        specializedOracle.setPitch(this.getPitch());
+                        specializedOracle.setVelocity(this.getVelocity());
+                        
+                        // Remove the current Oracle
+                        this.remove(Entity.RemovalReason.KILLED);
+                        
+                        // Spawn the specialized Oracle
+                        this.getWorld().spawnEntity(specializedOracle);
+                        
+                        // Send confirmation message
+                        serverPlayer.sendMessage(Text.literal(color + "§l[The Oracle] §r§aThis Oracle now serves " + godName + "!").formatted(Formatting.GREEN), false);
+                        serverPlayer.sendMessage(Text.literal("§7The Oracle has been permanently transformed.").formatted(Formatting.GRAY), false);
+                        
+                        GreekMythologyMod.LOGGER.info("Oracle transformation: {} Oracle created at ({}, {}, {})", 
+                            godName, this.getX(), this.getY(), this.getZ());
+                        
                         return ActionResult.SUCCESS;
-
                     }
                 }
             }
@@ -828,5 +850,26 @@ public class OracleEntity extends IllusionerEntity {
             }
         }
         return null;
+    }
+    
+    /**
+     * Get the nearest Oracle entity to a player
+     */
+    public static OracleEntity getNearestOracleEntity(ServerWorld world, net.minecraft.entity.player.PlayerEntity player) {
+        OracleEntity nearestOracle = null;
+        double nearestDistance = Double.MAX_VALUE;
+        
+        // Find the nearest Oracle entity by iterating through all loaded entities
+        for (net.minecraft.entity.Entity entity : world.iterateEntities()) {
+            if (entity instanceof OracleEntity oracle) {
+                double distance = player.squaredDistanceTo(oracle);
+                if (distance < nearestDistance) {
+                    nearestDistance = distance;
+                    nearestOracle = oracle;
+                }
+            }
+        }
+        
+        return nearestOracle;
     }
 } 
