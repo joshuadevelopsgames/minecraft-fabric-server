@@ -559,17 +559,12 @@ public class FavorCommands {
         
         // Register merchant spawn command
         dispatcher.register(CommandManager.literal("spawnmerchant")
+            .requires(source -> source.hasPermissionLevel(4))
             .executes(context -> {
                 ServerCommandSource source = context.getSource();
                 
                 try {
                     ServerPlayerEntity player = source.getPlayerOrThrow();
-                    
-                    // Check if player has permission (admin level 4 or higher)
-                    if (!player.hasPermissionLevel(4)) {
-                        player.sendMessage(Text.literal("§6§l[Merchant] §r§cYou don't have permission to use this command!").formatted(Formatting.RED), false);
-                        return 0;
-                    }
                     
                     // Spawn merchant at player's location
                     MerchantPiglinEntity merchant = new MerchantPiglinEntity(GreekEntityTypes.MERCHANT_PIGLIN, player.getWorld());
