@@ -25,11 +25,11 @@ public class GreekMythologyMod implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     
     // Version tracking system
-    public static final String MOD_VERSION = "1.0.159";
-    public static final String BUILD_VERSION_TITLE = "Oracle Tag System";
+    public static final String MOD_VERSION = "1.0.160";
+    public static final String BUILD_VERSION_TITLE = "Oracle Nametag Command";
     public static final String BUILD_DATE = "2024-08-04";
-    public static final String BUILD_TIME = "21:30";
-    public static final String BUILD_FEATURES = "Oracle Tag System - Added /tag command to give Oracle tags, specialized Oracles for specific gods, and enhanced Oracle management";
+    public static final String BUILD_TIME = "22:10";
+    public static final String BUILD_FEATURES = "Oracle Nametag Command - Changed /tag to /nametag command for better clarity, specialized Oracles for specific gods, and enhanced Oracle management";
     
     // Soul counting system
     private static final Map<UUID, Integer> playerSoulCounts = new HashMap<>();

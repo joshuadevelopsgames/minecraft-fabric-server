@@ -198,8 +198,8 @@ public class FavorCommands {
                 }
             }));
         
-        // Register the /tag command to give Oracle tags
-        dispatcher.register(CommandManager.literal("tag")
+        // Register the /nametag command to give Oracle tags
+        dispatcher.register(CommandManager.literal("nametag")
             .then(CommandManager.argument("god", StringArgumentType.string())
                 .executes(context -> {
                     ServerCommandSource source = context.getSource();
