@@ -20,6 +20,16 @@ public class GreekEntityTypes {
             .build(RegistryKey.of(Registries.ENTITY_TYPE.getKey(), Identifier.of(GreekMythologyMod.MOD_ID, "inferno_pearl")))
     );
     
+    public static final EntityType<MerchantPiglinEntity> MERCHANT_PIGLIN = Registry.register(
+        Registries.ENTITY_TYPE,
+        Identifier.of(GreekMythologyMod.MOD_ID, "merchant_piglin"),
+        EntityType.Builder.<MerchantPiglinEntity>create(MerchantPiglinEntity::new, SpawnGroup.AMBIENT)
+            .dimensions(0.6f, 1.8f) // Same size as piglin
+            .maxTrackingRange(8)
+            .trackingTickInterval(3)
+            .build(RegistryKey.of(Registries.ENTITY_TYPE.getKey(), Identifier.of(GreekMythologyMod.MOD_ID, "merchant_piglin")))
+    );
+    
     public static void initialize() {
         GreekMythologyMod.LOGGER.info("Registering Greek Mythology entity types");
     }

@@ -27,11 +27,11 @@ public class GreekMythologyMod implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     
     // Version tracking system
-    public static final String MOD_VERSION = "1.0.174";
-    public static final String BUILD_VERSION_TITLE = "Added Comprehensive Command List System";
-    public static final String BUILD_DATE = "2024-08-04";
-    public static final String BUILD_TIME = "00:30";
-    public static final String BUILD_FEATURES = "Added /greekmyth list command - Comprehensive command list organized by category (Quest System, Oracle Management, Zone Protection, PvP Zones, Admin Commands, Teleportation, Jail System, Utility, Easter Eggs)";
+    public static final String MOD_VERSION = "1.0.175";
+    public static final String BUILD_VERSION_TITLE = "Added Divine Merchant Economy System";
+    public static final String BUILD_DATE = "2024-08-05";
+    public static final String BUILD_TIME = "00:40";
+    public static final String BUILD_FEATURES = "Added Divine Merchant (MerchantPiglinEntity) - Economy system with trading commands (/buy, /sell, /endtrade, /spawnmerchant), custom piglin merchant with wandering trader texture, emerald-based economy for all Greek mythology items";
     
     // Soul counting system
     private static final Map<UUID, Integer> playerSoulCounts = new HashMap<>();

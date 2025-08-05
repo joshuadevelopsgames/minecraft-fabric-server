@@ -7,6 +7,7 @@ import com.example.greekmyth.item.GreekItems;
 import com.example.greekmyth.util.InfernoCommandTracker;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.CommandManager;
@@ -16,6 +17,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
+import com.example.greekmyth.entity.MerchantPiglinEntity;
+import com.example.greekmyth.entity.GreekEntityTypes;
 
 /**
  * Commands for the Greek Mythology mod
@@ -27,82 +30,23 @@ public class FavorCommands {
         
         // Register the /greekmyth list command to show all available commands
         dispatcher.register(CommandManager.literal("greekmyth")
+            .executes(context -> {
+                ServerCommandSource source = context.getSource();
+                try {
+                    ServerPlayerEntity player = source.getPlayerOrThrow();
+                    sendGreekMythCommandList(player);
+                    return 1;
+                } catch (Exception e) {
+                    source.sendMessage(Text.literal("§c❌ This command can only be used by players!").formatted(Formatting.RED));
+                    return 0;
+                }
+            })
             .then(CommandManager.literal("list")
                 .executes(context -> {
                     ServerCommandSource source = context.getSource();
-                    
                     try {
                         ServerPlayerEntity player = source.getPlayerOrThrow();
-                        
-                        player.sendMessage(Text.literal("§6§l=== GREEK MYTHOLOGY COMMANDS ===§r").formatted(Formatting.GOLD), false);
-                        player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
-                        
-                        // Quest System Commands
-                        player.sendMessage(Text.literal("§e§l📜 QUEST SYSTEM:").formatted(Formatting.YELLOW), false);
-                        player.sendMessage(Text.literal("§7/quest clear §8- Clear your current quest").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("§7/quest select §8- Show quest selection menu").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("§7/quest select <god> §8- Get a specific god's quest").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
-                        
-                        // Oracle Management Commands
-                        player.sendMessage(Text.literal("§b§l🔮 ORACLE MANAGEMENT:").formatted(Formatting.AQUA), false);
-                        player.sendMessage(Text.literal("§7/erase §8- Delete the nearest Oracle").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("§7/nametag <god> §8- Get Oracle tag for specific god").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("§7§8Available gods: zeus, poseidon, hades, ares, athena, hephaestus, apollo, artemis, hermes, dionysus, aphrodite, demeter").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
-                        
-                        // Zone Protection Commands
-                        player.sendMessage(Text.literal("§6§l🛡️ ZONE PROTECTION:").formatted(Formatting.GOLD), false);
-                        player.sendMessage(Text.literal("§7/stick §8- Get Power Stick for zone protection").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("§7/zones §8- List all protected zones").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("§7/zones remove <zone_id> §8- Remove a protected zone").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("§7/protect §8- Check zone protection status").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
-                        
-                        // PvP Zone Commands
-                        player.sendMessage(Text.literal("§a§l⚔️ PVP ZONES:").formatted(Formatting.GREEN), false);
-                        player.sendMessage(Text.literal("§7/stick pvp §8- Get No PvP Stick for safe zones").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("§7/pvpzones §8- List all No PvP zones").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("§7/pvpzones remove <zone_id> §8- Remove a No PvP zone").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("§7/testpvp §8- Check your current PvP zone status").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
-                        
-                        // Admin Commands (Level 4+)
-                        player.sendMessage(Text.literal("§c§l👑 ADMIN COMMANDS (Level 4+):").formatted(Formatting.RED), false);
-                        player.sendMessage(Text.literal("§7/break §8- Disable all zone protection globally").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("§7/unbreak §8- Re-enable all zone protection").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
-                        
-                        // Teleportation Commands
-                        player.sendMessage(Text.literal("§d§l🌍 TELEPORTATION:").formatted(Formatting.LIGHT_PURPLE), false);
-                        player.sendMessage(Text.literal("§7/visit overworld §8- Teleport to Overworld spawn").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("§7/visit world §8- Teleport to world spawn").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("§7/visit nether §8- Teleport to Nether spawn").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("§7/visit end §8- Teleport to End spawn").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
-                        
-                        // Jail System Commands
-                        player.sendMessage(Text.literal("§5§l🔒 JAIL SYSTEM:").formatted(Formatting.DARK_PURPLE), false);
-                        player.sendMessage(Text.literal("§7/jail <player> §8- Send player to jail").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("§7/setjail §8- Set your current position as jail spawn").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("§7/escape §8- Try to escape from jail").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
-                        
-                        // Utility Commands
-                        player.sendMessage(Text.literal("§f§l🛠️ UTILITY:").formatted(Formatting.WHITE), false);
-                        player.sendMessage(Text.literal("§7/spawnenhanced §8- Enhanced mob spawning").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("§7/soul §8- Soul collection system").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("§7/greekversion §8- Check mod version").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("§7/help §8- Show help information").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
-                        
-                        // Easter Egg Commands
-                        player.sendMessage(Text.literal("§6§l🎁 EASTER EGGS:").formatted(Formatting.GOLD), false);
-                        player.sendMessage(Text.literal("§7/inferno §8- Secret command (one-time use)").formatted(Formatting.GRAY), false);
-                        player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
-                        
-                        player.sendMessage(Text.literal("§7§oUse /greekmyth list to see this help again").formatted(Formatting.GRAY), false);
-                        
+                        sendGreekMythCommandList(player);
                         return 1;
                     } catch (Exception e) {
                         source.sendMessage(Text.literal("§c❌ This command can only be used by players!").formatted(Formatting.RED));
@@ -612,5 +556,103 @@ public class FavorCommands {
                 })));
         
         GreekMythologyMod.LOGGER.info("Greek Mythology commands registered successfully!");
+        
+        // Register merchant spawn command
+        dispatcher.register(CommandManager.literal("spawnmerchant")
+            .executes(context -> {
+                ServerCommandSource source = context.getSource();
+                
+                try {
+                    ServerPlayerEntity player = source.getPlayerOrThrow();
+                    
+                    // Check if player has permission (admin level 4 or higher)
+                    if (!player.hasPermissionLevel(4)) {
+                        player.sendMessage(Text.literal("§6§l[Merchant] §r§cYou don't have permission to use this command!").formatted(Formatting.RED), false);
+                        return 0;
+                    }
+                    
+                    // Spawn merchant at player's location
+                    MerchantPiglinEntity merchant = new MerchantPiglinEntity(GreekEntityTypes.MERCHANT_PIGLIN, player.getWorld());
+                    merchant.setPosition(player.getX(), player.getY(), player.getZ());
+                    player.getWorld().spawnEntity(merchant);
+                    
+                    player.sendMessage(Text.literal("§6§l[Merchant] §r§aDivine Merchant spawned successfully!").formatted(Formatting.GREEN), false);
+                    player.sendMessage(Text.literal("§7Right-click the merchant to interact.").formatted(Formatting.GRAY), false);
+                    
+                    GreekMythologyMod.LOGGER.info("MERCHANT SPAWN: Player {} spawned Divine Merchant at ({}, {}, {})", 
+                        player.getName().getString(), player.getX(), player.getY(), player.getZ());
+                    
+                    return 1;
+                } catch (Exception e) {
+                    source.sendMessage(Text.literal("§c❌ This command can only be used by players!").formatted(Formatting.RED));
+                    return 0;
+                }
+            }));
+    }
+
+    // Helper method to send the command list
+    private static void sendGreekMythCommandList(ServerPlayerEntity player) {
+        player.sendMessage(Text.literal("§6§l=== GREEK MYTHOLOGY COMMANDS ===§r").formatted(Formatting.GOLD), false);
+        player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
+        // Quest System Commands
+        player.sendMessage(Text.literal("§e§l📜 QUEST SYSTEM:").formatted(Formatting.YELLOW), false);
+        player.sendMessage(Text.literal("§7/quest clear §8- Clear your current quest").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7/quest select §8- Show quest selection menu").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7/quest select <god> §8- Get a specific god's quest").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
+        // Oracle Management Commands
+        player.sendMessage(Text.literal("§b§l🔮 ORACLE MANAGEMENT:").formatted(Formatting.AQUA), false);
+        player.sendMessage(Text.literal("§7/erase §8- Delete the nearest Oracle").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7/nametag <god> §8- Get Oracle tag for specific god").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7§8Available gods: zeus, poseidon, hades, ares, athena, hephaestus, apollo, artemis, hermes, dionysus, aphrodite, demeter").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
+        // Zone Protection Commands
+        player.sendMessage(Text.literal("§6§l🛡️ ZONE PROTECTION:").formatted(Formatting.GOLD), false);
+        player.sendMessage(Text.literal("§7/stick §8- Get Power Stick for zone protection").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7/zones §8- List all protected zones").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7/zones remove <zone_id> §8- Remove a protected zone").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7/protect §8- Check zone protection status").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
+        // PvP Zone Commands
+        player.sendMessage(Text.literal("§a§l⚔️ PVP ZONES:").formatted(Formatting.GREEN), false);
+        player.sendMessage(Text.literal("§7/stick pvp §8- Get No PvP Stick for safe zones").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7/pvpzones §8- List all No PvP zones").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7/pvpzones remove <zone_id> §8- Remove a No PvP zone").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7/testpvp §8- Check your current PvP zone status").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
+        // Admin Commands (Level 4+)
+        player.sendMessage(Text.literal("§c§l👑 ADMIN COMMANDS (Level 4+):").formatted(Formatting.RED), false);
+        player.sendMessage(Text.literal("§7/break §8- Disable all zone protection globally").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7/unbreak §8- Re-enable all zone protection").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
+        // Teleportation Commands
+        player.sendMessage(Text.literal("§d§l🌍 TELEPORTATION:").formatted(Formatting.LIGHT_PURPLE), false);
+        player.sendMessage(Text.literal("§7/visit overworld §8- Teleport to Overworld spawn").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7/visit world §8- Teleport to world spawn").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7/visit nether §8- Teleport to Nether spawn").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7/visit end §8- Teleport to End spawn").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
+        // Jail System Commands
+        player.sendMessage(Text.literal("§5§l🔒 JAIL SYSTEM:").formatted(Formatting.DARK_PURPLE), false);
+        player.sendMessage(Text.literal("§7/jail <player> §8- Send player to jail").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7/setjail §8- Set your current position as jail spawn").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7/escape §8- Try to escape from jail").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
+        // Merchant Commands
+        player.sendMessage(Text.literal("§6§l💰 MERCHANT:").formatted(Formatting.GOLD), false);
+        player.sendMessage(Text.literal("§7/spawnmerchant §8- Spawn Divine Merchant (Admin)").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
+        // Utility Commands
+        player.sendMessage(Text.literal("§f§l🛠️ UTILITY:").formatted(Formatting.WHITE), false);
+        player.sendMessage(Text.literal("§7/spawnenhanced §8- Enhanced mob spawning").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7/soul §8- Soul collection system").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7/greekversion §8- Check mod version").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7/help §8- Show help information").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
+        // Easter Egg Commands
+        player.sendMessage(Text.literal("§6§l🎁 EASTER EGGS:").formatted(Formatting.GOLD), false);
+        player.sendMessage(Text.literal("§7/inferno §8- Secret command (one-time use)").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7§oUse /greekmyth list to see this help again").formatted(Formatting.GRAY), false);
     }
 }
