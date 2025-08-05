@@ -245,8 +245,9 @@ public class GodQuest {
         switch (type) {
             case KILL_MOBS:
                 return new GodQuest("ares_warrior_trial", "Trial of the Warrior", 
-                    "Defeat 25 hostile mobs to prove your worth to Ares", 
-                    type, 25, God.ARES, 25, 100);
+                    "Defeat 20 Breezes and collect their Breeze Rods. Kill the Breezes first, then right-click the Oracle with 20 Breeze Rods to complete the quest.", 
+                    type, 20, God.ARES, 25, 100,
+                    new String[]{"breeze_rod"});
             case TRAVEL_DISTANCE:
                 return new GodQuest("ares_battlefield_runner", "Swift as the Wind of War", 
                     "Travel 1500 blocks to demonstrate your speed in battle", 

@@ -92,7 +92,12 @@ public class QuestProgressEvents {
      */
     public static void trackMobKill(ServerPlayerEntity player, Entity killedEntity) {
         if (killedEntity instanceof LivingEntity) {
-            updateQuestProgress(player, GodQuest.QuestType.KILL_MOBS, 1);
+            // Check if it's a Breeze for Ares quests
+            if (killedEntity.getType() == EntityType.BREEZE) {
+                updateQuestProgress(player, GodQuest.QuestType.KILL_MOBS, 1);
+                GreekMythologyMod.LOGGER.info("Breeze killed by player {} - updating KILL_MOBS quest progress", 
+                    player.getName().getString());
+            }
         }
     }
     
