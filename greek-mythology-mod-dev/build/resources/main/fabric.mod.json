@@ -17,6 +17,9 @@
   "entrypoints": {
     "main": [
       "com.example.greekmyth.GreekMythologyMod"
+    ],
+    "client": [
+      "com.example.greekmyth.GreekMythologyClientMod"
     ]
   },
   "mixins": [

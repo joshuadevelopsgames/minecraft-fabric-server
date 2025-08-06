@@ -1,0 +1,183 @@
+MERCHANT PIGLIN DEVELOPMENT ERROR LOG
+=====================================
+
+PROJECT CONTEXT:
+- Minecraft Version: 1.21.8
+- Fabric Loader: 0.16.14
+- Testing Environment: Singleplayer world (not server)
+- Goal: Create a custom merchant piglin entity with custom texture
+- Custom Entity: MerchantPiglinEntity extends PiglinEntity
+- Custom Texture: merchant_piglin.png
+
+WORKING FEATURES:
+✅ Server-side merchant entity creation
+✅ Custom merchant texture file (textures/entity/merchant_piglin.png)
+✅ /spawnmerchant command functionality
+✅ /erase command can delete merchants
+✅ Entity attribute registration
+✅ Server deployment successful
+
+CURRENT ISSUE:
+✅ RESOLVED - Client renderer now working with 7-argument constructor
+
+ERROR 1: Initial Client Crash - NullPointerException on defaultAttributes
+===========================================
+Error: Client crashed when attempting to summon the merchant
+Root Cause: MerchantPiglinEntity had no default attributes registered
+Fix: Added createMerchantPiglinAttributes() method to MerchantPiglinEntity.java
+Status: RESOLVED
+
+ERROR 2: Build Failure - Incorrect Attribute Names
+===========================================
+Error: Compilation failed after adding createMerchantPiglinAttributes
+Root Cause: Incorrect attribute names in the method
+Fix: Simplified to return PiglinEntity.createPiglinAttributes()
+Status: RESOLVED
+
+ERROR 3: Client Crash - NullPointerException on entityRenderer
+===========================================
+Error: java.lang.NullPointerException: Cannot invoke "net.minecraft.client.render.entity.EntityRenderer.shouldRender(...)" because "entityRenderer" is null
+Root Cause: No client renderer registered for MerchantPiglinEntity
+Fix: Created MerchantPiglinRenderer with 7-argument constructor for Minecraft 1.21.8
+Status: RESOLVED
+
+ERROR 4: Build Failure - Identifier Constructor Issues
+===========================================
+Error: Identifier(String,String) has private access
+Root Cause: API change in Minecraft 1.21.8
+Fix: Changed new Identifier() to Identifier.of()
+Status: RESOLVED
+
+ERROR 5: Build Failure - PiglinEntityRenderer Constructor Issues
+===========================================
+Error: constructor PiglinEntityRenderer cannot be applied
+Root Cause: Constructor signature changed in 1.21.8
+Fix: Updated constructor call with correct parameters
+Status: RESOLVED
+
+ERROR 6: Build Failure - Package Does Not Exist
+===========================================
+Error: package com.example.greekmyth.client does not exist
+Root Cause: splitEnvironmentSourceSets() separating client/server code
+Fix: Removed splitEnvironmentSourceSets() from build.gradle
+Status: RESOLVED
+
+ERROR 7: Client Crash - NoSuchElementException: Can't find part left_sleeve
+===========================================
+Error: java.util.NoSuchElementException: Can't find part left_sleeve
+Root Cause: Model part structure mismatch with vanilla PiglinEntityModel
+Fix: Used 7-argument constructor with correct piglin model layers
+Status: RESOLVED
+
+ERROR 8: Build Failure - Type Parameter Issues
+===========================================
+Error: type PiglinEntityModel does not take parameters
+Error: wrong number of type arguments; required 3
+Root Cause: API changes in Minecraft 1.21.8
+Fix: Extended PiglinEntityRenderer directly (avoided type parameters)
+Status: RESOLVED
+
+ERROR 9: Build Failure - Missing Methods
+===========================================
+Error: cannot find symbol: method getHeldItemRenderer()
+Error: cannot find symbol: method getModelLoader()
+Root Cause: API changes in EntityRendererFactory.Context
+Fix: Removed feature renderers temporarily
+Status: RESOLVED
+
+ERROR 10: Build Failure - Registration Issues
+===========================================
+Error: method register in class EntityRendererRegistry cannot be applied to given types
+Root Cause: Type mismatch in renderer registration
+Fix: Used correct renderer registration with GreekEntityTypes.MERCHANT_PIGLIN
+Status: RESOLVED
+
+FINAL SOLUTION IMPLEMENTED:
+==========================
+✅ CLIENT RENDERER WORKING - No more crashes!
+
+The solution was to use the 7-argument constructor for PiglinEntityRenderer in Minecraft 1.21.8:
+
+```java
+public MerchantPiglinRenderer(EntityRendererFactory.Context ctx) {
+    super(ctx,
+          EntityModelLayers.PIGLIN,
+          EntityModelLayers.PIGLIN_BABY,
+          EntityModelLayers.PIGLIN_INNER_ARMOR,
+          EntityModelLayers.PIGLIN_OUTER_ARMOR,
+          EntityModelLayers.PIGLIN_BABY_INNER_ARMOR,
+          EntityModelLayers.PIGLIN_BABY_OUTER_ARMOR);
+}
+```
+
+Key insights:
+- Minecraft 1.21.8 requires 7 model layers for PiglinEntityRenderer
+- Extending PiglinEntityRenderer directly avoids type parameter issues
+- Using correct piglin model layers prevents "left_sleeve" errors
+- Custom texture is properly applied via getTexture() method
+
+ATTEMPTED SOLUTIONS:
+===================
+
+1. EXTENDING PIGLINENTITYRENDERER:
+   - Extended PiglinEntityRenderer with 6-argument constructor
+   - Result: NoSuchElementException: Can't find part left_sleeve
+
+2. EXTENDING MOBENTITYRENDERER:
+   - Extended MobEntityRenderer<PiglinEntity, PiglinEntityModel<PiglinEntity>>
+   - Result: Compilation errors with type parameters
+
+3. EXTENDING ENTITYRENDERER:
+   - Extended EntityRenderer<MerchantPiglinEntity>
+   - Result: Black screen and NullPointerException
+
+4. BLOCKBENCH MODEL INTEGRATION:
+   - Attempted to use user-provided Blockbench export
+   - Result: Version incompatibility and compilation errors
+
+5. CHATGPT ADVICE IMPLEMENTATION:
+   - Attempted to use vanilla PiglinEntityModel with custom texture
+   - Result: Type parameter issues and missing methods
+
+CURRENT FILE STRUCTURE:
+======================
+src/main/java/com/example/greekmyth/
+├── entity/
+│   ├── MerchantPiglinEntity.java (WORKING)
+│   └── GreekEntityTypes.java (WORKING)
+├── command/
+│   └── FavorCommands.java (WORKING)
+├── event/
+│   └── MerchantTransformationHandler.java (WORKING)
+├── GreekMythologyMod.java (WORKING)
+└── GreekMythologyClientMod.java (WORKING - no renderer registration)
+
+src/main/resources/assets/greekmyth/
+└── textures/entity/
+    └── merchant_piglin.png (READY)
+
+KEY INSIGHTS:
+=============
+1. Server-side functionality is completely working
+2. The merchant entity spawns and functions correctly
+3. The custom texture file is properly placed
+4. The issue is purely client-side rendering
+5. Minecraft 1.21.8 has significant API changes from older versions
+6. The vanilla PiglinEntityModel structure may have changed
+
+RECOMMENDED NEXT STEPS:
+=======================
+1. Research the exact PiglinEntityModel structure in Minecraft 1.21.8
+2. Create a minimal renderer that extends the correct base class
+3. Use the vanilla piglin model parts without modification
+4. Focus on texture replacement rather than model modification
+5. Consider using a different approach like entity model layers
+
+TECHNICAL DETAILS:
+==================
+- Fabric API version: 0.129.0+local
+- Gradle version: 8.12.1
+- Java version: 21.0.2
+- Build tool: Fabric Loom 1.10.1
+
+This error log documents the complete troubleshooting journey for implementing a custom merchant piglin entity with a custom texture in Minecraft 1.21.8 using Fabric modding. 

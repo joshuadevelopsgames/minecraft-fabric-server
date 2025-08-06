@@ -1,8 +1,11 @@
 package com.example.greekmyth.entity;
 
 import com.example.greekmyth.GreekMythologyMod;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.mob.PiglinEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -23,10 +26,11 @@ public class GreekEntityTypes {
     public static final EntityType<MerchantPiglinEntity> MERCHANT_PIGLIN = Registry.register(
         Registries.ENTITY_TYPE,
         Identifier.of(GreekMythologyMod.MOD_ID, "merchant_piglin"),
-        EntityType.Builder.<MerchantPiglinEntity>create(MerchantPiglinEntity::new, SpawnGroup.AMBIENT)
-            .dimensions(0.6f, 1.8f) // Same size as piglin
-            .maxTrackingRange(8)
-            .trackingTickInterval(3)
+        FabricEntityTypeBuilder.createMob()
+            .entityFactory(MerchantPiglinEntity::new)
+            .spawnGroup(SpawnGroup.CREATURE)
+            .dimensions(EntityDimensions.fixed(0.6f, 1.95f)) // Same as Piglin
+            .defaultAttributes(PiglinEntity::createPiglinAttributes)
             .build(RegistryKey.of(Registries.ENTITY_TYPE.getKey(), Identifier.of(GreekMythologyMod.MOD_ID, "merchant_piglin")))
     );
     

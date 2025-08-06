@@ -19,6 +19,8 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import com.example.greekmyth.entity.MerchantPiglinEntity;
 import com.example.greekmyth.entity.GreekEntityTypes;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.mob.PiglinEntity;
 
 /**
  * Commands for the Greek Mythology mod
@@ -192,7 +194,7 @@ public class FavorCommands {
                         }
                                             }))));
         
-        // Register the /erase command to delete the nearest Oracle
+        // Register the /erase command to delete the nearest entity
         dispatcher.register(CommandManager.literal("erase")
             .executes(context -> {
                 ServerCommandSource source = context.getSource();
@@ -201,31 +203,36 @@ public class FavorCommands {
                     ServerPlayerEntity player = source.getPlayerOrThrow();
                     ServerWorld world = (ServerWorld) player.getWorld();
                     
-                    // Find the nearest Oracle entity to the player
-                    OracleEntity oracle = OracleEntity.getNearestOracleEntity(world, player);
+                    // Find the nearest entity to the player
+                    Entity nearestEntity = getNearestEntity(world, player);
                     
-                    if (oracle == null) {
-                        player.sendMessage(Text.literal("§c❌ No Oracle found nearby!").formatted(Formatting.RED), false);
+                    if (nearestEntity == null) {
+                        player.sendMessage(Text.literal("§c❌ No entity found nearby!").formatted(Formatting.RED), false);
                         return 0;
                     }
                     
-                    // Get Oracle position and distance for confirmation
+                    // Get entity position and distance for confirmation
                     String position = String.format("(%.1f, %.1f, %.1f)", 
-                        oracle.getX(), oracle.getY(), oracle.getZ());
-                    double distance = Math.sqrt(player.squaredDistanceTo(oracle));
+                        nearestEntity.getX(), nearestEntity.getY(), nearestEntity.getZ());
+                    double distance = Math.sqrt(player.squaredDistanceTo(nearestEntity));
                     String distanceText = String.format("%.1f blocks", distance);
+                    String entityName = nearestEntity.getName().getString();
+                    String entityType = nearestEntity.getType().toString();
                     
-                    // Remove the Oracle from the registry if it was specialized
-                    OracleRegistry.removeSpecializedOracle(oracle.getX(), oracle.getY(), oracle.getZ());
+                    // Special handling for Oracle entities
+                    if (nearestEntity instanceof OracleEntity oracle) {
+                        OracleRegistry.removeSpecializedOracle(oracle.getX(), oracle.getY(), oracle.getZ());
+                    }
                     
-                    // Remove the Oracle entity
-                    oracle.remove(Entity.RemovalReason.KILLED);
+                    // Remove the entity
+                    nearestEntity.remove(Entity.RemovalReason.KILLED);
                     
-                    player.sendMessage(Text.literal("§a✅ Oracle deleted successfully!").formatted(Formatting.GREEN), false);
+                    player.sendMessage(Text.literal("§a✅ Entity deleted successfully!").formatted(Formatting.GREEN), false);
+                    player.sendMessage(Text.literal("§7Entity: " + entityName + " (" + entityType + ")").formatted(Formatting.GRAY), false);
                     player.sendMessage(Text.literal("§7Location: " + position + " (Distance: " + distanceText + ")").formatted(Formatting.GRAY), false);
                     
-                    GreekMythologyMod.LOGGER.info("ERASE COMMAND: Player {} deleted Oracle at {}", 
-                        player.getName().getString(), position);
+                    GreekMythologyMod.LOGGER.info("ERASE COMMAND: Player {} deleted {} at {}", 
+                        player.getName().getString(), entityType, position);
                     
                     return 1;
                 } catch (Exception e) {
@@ -563,23 +570,54 @@ public class FavorCommands {
             .executes(context -> {
                 ServerCommandSource source = context.getSource();
                 
+                // Check if source is a player first
+                if (!(source.getEntity() instanceof ServerPlayerEntity)) {
+                    source.sendMessage(Text.literal("§c❌ This command can only be used by players!").formatted(Formatting.RED));
+                    return 0;
+                }
+                
+                ServerPlayerEntity player = (ServerPlayerEntity) source.getEntity();
+                
                 try {
-                    ServerPlayerEntity player = source.getPlayerOrThrow();
-                    
-                    // Spawn merchant at player's location
-                    MerchantPiglinEntity merchant = new MerchantPiglinEntity(GreekEntityTypes.MERCHANT_PIGLIN, player.getWorld());
-                    merchant.setPosition(player.getX(), player.getY(), player.getZ());
-                    player.getWorld().spawnEntity(merchant);
-                    
-                    player.sendMessage(Text.literal("§6§l[Merchant] §r§aDivine Merchant spawned successfully!").formatted(Formatting.GREEN), false);
-                    player.sendMessage(Text.literal("§7Right-click the merchant to interact.").formatted(Formatting.GRAY), false);
-                    
-                    GreekMythologyMod.LOGGER.info("MERCHANT SPAWN: Player {} spawned Divine Merchant at ({}, {}, {})", 
+                    // Log attempt for debugging
+                    GreekMythologyMod.LOGGER.info("SPAWNMERCHANT: Player {} attempting to spawn merchant at ({}, {}, {})", 
                         player.getName().getString(), player.getX(), player.getY(), player.getZ());
                     
-                    return 1;
+                    // Check if player has permission
+                    if (!player.hasPermissionLevel(4)) {
+                        player.sendMessage(Text.literal("§c❌ You need operator permissions (level 4) to use this command!").formatted(Formatting.RED), false);
+                        GreekMythologyMod.LOGGER.warn("SPAWNMERCHANT: Player {} lacks permission level 4", player.getName().getString());
+                        return 0;
+                    }
+                    
+                    // Spawn the custom merchant entity directly
+                    MerchantPiglinEntity merchant = new MerchantPiglinEntity(GreekEntityTypes.MERCHANT_PIGLIN, player.getWorld());
+                    merchant.setPosition(player.getX(), player.getY(), player.getZ());
+                    
+                    // Try to spawn the merchant
+                    boolean spawned = player.getWorld().spawnEntity(merchant);
+                    
+                    if (spawned) {
+                        player.sendMessage(Text.literal("§6§l[Merchant] §r§aDivine Merchant spawned successfully!").formatted(Formatting.GREEN), false);
+                        player.sendMessage(Text.literal("§7Right-click the merchant to interact.").formatted(Formatting.GRAY), false);
+                        
+                        GreekMythologyMod.LOGGER.info("MERCHANT SPAWN: Player {} successfully spawned Divine Merchant at ({}, {}, {})", 
+                            player.getName().getString(), player.getX(), player.getY(), player.getZ());
+                        
+                        return 1;
+                    } else {
+                        player.sendMessage(Text.literal("§c❌ Failed to spawn merchant - entity spawn failed!").formatted(Formatting.RED), false);
+                        GreekMythologyMod.LOGGER.error("MERCHANT SPAWN: Failed to spawn merchant for player {} at ({}, {}, {})", 
+                            player.getName().getString(), player.getX(), player.getY(), player.getZ());
+                        return 0;
+                    }
+                    
                 } catch (Exception e) {
-                    source.sendMessage(Text.literal("§c❌ This command can only be used by players!").formatted(Formatting.RED));
+                    // Log the specific exception for debugging
+                    GreekMythologyMod.LOGGER.error("MERCHANT SPAWN: Exception occurred while spawning merchant for player {}: {}", 
+                        player.getName().getString(), e.getMessage(), e);
+                    
+                    player.sendMessage(Text.literal("§c❌ Error spawning merchant: " + e.getMessage()).formatted(Formatting.RED), false);
                     return 0;
                 }
             }));
@@ -597,7 +635,7 @@ public class FavorCommands {
         player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
         // Oracle Management Commands
         player.sendMessage(Text.literal("§b§l🔮 ORACLE MANAGEMENT:").formatted(Formatting.AQUA), false);
-        player.sendMessage(Text.literal("§7/erase §8- Delete the nearest Oracle").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7/erase §8- Delete the nearest entity").formatted(Formatting.GRAY), false);
         player.sendMessage(Text.literal("§7/nametag <god> §8- Get Oracle tag for specific god").formatted(Formatting.GRAY), false);
         player.sendMessage(Text.literal("§7§8Available gods: zeus, poseidon, hades, ares, athena, hephaestus, apollo, artemis, hermes, dionysus, aphrodite, demeter").formatted(Formatting.GRAY), false);
         player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
@@ -649,5 +687,34 @@ public class FavorCommands {
         player.sendMessage(Text.literal("§7/inferno §8- Secret command (one-time use)").formatted(Formatting.GRAY), false);
         player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
         player.sendMessage(Text.literal("§7§oUse /greekmyth list to see this help again").formatted(Formatting.GRAY), false);
+    }
+    
+    /**
+     * Get the nearest entity to a player
+     */
+    private static Entity getNearestEntity(ServerWorld world, net.minecraft.entity.player.PlayerEntity player) {
+        Entity nearestEntity = null;
+        double nearestDistance = Double.MAX_VALUE;
+        
+        // Find the nearest entity by iterating through all loaded entities
+        for (Entity entity : world.iterateEntities()) {
+            // Skip the player themselves
+            if (entity == player) {
+                continue;
+            }
+            
+            // Skip entities that are too far away (optional - you can remove this if you want to find entities at any distance)
+            double distance = player.squaredDistanceTo(entity);
+            if (distance > 10000) { // 100 blocks squared
+                continue;
+            }
+            
+            if (distance < nearestDistance) {
+                nearestDistance = distance;
+                nearestEntity = entity;
+            }
+        }
+        
+        return nearestEntity;
     }
 }

@@ -75,6 +75,9 @@ public class GreekMythologyMod implements ModInitializer {
         // Register Oracle transformation handler
         com.example.greekmyth.event.OracleTransformationHandler.register();
         
+        // Register Merchant transformation handler
+        com.example.greekmyth.event.MerchantTransformationHandler.register();
+        
         // Register Oracle damage handler
         com.example.greekmyth.event.OracleDamageHandler.register();
         

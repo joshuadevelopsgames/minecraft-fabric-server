@@ -27,5 +27,5 @@ dependencies {
 }
 
 loom {
-    splitEnvironmentSourceSets()
+    // Don't split environment source sets so client code can be included
 } 

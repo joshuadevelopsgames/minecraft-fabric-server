@@ -2,8 +2,6 @@ package com.example.greekmyth.entity;
 
 import com.example.greekmyth.GreekMythologyMod;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.PiglinEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -12,16 +10,23 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ActionResult;
 import net.minecraft.world.World;
+import net.minecraft.entity.damage.DamageSource;
 
 public class MerchantPiglinEntity extends PiglinEntity {
     
     public MerchantPiglinEntity(EntityType<? extends PiglinEntity> entityType, World world) {
         super(entityType, world);
+        
+        GreekMythologyMod.LOGGER.info("Merchant Piglin Entity constructor called");
+        
+        // Set up the merchant properties
         this.setCustomName(Text.literal("Divine Merchant").formatted(Formatting.GOLD, Formatting.BOLD));
         this.setCustomNameVisible(true);
         this.setPersistent();
         this.setInvulnerable(true);
-        GreekMythologyMod.LOGGER.info("Merchant Piglin Entity created - Divine economy merchant ready");
+        this.setBaby(false);
+        
+        GreekMythologyMod.LOGGER.info("Merchant Piglin Entity created successfully");
     }
     
     @Override
@@ -37,23 +42,26 @@ public class MerchantPiglinEntity extends PiglinEntity {
         return ActionResult.SUCCESS;
     }
     
+    @Override
     public boolean isPersistent() {
         return true;
     }
     
+    @Override
     public boolean cannotDespawn() {
         return true;
     }
     
+    @Override
     public boolean isInvulnerable() {
         return true;
     }
     
-    public boolean canTarget(LivingEntity target) {
+    public boolean canTarget(net.minecraft.entity.LivingEntity target) {
         return false;
     }
     
-    public boolean canAttack(LivingEntity target) {
+    public boolean canAttack(net.minecraft.entity.LivingEntity target) {
         return false;
     }
     
@@ -61,11 +69,8 @@ public class MerchantPiglinEntity extends PiglinEntity {
         return false;
     }
     
-    public void setTarget(LivingEntity target) {
-        // Do nothing - merchant doesn't target anyone
-    }
-    
     public boolean damage(DamageSource source, float amount) {
+        // Merchant is invulnerable to all damage
         return false;
     }
     
@@ -81,8 +86,32 @@ public class MerchantPiglinEntity extends PiglinEntity {
         return true;
     }
     
-    public static MerchantPiglinEntity getNearestMerchant(World world) {
-        // For now, return null - we'll implement this later when needed
-        return null;
+    // Override transformation methods to prevent zombification
+    public boolean canConvertInWater() {
+        return false;
+    }
+    
+    public boolean canConvertInPowderSnow() {
+        return false;
+    }
+    
+    public boolean canConvertInOverworld() {
+        return false;
+    }
+    
+    public boolean shouldConvertInOverworld() {
+        return false;
+    }
+    
+    public boolean shouldConvertInWater() {
+        return false;
+    }
+    
+    public boolean shouldConvertInPowderSnow() {
+        return false;
+    }
+    
+    public boolean canConvert() {
+        return false;
     }
 } 
