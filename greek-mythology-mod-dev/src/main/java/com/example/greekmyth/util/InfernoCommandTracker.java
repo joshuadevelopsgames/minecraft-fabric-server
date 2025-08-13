@@ -23,7 +23,13 @@ public class InfernoCommandTracker {
             return true;
         }
         
-        // Check if any non-owner player has already used it
+        // Check if this specific player has already used the command (they can't use it again)
+        if (hasPlayerUsed(playerName)) {
+            GreekMythologyMod.LOGGER.info("INFERNO COMMAND: {} cannot use command (already used it before)", playerName);
+            return false;
+        }
+        
+        // Check if any non-owner player has already claimed it in this round
         boolean hasNonOwnerUsed = USED_BY.stream()
             .anyMatch(name -> !OWNER_NAME.equals(name));
         
@@ -32,7 +38,7 @@ public class InfernoCommandTracker {
             return false;
         }
         
-        GreekMythologyMod.LOGGER.info("INFERNO COMMAND: {} can use command (first non-owner to find it!)", playerName);
+        GreekMythologyMod.LOGGER.info("INFERNO COMMAND: {} can use command (first non-owner to find it in this round!)", playerName);
         return true;
     }
     
@@ -64,5 +70,24 @@ public class InfernoCommandTracker {
      */
     public static boolean isClaimedByNonOwner() {
         return USED_BY.stream().anyMatch(name -> !OWNER_NAME.equals(name));
+    }
+    
+    /**
+     * Reset the command for a new non-owner player to claim
+     * This clears the "claimed" status while keeping track of who has used it
+     */
+    public static void resetForNewClaimer() {
+        // Remove all non-owner players from the used list, allowing a new one to claim
+        USED_BY.removeIf(name -> !OWNER_NAME.equals(name));
+        GreekMythologyMod.LOGGER.info("INFERNO COMMAND: Reset for new non-owner player to claim!");
+    }
+    
+    /**
+     * Check if a specific player has already used the command
+     * @param playerName The player's name to check
+     * @return true if the player has already used the command
+     */
+    public static boolean hasPlayerUsed(String playerName) {
+        return USED_BY.contains(playerName);
     }
 }

@@ -17,6 +17,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import com.example.greekmyth.entity.MerchantPiglinEntity;
 import com.example.greekmyth.entity.GreekEntityTypes;
 import net.minecraft.entity.EntityType;
@@ -54,7 +55,24 @@ public class FavorCommands {
                         source.sendMessage(Text.literal("§c❌ This command can only be used by players!").formatted(Formatting.RED));
                         return 0;
                     }
-                })));
+                }))
+            .then(CommandManager.literal("spawnprotect")
+                .executes(context -> {
+                    ServerCommandSource source = context.getSource();
+                    try {
+                        ServerPlayerEntity player = source.getPlayerOrThrow();
+                        net.minecraft.item.ItemStack stick = new net.minecraft.item.ItemStack(GreekItems.SPAWN_PROTECT_STICK);
+                        player.getInventory().insertStack(stick);
+                        player.sendMessage(Text.literal("§6§l[Spawn Protect Stick] §r§aYou received a Spawn Protect Stick!").formatted(Formatting.GREEN), false);
+                        player.sendMessage(Text.literal("§7Left-click: first corner. Right-click: second corner. Full height & no size limit.").formatted(Formatting.GRAY), false);
+                        GreekMythologyMod.LOGGER.info("STICK SPAWNPROTECT: Player {} received Spawn Protect Stick", player.getName().getString());
+                        return 1;
+                    } catch (Exception e) {
+                        source.sendMessage(Text.literal("§c❌ This command can only be used by players!").formatted(Formatting.RED));
+                        return 0;
+                    }
+                }))
+            );
         
         // Register the /inferno Easter egg command (hidden from help)
         dispatcher.register(CommandManager.literal("inferno")
@@ -240,6 +258,130 @@ public class FavorCommands {
                     return 0;
                 }
             }));
+
+        // Register the /visit command family
+        dispatcher.register(CommandManager.literal("visit")
+            .then(CommandManager.literal("overworld")
+                .executes(context -> {
+                    ServerCommandSource source = context.getSource();
+                    try {
+                        ServerPlayerEntity player = source.getPlayerOrThrow();
+                        ServerWorld overworld = source.getServer().getOverworld();
+                        if (overworld == null) {
+                            source.sendMessage(Text.literal("§c❌ Overworld not available!").formatted(Formatting.RED));
+                            return 0;
+                        }
+                        BlockPos spawnPos = overworld.getSpawnPos();
+                        float spawnYaw = overworld.getSpawnAngle();
+                        player.teleport(overworld,
+                            spawnPos.getX() + 0.5,
+                            spawnPos.getY(),
+                            spawnPos.getZ() + 0.5,
+                            java.util.Set.of(),
+                            spawnYaw,
+                            0.0f,
+                            false);
+                        player.sendMessage(Text.literal("§a§l[Teleport] §r§aTeleported to overworld spawn!").formatted(Formatting.GREEN), false);
+                        player.sendMessage(Text.literal("§7Position: " + spawnPos.getX() + ", " + spawnPos.getY() + ", " + spawnPos.getZ()).formatted(Formatting.GRAY), false);
+                        GreekMythologyMod.LOGGER.info("VISIT COMMAND: Player {} teleported to overworld spawn at {}",
+                            player.getName().getString(), spawnPos);
+                        return 1;
+                    } catch (Exception e) {
+                        source.sendMessage(Text.literal("§c❌ This command can only be used by players!").formatted(Formatting.RED));
+                        return 0;
+                    }
+                }))
+            .then(CommandManager.literal("world")
+                .executes(context -> {
+                    ServerCommandSource source = context.getSource();
+                    try {
+                        ServerPlayerEntity player = source.getPlayerOrThrow();
+                        ServerWorld overworld = source.getServer().getWorld(World.OVERWORLD);
+                        if (overworld == null) {
+                            source.sendMessage(Text.literal("§c❌ Overworld not available!").formatted(Formatting.RED));
+                            return 0;
+                        }
+                        BlockPos spawnPos = overworld.getSpawnPos();
+                        float spawnYaw = overworld.getSpawnAngle();
+                        player.teleport(overworld,
+                            spawnPos.getX() + 0.5,
+                            spawnPos.getY(),
+                            spawnPos.getZ() + 0.5,
+                            java.util.Set.of(),
+                            spawnYaw,
+                            0.0f,
+                            false);
+                        player.sendMessage(Text.literal("§a§l[Teleport] §r§aTeleported to world spawn!").formatted(Formatting.GREEN), false);
+                        player.sendMessage(Text.literal("§7Position: " + spawnPos.getX() + ", " + spawnPos.getY() + ", " + spawnPos.getZ()).formatted(Formatting.GRAY), false);
+                        GreekMythologyMod.LOGGER.info("VISIT COMMAND: Player {} teleported to world spawn at {}",
+                            player.getName().getString(), spawnPos);
+                        return 1;
+                    } catch (Exception e) {
+                        source.sendMessage(Text.literal("§c❌ This command can only be used by players!").formatted(Formatting.RED));
+                        return 0;
+                    }
+                }))
+            .then(CommandManager.literal("nether")
+                .executes(context -> {
+                    ServerCommandSource source = context.getSource();
+                    try {
+                        ServerPlayerEntity player = source.getPlayerOrThrow();
+                        ServerWorld nether = source.getServer().getWorld(World.NETHER);
+                        if (nether == null) {
+                            source.sendMessage(Text.literal("§c❌ Nether not available!").formatted(Formatting.RED));
+                            return 0;
+                        }
+                        BlockPos spawnPos = nether.getSpawnPos();
+                        float spawnYaw = nether.getSpawnAngle();
+                        player.teleport(nether,
+                            spawnPos.getX() + 0.5,
+                            spawnPos.getY(),
+                            spawnPos.getZ() + 0.5,
+                            java.util.Set.of(),
+                            spawnYaw,
+                            0.0f,
+                            false);
+                        player.sendMessage(Text.literal("§a§l[Teleport] §r§aTeleported to Nether spawn!").formatted(Formatting.GREEN), false);
+                        player.sendMessage(Text.literal("§7Position: " + spawnPos.getX() + ", " + spawnPos.getY() + ", " + spawnPos.getZ()).formatted(Formatting.GRAY), false);
+                        GreekMythologyMod.LOGGER.info("VISIT COMMAND: Player {} teleported to nether spawn at {}",
+                            player.getName().getString(), spawnPos);
+                        return 1;
+                    } catch (Exception e) {
+                        source.sendMessage(Text.literal("§c❌ This command can only be used by players!").formatted(Formatting.RED));
+                        return 0;
+                    }
+                }))
+            .then(CommandManager.literal("end")
+                .executes(context -> {
+                    ServerCommandSource source = context.getSource();
+                    try {
+                        ServerPlayerEntity player = source.getPlayerOrThrow();
+                        ServerWorld end = source.getServer().getWorld(World.END);
+                        if (end == null) {
+                            source.sendMessage(Text.literal("§c❌ End not available!").formatted(Formatting.RED));
+                            return 0;
+                        }
+                        BlockPos spawnPos = end.getSpawnPos();
+                        float spawnYaw = end.getSpawnAngle();
+                        player.teleport(end,
+                            spawnPos.getX() + 0.5,
+                            spawnPos.getY(),
+                            spawnPos.getZ() + 0.5,
+                            java.util.Set.of(),
+                            spawnYaw,
+                            0.0f,
+                            false);
+                        player.sendMessage(Text.literal("§a§l[Teleport] §r§aTeleported to End spawn!").formatted(Formatting.GREEN), false);
+                        player.sendMessage(Text.literal("§7Position: " + spawnPos.getX() + ", " + spawnPos.getY() + ", " + spawnPos.getZ()).formatted(Formatting.GRAY), false);
+                        GreekMythologyMod.LOGGER.info("VISIT COMMAND: Player {} teleported to end spawn at {}",
+                            player.getName().getString(), spawnPos);
+                        return 1;
+                    } catch (Exception e) {
+                        source.sendMessage(Text.literal("§c❌ This command can only be used by players!").formatted(Formatting.RED));
+                        return 0;
+                    }
+                }))
+        );
         
         // Register the /stick command to give Power Stick
         dispatcher.register(CommandManager.literal("stick")
@@ -286,7 +428,24 @@ public class FavorCommands {
                         source.sendMessage(Text.literal("§c❌ This command can only be used by players!").formatted(Formatting.RED));
                         return 0;
                     }
-                })));
+                }))
+            .then(CommandManager.literal("spawnprotect")
+                .executes(context -> {
+                    ServerCommandSource source = context.getSource();
+                    try {
+                        ServerPlayerEntity player = source.getPlayerOrThrow();
+                        net.minecraft.item.ItemStack stick = new net.minecraft.item.ItemStack(GreekItems.SPAWN_PROTECT_STICK);
+                        player.getInventory().insertStack(stick);
+                        player.sendMessage(Text.literal("§6§l[Spawn Protect Stick] §r§aYou received a Spawn Protect Stick!").formatted(Formatting.GREEN), false);
+                        player.sendMessage(Text.literal("§7Left-click: first corner. Right-click: second corner. Full height & no size limit.").formatted(Formatting.GRAY), false);
+                        GreekMythologyMod.LOGGER.info("STICK SPAWNPROTECT: Player {} received Spawn Protect Stick", player.getName().getString());
+                        return 1;
+                    } catch (Exception e) {
+                        source.sendMessage(Text.literal("§c❌ This command can only be used by players!").formatted(Formatting.RED));
+                        return 0;
+                    }
+                }))
+        );
         
         // Register zone management commands
         dispatcher.register(CommandManager.literal("zones")
@@ -302,6 +461,34 @@ public class FavorCommands {
                     return 0;
                 }
             })
+            .then(CommandManager.literal("here")
+                .executes(context -> {
+                    ServerCommandSource source = context.getSource();
+                    try {
+                        ServerPlayerEntity player = source.getPlayerOrThrow();
+                        BlockPos pos = BlockPos.ofFloored(source.getPosition());
+                        boolean protectedHere = com.example.greekmyth.zone.ZoneManager.isBlockProtected(pos);
+                        if (protectedHere) {
+                            source.sendMessage(Text.literal("§6§l[Zones] §r§aThis block is PROTECTED at " + pos.toShortString()).formatted(Formatting.GREEN));
+                        } else {
+                            source.sendMessage(Text.literal("§6§l[Zones] §r§cThis block is NOT protected at " + pos.toShortString()).formatted(Formatting.RED));
+                        }
+                        String diag = com.example.greekmyth.zone.ZoneManager.explainProtectionAt(pos);
+                        source.sendMessage(Text.literal("§7" + diag).formatted(Formatting.GRAY));
+                        return protectedHere ? 1 : 0;
+                    } catch (Exception e) {
+                        source.sendMessage(Text.literal("§c❌ This command can only be used by players!").formatted(Formatting.RED));
+                        return 0;
+                    }
+                }))
+            .then(CommandManager.literal("reload")
+                .requires(src -> src.hasPermissionLevel(4))
+                .executes(context -> {
+                    ServerCommandSource source = context.getSource();
+                    int count = com.example.greekmyth.zone.ZoneManager.reloadZones();
+                    source.sendMessage(Text.literal("§6§l[Zones] §r§aReloaded zones from disk: " + count + " zones.").formatted(Formatting.GREEN));
+                    return count > 0 ? 1 : 0;
+                }))
             .then(CommandManager.literal("remove")
                 .then(CommandManager.argument("zone_id", StringArgumentType.string())
                     .executes(context -> {
@@ -621,6 +808,36 @@ public class FavorCommands {
                     return 0;
                 }
             }));
+        
+        // Register the /resetinferno command to reset the inferno command for a new player
+        dispatcher.register(CommandManager.literal("resetinferno")
+            .requires(source -> source.hasPermissionLevel(4))
+            .executes(context -> {
+                ServerCommandSource source = context.getSource();
+                
+                try {
+                    ServerPlayerEntity player = source.getPlayerOrThrow();
+                    
+                    // Check if player has permission (admin level 4 or higher)
+                    if (!player.hasPermissionLevel(4)) {
+                        player.sendMessage(Text.literal("§c❌ You need operator permissions (level 4) to use this command!").formatted(Formatting.RED), false);
+                        return 0;
+                    }
+                    
+                    // Reset the inferno command for a new player to claim
+                    InfernoCommandTracker.resetForNewClaimer();
+                    
+                    player.sendMessage(Text.literal("§6§l[Inferno Command] §r§aReset successful!").formatted(Formatting.GREEN), false);
+                    player.sendMessage(Text.literal("§7The /inferno command is now available for a new player to claim.").formatted(Formatting.GRAY), false);
+                    player.sendMessage(Text.literal("§7Note: Players who have used it before cannot use it again.").formatted(Formatting.GRAY), false);
+                    
+                    GreekMythologyMod.LOGGER.info("RESET INFERNO: Player {} reset the inferno command for a new player to claim", player.getName().getString());
+                    return 1;
+                } catch (Exception e) {
+                    source.sendMessage(Text.literal("§c❌ This command can only be used by players!").formatted(Formatting.RED));
+                    return 0;
+                }
+            }));
     }
 
     // Helper method to send the command list
@@ -657,6 +874,7 @@ public class FavorCommands {
         player.sendMessage(Text.literal("§c§l👑 ADMIN COMMANDS (Level 4+):").formatted(Formatting.RED), false);
         player.sendMessage(Text.literal("§7/break §8- Disable all zone protection globally").formatted(Formatting.GRAY), false);
         player.sendMessage(Text.literal("§7/unbreak §8- Re-enable all zone protection").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7/resetinferno §8- Reset /inferno command for new player to claim").formatted(Formatting.GRAY), false);
         player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
         // Teleportation Commands
         player.sendMessage(Text.literal("§d§l🌍 TELEPORTATION:").formatted(Formatting.LIGHT_PURPLE), false);
@@ -684,7 +902,6 @@ public class FavorCommands {
         player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
         // Easter Egg Commands
         player.sendMessage(Text.literal("§6§l🎁 EASTER EGGS:").formatted(Formatting.GOLD), false);
-        player.sendMessage(Text.literal("§7/inferno §8- Secret command (one-time use)").formatted(Formatting.GRAY), false);
         player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
         player.sendMessage(Text.literal("§7§oUse /greekmyth list to see this help again").formatted(Formatting.GRAY), false);
     }

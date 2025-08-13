@@ -15,11 +15,10 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.text.Text;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.random.Random;
+
 public class InfernoPearlItem extends Item {
     
     public InfernoPearlItem(Item.Settings settings) {
@@ -43,7 +42,7 @@ public class InfernoPearlItem extends Item {
                 @Override
                 protected void onCollision(HitResult hitResult) {
                     // DON'T call super.onCollision() - that does teleportation!
-                    // Instead, do our custom corruption logic
+                    // Instead, do our custom fire logic
                     
                     if (!this.getWorld().isClient) {
                         BlockPos impactPos = BlockPos.ofFloored(hitResult.getPos());
@@ -62,10 +61,10 @@ public class InfernoPearlItem extends Item {
                                 1, 0, 0, 0, 0.1);
                         }
                         
-                        // Corrupt the area with crimson forest
-                        corruptArea(this.getWorld(), impactPos);
+                        // Set the area around impact on fire
+                        setAreaOnFire(this.getWorld(), impactPos);
                         
-                        GreekMythologyMod.LOGGER.info("INFERNO PEARL: Impact at {} - corrupting area", impactPos);
+                        GreekMythologyMod.LOGGER.info("INFERNO PEARL: Impact at {} - setting area on fire", impactPos);
                     }
                     
                     // Remove the entity (important: don't call super!)
@@ -89,102 +88,79 @@ public class InfernoPearlItem extends Item {
         return ActionResult.SUCCESS;
     }
     
-    private void corruptArea(World world, BlockPos center) {
+    private void setAreaOnFire(World world, BlockPos center) {
         Random random = world.getRandom();
-        int radius = 4; // Corruption radius
+        int radius = 4; // Fire radius
         
         for (int x = -radius; x <= radius; x++) {
-            for (int y = -radius; y <= radius; y++) {
-                for (int z = -radius; z <= radius; z++) {
-                    BlockPos pos = center.add(x, y, z);
-                    BlockState currentState = world.getBlockState(pos);
-                    
-                    // Transform trees into warped forest
-                    if (isTreeBlock(currentState)) {
-                        Block crimsonBlock = getCrimsonForestBlock(currentState, random);
-                        world.setBlockState(pos, crimsonBlock.getDefaultState());
-                    }
-                    // Corrupt other replaceable blocks
-                    else if (isReplaceable(currentState)) {
-                        Block corruptedBlock = getRandomNetherBlock(random);
-                        world.setBlockState(pos, corruptedBlock.getDefaultState());
+            for (int z = -radius; z <= radius; z++) {
+                // Find the highest solid block at this x,z position
+                BlockPos surfacePos = findSurfacePosition(world, center.add(x, 0, z));
+                
+                if (surfacePos != null) {
+                    // Check if we can place fire on the surface
+                    if (canPlaceFire(world, surfacePos, world.getBlockState(surfacePos))) {
+                        // Place fire block on top of the surface
+                        BlockPos firePos = surfacePos.up();
+                        BlockState fireState = world.getBlockState(firePos);
+                        
+                        // Only place fire if the position is air (won't destroy anything)
+                        if (fireState.isAir()) {
+                            world.setBlockState(firePos, Blocks.FIRE.getDefaultState());
+                            
+                            // Add some randomness to make it look more natural
+                            if (random.nextFloat() < 0.4f) { // 40% chance to skip some blocks
+                                continue;
+                            }
+                        }
                     }
                 }
             }
         }
     }
     
-    private boolean isTreeBlock(BlockState state) {
-        Block block = state.getBlock();
-        return block == Blocks.OAK_LOG ||
-               block == Blocks.BIRCH_LOG ||
-               block == Blocks.SPRUCE_LOG ||
-               block == Blocks.JUNGLE_LOG ||
-               block == Blocks.ACACIA_LOG ||
-               block == Blocks.DARK_OAK_LOG ||
-               block == Blocks.MANGROVE_LOG ||
-               block == Blocks.CHERRY_LOG ||
-               block == Blocks.OAK_LEAVES ||
-               block == Blocks.BIRCH_LEAVES ||
-               block == Blocks.SPRUCE_LEAVES ||
-               block == Blocks.JUNGLE_LEAVES ||
-               block == Blocks.ACACIA_LEAVES ||
-               block == Blocks.DARK_OAK_LEAVES ||
-               block == Blocks.MANGROVE_LEAVES ||
-               block == Blocks.CHERRY_LEAVES ||
-               block == Blocks.AZALEA_LEAVES ||
-               block == Blocks.FLOWERING_AZALEA_LEAVES;
-    }
-    
-    private Block getCrimsonForestBlock(BlockState originalState, Random random) {
-        Block originalBlock = originalState.getBlock();
+    private BlockPos findSurfacePosition(World world, BlockPos xzPos) {
+        // Start from a reasonable height and work down to find the surface
+        int startY = Math.min(255, xzPos.getY() + 10);
         
-        // Transform logs to crimson stems (crimson wood)
-        if (originalBlock == Blocks.OAK_LOG || 
-            originalBlock == Blocks.BIRCH_LOG || 
-            originalBlock == Blocks.SPRUCE_LOG || 
-            originalBlock == Blocks.JUNGLE_LOG || 
-            originalBlock == Blocks.ACACIA_LOG || 
-            originalBlock == Blocks.DARK_OAK_LOG ||
-            originalBlock == Blocks.MANGROVE_LOG ||
-            originalBlock == Blocks.CHERRY_LOG) {
-            return Blocks.CRIMSON_STEM;
+        for (int y = startY; y >= 0; y--) {
+            BlockPos pos = new BlockPos(xzPos.getX(), y, xzPos.getZ());
+            BlockState state = world.getBlockState(pos);
+            
+            // Check if this is a solid surface block
+            if (state.isSolidBlock(world, pos)) {
+                // Check if the block above is air (so we can place fire)
+                BlockPos above = pos.up();
+                if (world.getBlockState(above).isAir()) {
+                    return pos;
+                }
+            }
         }
         
-        // Transform leaves to nether wart blocks (crimson forest leaves)
-        if (originalBlock == Blocks.OAK_LEAVES || 
-            originalBlock == Blocks.BIRCH_LEAVES || 
-            originalBlock == Blocks.SPRUCE_LEAVES || 
-            originalBlock == Blocks.JUNGLE_LEAVES || 
-            originalBlock == Blocks.ACACIA_LEAVES || 
-            originalBlock == Blocks.DARK_OAK_LEAVES ||
-            originalBlock == Blocks.MANGROVE_LEAVES ||
-            originalBlock == Blocks.CHERRY_LEAVES ||
-            originalBlock == Blocks.AZALEA_LEAVES ||
-            originalBlock == Blocks.FLOWERING_AZALEA_LEAVES) {
-            return Blocks.NETHER_WART_BLOCK;
+        return null; // No suitable surface found
+    }
+    
+    private boolean canPlaceFire(World world, BlockPos pos, BlockState currentState) {
+        // Don't place fire on fire-resistant blocks
+        if (currentState.getBlock() == Blocks.NETHERRACK || 
+            currentState.getBlock() == Blocks.MAGMA_BLOCK ||
+            currentState.getBlock() == Blocks.OBSIDIAN ||
+            currentState.getBlock() == Blocks.CRYING_OBSIDIAN ||
+            currentState.getBlock() == Blocks.BEDROCK ||
+            currentState.getBlock() == Blocks.BARRIER) {
+            return false;
         }
         
-        // Fallback to crimson nylium
-        return Blocks.CRIMSON_NYLIUM;
-    }
-    
-    private boolean isReplaceable(BlockState state) {
-        Block block = state.getBlock();
-        return block == Blocks.GRASS_BLOCK || 
-               block == Blocks.DIRT || 
-               block == Blocks.STONE || 
-               block == Blocks.SAND || 
-               block == Blocks.GRAVEL ||
-               block == Blocks.COBBLESTONE;
-    }
-    
-    private Block getRandomNetherBlock(Random random) {
-        Block[] netherBlocks = {
-            Blocks.NETHERRACK,
-            Blocks.MAGMA_BLOCK
-        };
+        // Don't place fire underwater
+        if (world.getBlockState(pos.up()).getBlock() == Blocks.WATER) {
+            return false;
+        }
         
-        return netherBlocks[random.nextInt(netherBlocks.length)];
+        // Don't place fire on non-solid blocks
+        if (!currentState.isSolidBlock(world, pos)) {
+            return false;
+        }
+        
+        return true;
     }
 }

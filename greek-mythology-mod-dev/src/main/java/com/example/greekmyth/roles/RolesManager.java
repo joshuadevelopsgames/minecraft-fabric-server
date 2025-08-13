@@ -80,6 +80,12 @@ public class RolesManager {
         return roles.getOrDefault(roleName, new Role("Member", "[Member]", "green", 1));
     }
 
+    // Overloaded method for string-based player names
+    public static Role getRoleForPlayer(String playerName) {
+        String roleName = assignments.getOrDefault(playerName, "Member");
+        return roles.getOrDefault(roleName, new Role("Member", "[Member]", "green", 1));
+    }
+
     public static void assignRole(String playerName, String roleName) {
         assignments.put(playerName, roleName);
         saveConfig(); // Save the assignment to persist it
@@ -97,5 +103,30 @@ public class RolesManager {
             roles.put(roleName, updatedRole);
             saveConfig(); // Save the updated role to persist it
         }
+    }
+
+    // Check if a role exists
+    public static boolean roleExists(String roleName) {
+        return roles.containsKey(roleName);
+    }
+
+    // Get a specific role by name
+    public static Role getRole(String roleName) {
+        return roles.get(roleName);
+    }
+
+    // Get all available roles
+    public static Map<String, Role> getAllRoles() {
+        return new HashMap<>(roles);
+    }
+
+    // Get all role assignments
+    public static Map<String, String> getAllAssignments() {
+        return new HashMap<>(assignments);
+    }
+
+    // Initialize the roles system (call this on server start)
+    public static void init() {
+        loadConfig();
     }
 } 

@@ -75,6 +75,10 @@ public class ZoneManager {
      * Handle right-click (second corner selection and zone creation)
      */
     public static void handleRightClick(ServerPlayerEntity player, ServerWorld world, BlockPos pos) {
+        handleRightClick(player, world, pos, false, false);
+    }
+
+    public static void handleRightClick(ServerPlayerEntity player, ServerWorld world, BlockPos pos, boolean ignoreSizeLimit, boolean fullHeight) {
         UUID playerId = player.getUuid();
         ZoneSelection selection = playerSelections.get(playerId);
         
@@ -85,19 +89,32 @@ public class ZoneManager {
         
         selection.setCorner2(pos);
         
+        BlockPos c1 = selection.getCorner1();
+        BlockPos c2 = selection.getCorner2();
+        if (fullHeight) {
+            int bottomY = world.getBottomY();
+            // Build height spans 384 in modern versions
+            int topYExclusive = bottomY + 384;
+            c1 = new BlockPos(c1.getX(), bottomY, c1.getZ());
+            c2 = new BlockPos(c2.getX(), topYExclusive - 1, c2.getZ());
+        }
+
         // Create the protected zone
         ProtectedZone zone = new ProtectedZone(
-            selection.getCorner1(),
-            selection.getCorner2(),
+            c1,
+            c2,
             player.getUuid(),
             player.getName().getString()
         );
         
-        // Check if zone is too large (max 100x100x100)
-        if (zone.getVolume() > 1000000) {
-            player.sendMessage(Text.literal("§6§l[Power Stick] §r§cZone is too large! Maximum size is 100x100x100 blocks.").formatted(Formatting.RED), false);
-            playerSelections.remove(playerId);
-            return;
+        // Check size limit only when not using spawn protect stick
+        if (!ignoreSizeLimit) {
+            // Check if zone is too large (max 100x100x100)
+            if (zone.getVolume() > 1000000) {
+                player.sendMessage(Text.literal("§6§l[Power Stick] §r§cZone is too large! Maximum size is 100x100x100 blocks.").formatted(Formatting.RED), false);
+                playerSelections.remove(playerId);
+                return;
+            }
         }
         
         // Add zone to protection list
@@ -111,7 +128,11 @@ public class ZoneManager {
         // Send success message
         player.sendMessage(Text.literal("§6§l[Power Stick] §r§aProtected zone created successfully!").formatted(Formatting.GREEN), false);
         player.sendMessage(Text.literal("§7Zone ID: " + zoneId).formatted(Formatting.GRAY), false);
-        player.sendMessage(Text.literal("§7Volume: " + zone.getVolume() + " blocks").formatted(Formatting.GRAY), false);
+        if (!ignoreSizeLimit) {
+            player.sendMessage(Text.literal("§7Volume: " + zone.getVolume() + " blocks").formatted(Formatting.GRAY), false);
+        } else {
+            player.sendMessage(Text.literal("§7Height: world bottom to sky (full vertical)").formatted(Formatting.GRAY), false);
+        }
         player.sendMessage(Text.literal("§7Owner: " + player.getName().getString()).formatted(Formatting.GRAY), false);
         
         GreekMythologyMod.LOGGER.info("Zone Manager: Player {} created protected zone {} with volume {}", 
@@ -232,6 +253,14 @@ public class ZoneManager {
             GreekMythologyMod.LOGGER.error("Zone Manager: Failed to load zones", e);
         }
     }
+
+    /**
+     * Reload zones from disk. Returns number of zones after reload.
+     */
+    public static int reloadZones() {
+        loadZones();
+        return protectedZones.size();
+    }
     
     /**
      * Format position for display
@@ -245,6 +274,36 @@ public class ZoneManager {
      */
     public static Map<String, ProtectedZone> getAllZones() {
         return new HashMap<>(protectedZones);
+    }
+
+    /**
+     * Debug helper: explain protection status at a position.
+     */
+    public static String explainProtectionAt(BlockPos pos) {
+        StringBuilder sb = new StringBuilder();
+        boolean any = false;
+        for (ProtectedZone zone : protectedZones.values()) {
+            BlockPos min = zone.getMinCorner();
+            BlockPos max = zone.getMaxCorner();
+            boolean inX = pos.getX() >= min.getX() && pos.getX() <= max.getX();
+            boolean inY = pos.getY() >= min.getY() && pos.getY() <= max.getY();
+            boolean inZ = pos.getZ() >= min.getZ() && pos.getZ() <= max.getZ();
+            if (inX || inY || inZ) {
+                any = true;
+                sb.append("Zone ").append(zone.getId())
+                  .append(" owner=").append(zone.getOwnerName())
+                  .append(" min=").append(min.toShortString())
+                  .append(" max=").append(max.toShortString())
+                  .append(" | inX=").append(inX)
+                  .append(" inY=").append(inY)
+                  .append(" inZ=").append(inZ)
+                  .append('\n');
+            }
+        }
+        if (!any) {
+            sb.append("No nearby zones intersect any axis here.");
+        }
+        return sb.toString();
     }
     
     /**

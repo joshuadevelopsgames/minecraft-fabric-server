@@ -21,17 +21,18 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import com.example.greekmyth.dimension.ShadowRealmDimensionManager;
 
 public class GreekMythologyMod implements ModInitializer {
     public static final String MOD_ID = "greekmyth";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     
     // Version tracking system
-    public static final String MOD_VERSION = "1.0.175";
-    public static final String BUILD_VERSION_TITLE = "Added Divine Merchant Economy System";
+    public static final String MOD_VERSION = "1.0.176";
+    public static final String BUILD_VERSION_TITLE = "Updated /visit Command Permissions";
     public static final String BUILD_DATE = "2024-08-05";
     public static final String BUILD_TIME = "00:40";
-    public static final String BUILD_FEATURES = "Added Divine Merchant (MerchantPiglinEntity) - Economy system with trading commands (/buy, /sell, /endtrade, /spawnmerchant), custom piglin merchant with wandering trader texture, emerald-based economy for all Greek mythology items";
+    public static final String BUILD_FEATURES = "Updated /visit command permissions - Only admins (Level 3+) and owner (Level 4+) can use /visit, with admins restricted to jail/overworld and owner having access to all dimensions";
     
     // Soul counting system
     private static final Map<UUID, Integer> playerSoulCounts = new HashMap<>();
@@ -64,6 +65,9 @@ public class GreekMythologyMod implements ModInitializer {
         // Register Inferno Portal system
         com.example.greekmyth.portal.InfernoPortalManager.register();
         
+        // Initialize Shadow Realm system
+        com.example.greekmyth.dimension.ShadowRealmDimensionManager.init();
+        
         ModEvents.register();
         UndeadWarriorEvents.register();
         UndeadWarriorSoundEvents.register();
@@ -74,6 +78,9 @@ public class GreekMythologyMod implements ModInitializer {
         
         // Register Oracle transformation handler
         com.example.greekmyth.event.OracleTransformationHandler.register();
+        
+        // Register Oracle tag interaction handler
+        com.example.greekmyth.event.OracleTagInteractionHandler.register();
         
         // Register Merchant transformation handler
         com.example.greekmyth.event.MerchantTransformationHandler.register();
@@ -87,6 +94,12 @@ public class GreekMythologyMod implements ModInitializer {
         // Register PvP protection events
         com.example.greekmyth.event.PvpProtectionEvents.register();
         
+        // Register Waystone activation gating
+        com.example.greekmyth.event.WaystoneActivationEvents.register();
+
+        // Register Shadow Realm events for one-way world syncing
+        com.example.greekmyth.event.ShadowRealmEvents.register();
+
         // Register armor stand PvP events for testing
         com.example.greekmyth.event.ArmorStandPvpEvents.register();
         
@@ -98,7 +111,12 @@ public class GreekMythologyMod implements ModInitializer {
             OracleRegistry.initialize(server);
             com.example.greekmyth.zone.ZoneManager.initialize(server);
             com.example.greekmyth.pvp.PvpZoneManager.initialize(server);
-            LOGGER.info("Oracle Registry, Zone Manager, and PvP Zone Manager initialized on server start");
+            // Register the shadow realm dimension
+            ShadowRealmDimensionManager.registerDimension(server);
+            // Initialize the roles system
+            com.example.greekmyth.roles.RolesManager.init();
+            // Waystone tracker no longer needed; interaction is per-use with Eye consumption
+            LOGGER.info("Oracle Registry, Zone Manager, PvP Zone Manager, and Roles Manager initialized on server start");
         });
         
         // Oracle Altar system temporarily disabled due to block registration issues
@@ -106,6 +124,8 @@ public class GreekMythologyMod implements ModInitializer {
         // Initialize favor system
         LOGGER.info("Initializing Greek Mythology Favor System...");
         FavorManager.init();
+        
+        LOGGER.info("Greek Mythology Mod initialization complete!");
         
         // Register commands
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
@@ -120,6 +140,15 @@ public class GreekMythologyMod implements ModInitializer {
             
             // Register favor commands
             com.example.greekmyth.command.FavorCommands.register(dispatcher);
+            
+            // Register Shadow Realm commands
+            com.example.greekmyth.command.ShadowRealmCommand.register(dispatcher);
+            
+            // Register role management commands
+            com.example.greekmyth.command.RoleCommands.register(dispatcher);
+            
+            // Register class management commands (god selection, class info, etc.)
+            com.example.greekmyth.command.ClassCommands.register(dispatcher);
             
             // Register the /jail command
             dispatcher.register(net.minecraft.server.command.CommandManager.literal("jail")
@@ -172,7 +201,7 @@ public class GreekMythologyMod implements ModInitializer {
 
             // Register the /visit command
             dispatcher.register(net.minecraft.server.command.CommandManager.literal("visit")
-                .requires(source -> source.hasPermissionLevel(4))
+                .requires(source -> source.hasPermissionLevel(3))
                 .then(net.minecraft.server.command.CommandManager.argument("dimension", StringArgumentType.word())
                     .executes(context -> {
                         ServerPlayerEntity player = context.getSource().getPlayer();
@@ -180,7 +209,21 @@ public class GreekMythologyMod implements ModInitializer {
                             context.getSource().sendError(net.minecraft.text.Text.literal("This command can only be used by a player."));
                             return 0;
                         }
+                        
                         String dimension = StringArgumentType.getString(context, "dimension");
+                        
+                        // Check if player is owner (Level 4) or admin (Level 3)
+                        boolean isOwner = context.getSource().hasPermissionLevel(4);
+                        boolean isAdmin = context.getSource().hasPermissionLevel(3);
+                        
+                        // Admin (Level 3) restrictions - can only access jail and overworld
+                        if (isAdmin && !isOwner) {
+                            if (!dimension.toLowerCase().equals("jail") && !dimension.toLowerCase().equals("overworld") && !dimension.toLowerCase().equals("world")) {
+                                player.sendMessage(net.minecraft.text.Text.literal("§c❌ Access denied! Admins can only visit jail and overworld dimensions."));
+                                GreekMythologyMod.LOGGER.warn("VISIT COMMAND: Admin {} attempted to access restricted dimension: {}", player.getName().getString(), dimension);
+                                return 0;
+                            }
+                        }
                         switch (dimension.toLowerCase()) {
                             case "jail":
                             case "tartarus":
@@ -215,6 +258,12 @@ public class GreekMythologyMod implements ModInitializer {
                                 }
                                 break;
                             case "nether":
+                                // Only Owner (Level 4) can access Nether
+                                if (!isOwner) {
+                                    player.sendMessage(net.minecraft.text.Text.literal("§c❌ Access denied! Only the owner can visit the Nether dimension."));
+                                    GreekMythologyMod.LOGGER.warn("VISIT COMMAND: Non-owner {} attempted to access Nether dimension", player.getName().getString());
+                                    return 0;
+                                }
                                 ServerWorld netherWorld = player.getServer().getWorld(net.minecraft.world.World.NETHER);
                                 if (netherWorld != null) {
                                     player.teleport(netherWorld, 0, 64, 0, java.util.Set.of(), player.getYaw(), player.getPitch(), false);
@@ -226,6 +275,12 @@ public class GreekMythologyMod implements ModInitializer {
                                 }
                                 break;
                             case "end":
+                                // Only Owner (Level 4) can access End
+                                if (!isOwner) {
+                                    player.sendMessage(net.minecraft.text.Text.literal("§c❌ Access denied! Only the owner can visit the End dimension."));
+                                    GreekMythologyMod.LOGGER.warn("VISIT COMMAND: Non-owner {} attempted to access End dimension", player.getName().getString());
+                                    return 0;
+                                }
                                 ServerWorld endWorld = player.getServer().getWorld(net.minecraft.world.World.END);
                                 if (endWorld != null) {
                                     // Teleport to a safe spot in the End (e.g., 4, 64, 0)
@@ -313,6 +368,7 @@ public class GreekMythologyMod implements ModInitializer {
         // Overview
         source.sendMessage(net.minecraft.text.Text.literal("📖 OVERVIEW").formatted(net.minecraft.util.Formatting.YELLOW, net.minecraft.util.Formatting.BOLD));
         source.sendMessage(net.minecraft.text.Text.literal("Welcome to the Greek Mythology mod! This mod brings the power of the Olympian gods to your Minecraft world.").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("Choose your divine parent to become a demigod and unlock special abilities!").formatted(net.minecraft.util.Formatting.WHITE));
         source.sendMessage(net.minecraft.text.Text.literal("").formatted(net.minecraft.util.Formatting.GOLD));
         
         // Items Section
@@ -375,6 +431,37 @@ public class GreekMythologyMod implements ModInitializer {
         source.sendMessage(net.minecraft.text.Text.literal("• /favor summary: View system statistics (admin only)").formatted(net.minecraft.util.Formatting.WHITE));
         source.sendMessage(net.minecraft.text.Text.literal("").formatted(net.minecraft.util.Formatting.GOLD));
         
+        // Class System Section
+        source.sendMessage(net.minecraft.text.Text.literal("⚔️ CLASS SYSTEM").formatted(net.minecraft.util.Formatting.YELLOW, net.minecraft.util.Formatting.BOLD));
+        source.sendMessage(net.minecraft.text.Text.literal("Choose your divine parent and become a demigod:").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• /choosezeus: Choose Zeus as your god parent").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• /chooseposeidon: Choose Poseidon as your god parent").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• /choosehades: Choose Hades as your god parent").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• /chooseathena: Choose Athena as your god parent").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• /chooseares: Choose Ares as your god parent").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• /chooseapollo: Choose Apollo as your god parent").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• /chooseartemis: Choose Artemis as your god parent").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• /choosehermes: Choose Hermes as your god parent").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• /choosehephaestus: Choose Hephaestus as your god parent").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• /chooseaphrodite: Choose Aphrodite as your god parent").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• /choosedemeter: Choose Demeter as your god parent").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• /choosedionysus: Choose Dionysus as your god parent").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• /class: Show your current class information").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• /class info <player>: View another player's class (Mod+)").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• /class reset: Reset your class to mortal (Admin+)").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• /class clear: Completely clear your class (Admin+)").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• /class level <level>: Set your class level (Admin+)").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("").formatted(net.minecraft.util.Formatting.GOLD));
+        
+        // Admin Commands Section
+        source.sendMessage(net.minecraft.text.Text.literal("🔐 ADMIN COMMANDS").formatted(net.minecraft.util.Formatting.RED, net.minecraft.util.Formatting.BOLD));
+        source.sendMessage(net.minecraft.text.Text.literal("• /visit <dimension>: Teleport to different dimensions").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("  - Admins (Level 3+): jail, overworld").formatted(net.minecraft.util.Formatting.GRAY));
+        source.sendMessage(net.minecraft.text.Text.literal("  - Owner (Level 4+): jail, overworld, nether, end").formatted(net.minecraft.util.Formatting.GRAY));
+        source.sendMessage(net.minecraft.text.Text.literal("• /jail <player> <cell>: Jail a player in Tartarus").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• /escape <player>: Free a jailed player").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("").formatted(net.minecraft.util.Formatting.GOLD));
+        
         // How to Gain Favor
         source.sendMessage(net.minecraft.text.Text.literal("🎯 HOW TO GAIN FAVOR").formatted(net.minecraft.util.Formatting.YELLOW, net.minecraft.util.Formatting.BOLD));
         source.sendMessage(net.minecraft.text.Text.literal("• Zeus: Use lightning, respect the weather, be a leader").formatted(net.minecraft.util.Formatting.WHITE));
@@ -398,6 +485,9 @@ public class GreekMythologyMod implements ModInitializer {
         source.sendMessage(net.minecraft.text.Text.literal("• Higher favor tiers unlock better rewards and abilities").formatted(net.minecraft.util.Formatting.WHITE));
         source.sendMessage(net.minecraft.text.Text.literal("• You can gain favor with multiple gods simultaneously").formatted(net.minecraft.util.Formatting.WHITE));
         source.sendMessage(net.minecraft.text.Text.literal("• Check your profile regularly to see your progress").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• Choose your god parent wisely - you can only choose once!").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• Your class level increases with experience and achievements").formatted(net.minecraft.util.Formatting.WHITE));
+        source.sendMessage(net.minecraft.text.Text.literal("• Different god parents grant different abilities and bonuses").formatted(net.minecraft.util.Formatting.WHITE));
         source.sendMessage(net.minecraft.text.Text.literal("").formatted(net.minecraft.util.Formatting.GOLD));
         
         // Version Info

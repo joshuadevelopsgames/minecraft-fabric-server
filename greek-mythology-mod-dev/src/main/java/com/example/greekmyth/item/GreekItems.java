@@ -15,6 +15,7 @@ public class GreekItems {
     public static final Identifier ZEUS_BOLT_ID = Identifier.of(GreekMythologyMod.MOD_ID, "zeus_bolt");
     public static final Identifier POSEIDON_TRIDENT_ID = Identifier.of(GreekMythologyMod.MOD_ID, "poseidon_trident");
     public static final Identifier HADES_SCYTHE_ID = Identifier.of(GreekMythologyMod.MOD_ID, "hades_scythe");
+    public static final Identifier ARES_BATTLE_AXE_ID = Identifier.of(GreekMythologyMod.MOD_ID, "ares_battle_axe");
     public static final Identifier INFERNO_PEARL_ID = Identifier.of(GreekMythologyMod.MOD_ID, "inferno_pearl");
     
     // Soul Items
@@ -76,6 +77,9 @@ public class GreekItems {
     public static final Identifier BREEZE_SOUL_ID = Identifier.of(GreekMythologyMod.MOD_ID, "breeze_soul");
     // ILLUSIONER_SOUL_ID removed - now functions as Oracle mob
     
+    // Dark Angel Elytra
+    public static final Identifier DARK_ANGEL_ELYTRA_ID = Identifier.of(GreekMythologyMod.MOD_ID, "dark_angel_elytra");
+
     // Oracle Tag Items
     public static final Identifier ZEUS_ORACLE_TAG_ID = Identifier.of(GreekMythologyMod.MOD_ID, "zeus_oracle_tag");
     public static final Identifier POSEIDON_ORACLE_TAG_ID = Identifier.of(GreekMythologyMod.MOD_ID, "poseidon_oracle_tag");
@@ -92,6 +96,8 @@ public class GreekItems {
     
     // Power Stick for zone protection
     public static final Identifier POWER_STICK_ID = Identifier.of(GreekMythologyMod.MOD_ID, "power_stick");
+    // Spawn Protect Stick (infinite range, full height)
+    public static final Identifier SPAWN_PROTECT_STICK_ID = Identifier.of(GreekMythologyMod.MOD_ID, "spawn_protect_stick");
     
     // No PvP Stick for safe zones
     public static final Identifier NO_PVP_STICK_ID = Identifier.of(GreekMythologyMod.MOD_ID, "no_pvp_stick");
@@ -100,6 +106,7 @@ public class GreekItems {
     public static Item ZEUS_BOLT;
     public static Item POSEIDON_TRIDENT;
     public static Item HADES_SCYTHE;
+    public static Item ARES_BATTLE_AXE;
     public static Item INFERNO_PEARL;
     
     // Soul Items
@@ -161,6 +168,9 @@ public class GreekItems {
     public static Item BREEZE_SOUL;
     // ILLUSIONER_SOUL removed - now functions as Oracle mob
     
+    // Dark Angel Elytra
+    public static Item DARK_ANGEL_ELYTRA;
+
     // Oracle Tag Items
     public static Item ZEUS_ORACLE_TAG;
     public static Item POSEIDON_ORACLE_TAG;
@@ -177,6 +187,8 @@ public class GreekItems {
     
     // Power Stick for zone protection
     public static Item POWER_STICK;
+    // Spawn Protect Stick
+    public static Item SPAWN_PROTECT_STICK;
     
     // No PvP Stick for safe zones
     public static Item NO_PVP_STICK;
@@ -220,6 +232,18 @@ public class GreekItems {
             new HadesScytheItem(scytheSettings));
         GreekMythologyMod.LOGGER.info("Registered Hades Scythe via factory with underworld abilities");
         
+        // Ares Battle Axe
+        Item.Settings axeSettings = new Item.Settings()
+            .maxCount(1)
+            .maxDamage(0) // Unbreakable
+            .fireproof()
+            .rarity(Rarity.EPIC)
+            .registryKey(RegistryKey.of(RegistryKeys.ITEM, ARES_BATTLE_AXE_ID));
+
+        // ARES_BATTLE_AXE = Registry.register(Registries.ITEM, ARES_BATTLE_AXE_ID,
+        //     new AresBattleAxeItem(axeSettings));
+        // GreekMythologyMod.LOGGER.info("Registered Ares Battle Axe via factory with blood rage abilities");
+        
         // Inferno Pearl
         Item.Settings pearlSettings = new Item.Settings()
             .maxCount(16)
@@ -242,6 +266,12 @@ public class GreekItems {
         
         // Register No PvP Stick
         registerNoPvpStick();
+
+        // Register Spawn Protect Stick
+        registerSpawnProtectStick();
+
+        // Register Dark Angel Elytra
+        registerDarkAngelElytra();
     }
     
     private static void registerSoulItems() {
@@ -307,6 +337,17 @@ public class GreekItems {
         // ILLUSIONER_SOUL registration removed - now functions as Oracle mob
         
         GreekMythologyMod.LOGGER.info("Registered {} soul items for Hades Scythe soul harvesting", 50);
+    }
+
+    private static void registerSpawnProtectStick() {
+        Item.Settings settings = new Item.Settings()
+            .maxCount(1)
+            .fireproof()
+            .rarity(Rarity.RARE)
+            .registryKey(RegistryKey.of(RegistryKeys.ITEM, SPAWN_PROTECT_STICK_ID));
+        SPAWN_PROTECT_STICK = Registry.register(Registries.ITEM, SPAWN_PROTECT_STICK_ID,
+            new ZoneStickItem(settings, true));
+        GreekMythologyMod.LOGGER.info("Registered Spawn Protect Stick with infinite range and full height");
     }
     
     private static Item registerSoulItem(Identifier id, String name, Rarity rarity) {
@@ -471,5 +512,17 @@ public class GreekItems {
                 .registryKey(RegistryKey.of(RegistryKeys.ITEM, NO_PVP_STICK_ID))));
         
         GreekMythologyMod.LOGGER.info("Registered No PvP Stick for safe zones");
+    }
+
+    private static void registerDarkAngelElytra() {
+        Item.Settings settings = new Item.Settings()
+            .maxCount(1)
+            .rarity(Rarity.RARE)
+            // Enable glider behavior and equip on chest via data components
+            .component(net.minecraft.component.DataComponentTypes.GLIDER, net.minecraft.util.Unit.INSTANCE)
+            .equippable(net.minecraft.entity.EquipmentSlot.CHEST)
+            .registryKey(RegistryKey.of(RegistryKeys.ITEM, DARK_ANGEL_ELYTRA_ID));
+        DARK_ANGEL_ELYTRA = Registry.register(Registries.ITEM, DARK_ANGEL_ELYTRA_ID, new DarkAngelElytraItem(settings));
+        GreekMythologyMod.LOGGER.info("Registered Dark Angel Elytra");
     }
 } 

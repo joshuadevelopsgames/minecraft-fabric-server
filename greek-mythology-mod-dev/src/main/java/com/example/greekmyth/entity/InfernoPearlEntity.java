@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FireBlock;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.random.Random;
@@ -63,10 +64,10 @@ public class InfernoPearlEntity extends ThrownItemEntity {
                     1, 0, 0, 0, 0.1);
             }
             
-            // Corrupt the area around impact
-            corruptArea(this.getWorld(), impactPos);
+            // Set the area around impact on fire
+            setAreaOnFire(this.getWorld(), impactPos);
             
-            GreekMythologyMod.LOGGER.info("INFERNO PEARL: Impact at {} - corrupting area", impactPos);
+            GreekMythologyMod.LOGGER.info("INFERNO PEARL: Impact at {} - setting area on fire", impactPos);
             
             // Remove the pearl entity
             this.discard();
@@ -87,9 +88,9 @@ public class InfernoPearlEntity extends ThrownItemEntity {
         onCollision(blockHitResult);
     }
     
-    private void corruptArea(World world, BlockPos center) {
+    private void setAreaOnFire(World world, BlockPos center) {
         Random random = world.getRandom();
-        int radius = 4; // Corruption radius
+        int radius = 4; // Fire radius (same as original corruption radius)
         
         for (int x = -radius; x <= radius; x++) {
             for (int y = -radius; y <= radius; y++) {
@@ -97,92 +98,63 @@ public class InfernoPearlEntity extends ThrownItemEntity {
                     BlockPos pos = center.add(x, y, z);
                     BlockState currentState = world.getBlockState(pos);
                     
-                    // Transform trees into crimson forest
-                    if (isTreeBlock(currentState)) {
-                        Block crimsonBlock = getCrimsonForestBlock(currentState, random);
-                        world.setBlockState(pos, crimsonBlock.getDefaultState());
-                    }
-                    // Corrupt other replaceable blocks
-                    else if (isReplaceable(currentState)) {
-                        Block corruptedBlock = getRandomNetherBlock(random);
-                        world.setBlockState(pos, corruptedBlock.getDefaultState());
+                    // Check if we can place fire at this position
+                    if (canPlaceFire(world, pos, currentState)) {
+                        // Place fire block
+                        world.setBlockState(pos, Blocks.FIRE.getDefaultState());
+                        
+                        // Add some randomness to make it look more natural
+                        if (random.nextFloat() < 0.3f) { // 30% chance to skip some blocks
+                            continue;
+                        }
                     }
                 }
             }
         }
     }
     
-    private boolean isTreeBlock(BlockState state) {
-        Block block = state.getBlock();
-        return block == Blocks.OAK_LOG ||
-               block == Blocks.BIRCH_LOG ||
-               block == Blocks.SPRUCE_LOG ||
-               block == Blocks.JUNGLE_LOG ||
-               block == Blocks.ACACIA_LOG ||
-               block == Blocks.DARK_OAK_LOG ||
-               block == Blocks.MANGROVE_LOG ||
-               block == Blocks.CHERRY_LOG ||
-               block == Blocks.OAK_LEAVES ||
-               block == Blocks.BIRCH_LEAVES ||
-               block == Blocks.SPRUCE_LEAVES ||
-               block == Blocks.JUNGLE_LEAVES ||
-               block == Blocks.ACACIA_LEAVES ||
-               block == Blocks.DARK_OAK_LEAVES ||
-               block == Blocks.MANGROVE_LEAVES ||
-               block == Blocks.CHERRY_LEAVES ||
-               block == Blocks.AZALEA_LEAVES ||
-               block == Blocks.FLOWERING_AZALEA_LEAVES;
-    }
-    
-    private Block getCrimsonForestBlock(BlockState originalState, Random random) {
-        Block originalBlock = originalState.getBlock();
+    private boolean canPlaceFire(World world, BlockPos pos, BlockState currentState) {
+        Block block = currentState.getBlock();
         
-        // Transform logs to crimson stems
-        if (originalBlock == Blocks.OAK_LOG || 
-            originalBlock == Blocks.BIRCH_LOG || 
-            originalBlock == Blocks.SPRUCE_LOG || 
-            originalBlock == Blocks.JUNGLE_LOG || 
-            originalBlock == Blocks.ACACIA_LOG || 
-            originalBlock == Blocks.DARK_OAK_LOG ||
-            originalBlock == Blocks.MANGROVE_LOG ||
-            originalBlock == Blocks.CHERRY_LOG) {
-            return Blocks.CRIMSON_STEM;
+        // Can't place fire on fire
+        if (block == Blocks.FIRE) {
+            return false;
         }
         
-        // Transform leaves to nether wart blocks (crimson forest leaves)
-        if (originalBlock == Blocks.OAK_LEAVES || 
-            originalBlock == Blocks.BIRCH_LEAVES || 
-            originalBlock == Blocks.SPRUCE_LEAVES || 
-            originalBlock == Blocks.JUNGLE_LEAVES || 
-            originalBlock == Blocks.ACACIA_LEAVES || 
-            originalBlock == Blocks.DARK_OAK_LEAVES ||
-            originalBlock == Blocks.MANGROVE_LEAVES ||
-            originalBlock == Blocks.CHERRY_LEAVES ||
-            originalBlock == Blocks.AZALEA_LEAVES ||
-            originalBlock == Blocks.FLOWERING_AZALEA_LEAVES) {
-            return Blocks.NETHER_WART_BLOCK;
+        // Can't place fire on water or lava
+        if (block == Blocks.WATER || block == Blocks.LAVA) {
+            return false;
         }
         
-        // Fallback to crimson nylium
-        return Blocks.CRIMSON_NYLIUM;
-    }
-    
-    private boolean isReplaceable(BlockState state) {
-        Block block = state.getBlock();
-        return block == Blocks.GRASS_BLOCK || 
-               block == Blocks.DIRT || 
-               block == Blocks.STONE || 
-               block == Blocks.SAND || 
-               block == Blocks.GRAVEL ||
-               block == Blocks.COBBLESTONE;
-    }
-    
-    private Block getRandomNetherBlock(Random random) {
-        Block[] netherBlocks = {
-            Blocks.NETHERRACK,
-            Blocks.MAGMA_BLOCK
-        };
+        // Can't place fire on ice
+        if (block == Blocks.ICE || block == Blocks.FROSTED_ICE || block == Blocks.BLUE_ICE || block == Blocks.PACKED_ICE) {
+            return false;
+        }
         
-        return netherBlocks[random.nextInt(netherBlocks.length)];
+        // Can't place fire on obsidian or bedrock
+        if (block == Blocks.OBSIDIAN || block == Blocks.BEDROCK) {
+            return false;
+        }
+        
+        // Can't place fire on netherrack (fire-resistant)
+        if (block == Blocks.NETHERRACK) {
+            return false;
+        }
+        
+        // Check if the block below can support fire
+        BlockPos below = pos.down();
+        BlockState belowState = world.getBlockState(below);
+        
+        // Fire needs a solid block below it
+        if (!belowState.isSolidBlock(world, below)) {
+            return false;
+        }
+        
+        // Can't place fire on leaves (they burn away)
+        if (belowState.getBlock() instanceof net.minecraft.block.LeavesBlock) {
+            return false;
+        }
+        
+        return true;
     }
 } 

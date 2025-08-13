@@ -1,0 +1,61 @@
+Greek Mythology Mod - Version 1.0.176
+Build Date: 2024-08-05
+Build Time: 00:40
+
+CHANGELOG:
+
+SECURITY & PERMISSIONS:
+- Updated /visit command permissions for enhanced security
+- Only admins (Level 3+) and owner (Level 4+) can now use /visit commands
+- Admin restrictions: Can only visit jail and overworld dimensions
+- Owner access: Full access to all dimensions (jail, overworld, nether, end)
+- Regular players (Level 0-2) can no longer use /visit commands
+
+DIMENSION ACCESS BREAKDOWN:
+- Jail dimension: Admins (Level 3+) and Owner (Level 4+)
+- Overworld: Admins (Level 3+) and Owner (Level 4+)
+- Nether: Owner only (Level 4+)
+- End: Owner only (Level 4+)
+
+COMMAND UPDATES:
+- /visit command now requires admin permissions (Level 3+)
+- Enhanced permission checking with clear access denied messages
+- Improved logging for security monitoring
+- Removed /inferno command from help text display
+- Added /resetinferno admin command to help text
+
+INFERNO COMMAND SYSTEM:
+- /inferno command removed from help text display
+- Enhanced tracking system to prevent repeat usage by same player
+- Added /resetinferno command (Admin Level 4+) to reset Easter egg for new player
+- Players who have used /inferno before cannot use it again, even after reset
+- Only one non-owner player can claim the command per reset cycle
+
+HELP SYSTEM:
+- Updated help command to show new permission requirements
+- Added admin commands section with clear permission breakdown
+- Updated commands reference documentation
+
+POSEIDON TRIDENT IMPROVEMENTS:
+- Removed debug logging from Riptide III underwater sprinting feature
+- Cleaned up console output for better server performance
+- Maintained all functionality while reducing log spam
+
+TECHNICAL IMPROVEMENTS:
+- Fixed compilation errors in permission checking system
+- Improved code structure for better maintainability
+- Enhanced error handling and user feedback
+- Enhanced InfernoCommandTracker with reset functionality
+- Added /resetinferno command for admins to reset Easter egg
+
+DEPLOYMENT IMPROVEMENTS:
+- Enhanced restart script to automatically clean up old mod files
+- Added automatic removal of old Greek mythology mod versions before server restart
+- Created new deploy.sh script for automated build and deployment process
+- Prevents version conflicts by ensuring only the latest mod version is present
+- Streamlined deployment workflow for future updates
+
+BUILD & VERSIONING:
+- Updated MOD_VERSION to 1.0.176
+- Fixed fabric.mod.json version mismatch (was showing 1.0.98)
+- Enhanced build process to ensure version consistency

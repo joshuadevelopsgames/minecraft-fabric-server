@@ -55,11 +55,7 @@ public abstract class PlayerEntityMixin {
         // Check if sprint key is pressed (this works even underwater)
         boolean isSprintPressed = player.isSprinting();
         
-        // Debug: Log conditions every 20 ticks (1 second)
-        if (player.getWorld().getTime() % 20 == 0) {
-            com.example.greekmyth.GreekMythologyMod.LOGGER.info("POSEIDON RIPTIDE DEBUG: Player {} - HasTrident: {}, InWater: {}, MovingForward: {}, SprintPressed: {}, DoubleTap: {}", 
-                player.getName().getString(), hasPoseidonTrident, isInWater, isMovingForward, isSprintPressed, doubleTapForward);
-        }
+
         
         // Activate Riptide if player has trident, is in water, and either:
         // 1. Pressing sprint key, OR
@@ -84,10 +80,7 @@ public abstract class PlayerEntityMixin {
             
             player.setVelocity(newVelocity);
             
-            // Log the Riptide boost
-            String activationMethod = isSprintPressed ? "SPRINT" : "DOUBLE-TAP";
-            com.example.greekmyth.GreekMythologyMod.LOGGER.info("POSEIDON RIPTIDE: Player {} activated via {} - Speed: {:.2f}", 
-                player.getName().getString(), activationMethod, riptideSpeed);
+
         }
     }
 } 

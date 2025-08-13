@@ -11,14 +11,19 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.IllusionerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.nbt.NbtCompound;
 
 public class OracleTransformationHandler {
     
     public static void register() {
         ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
             if (entity instanceof IllusionerEntity illusioner) {
-                // Transform the Illusioner into an Oracle
-                transformToOracle(illusioner, world);
+                // Check if this Illusioner should be transformed
+                // Only transform if it's not already an Oracle entity
+                if (!(illusioner instanceof OracleEntity)) {
+                    // Transform the Illusioner into an Oracle
+                    transformToOracle(illusioner, world);
+                }
             }
         });
         

@@ -1,16 +1,50 @@
 {
   "mappings": {
+    "com/example/aimyth/mixin/ClientFluidRenderingMixin": {
+      "render": "Lnet/minecraft/class_775;method_3347(Lnet/minecraft/class_1920;Lnet/minecraft/class_2338;Lnet/minecraft/class_4588;Lnet/minecraft/class_2680;Lnet/minecraft/class_3610;)V"
+    },
+    "com/example/aimyth/mixin/FallDamageMixin": {
+      "damage": "Lnet/minecraft/class_1657;method_64397(Lnet/minecraft/class_3218;Lnet/minecraft/class_1282;F)Z"
+    },
+    "com/example/aimyth/mixin/LightningMixin": {
+      "damage": "Lnet/minecraft/class_1657;method_64397(Lnet/minecraft/class_3218;Lnet/minecraft/class_1282;F)Z"
+    },
+    "com/example/aimyth/mixin/WaterBlockMixin": {
+      "renderBlock": "Lnet/minecraft/class_776;method_3355(Lnet/minecraft/class_2680;Lnet/minecraft/class_2338;Lnet/minecraft/class_1920;Lnet/minecraft/class_4587;Lnet/minecraft/class_4588;ZLjava/util/List;)V"
+    },
+    "com/example/greekmyth/mixin/ExplosionMixin": {
+      "net.minecraft.world.explosion.Explosion": "net/minecraft/class_1927"
+    },
     "com/example/greekmyth/mixin/FluidBlockMixin": {
       "getCollisionShape": "Lnet/minecraft/class_2404;method_9549(Lnet/minecraft/class_2680;Lnet/minecraft/class_1922;Lnet/minecraft/class_2338;Lnet/minecraft/class_3726;)Lnet/minecraft/class_265;"
     },
     "com/example/greekmyth/mixin/ItemEntityMixin": {
       "tick": "Lnet/minecraft/class_1542;method_5773()V"
     },
+    "com/example/greekmyth/mixin/MultiplayerScreenMixin": {
+      "render": "Lnet/minecraft/class_500;method_25394(Lnet/minecraft/class_332;IIF)V"
+    },
     "com/example/greekmyth/mixin/PlayerEntityMixin": {
       "tick": "Lnet/minecraft/class_1657;method_5773()V"
     },
+    "com/example/greekmyth/mixin/SelectWorldScreenMixin": {
+      "render": "Lnet/minecraft/class_526;method_25394(Lnet/minecraft/class_332;IIF)V"
+    },
+    "com/example/greekmyth/mixin/ServerWorldMixin": {
+      "createExplosion": "Lnet/minecraft/class_3218;method_8454(Lnet/minecraft/class_1297;Lnet/minecraft/class_1282;Lnet/minecraft/class_5362;DDDFZLnet/minecraft/class_1937$class_7867;Lnet/minecraft/class_2394;Lnet/minecraft/class_2394;Lnet/minecraft/class_6880;)V"
+    },
     "com/example/greekmyth/mixin/StriderEntityMixin": {
       "<init>": "Lnet/minecraft/class_4985;<init>(Lnet/minecraft/class_1299;Lnet/minecraft/class_1937;)V"
+    },
+    "com/example/greekmyth/mixin/TitleScreenLogoMixin": {
+      "render": "Lnet/minecraft/class_442;method_25394(Lnet/minecraft/class_332;IIF)V"
+    },
+    "com/example/greekmyth/mixin/TitleScreenLogoReplacer": {
+      "render": "Lnet/minecraft/class_442;method_25394(Lnet/minecraft/class_332;IIF)V"
+    },
+    "com/example/greekmyth/mixin/TitleScreenMixin": {
+      "init": "Lnet/minecraft/class_442;method_25426()V",
+      "render": "Lnet/minecraft/class_442;method_25394(Lnet/minecraft/class_332;IIF)V"
     },
     "com/example/greekmyth/mixin/UndeadWarriorMixin": {
       "getAmbientSound": "Lnet/minecraft/class_1493;method_5994()Lnet/minecraft/class_3414;",
@@ -20,21 +54,60 @@
     },
     "com/example/greekmyth/mixin/WaterBlockMixin": {
       "getCollisionShape": "Lnet/minecraft/class_2404;method_9549(Lnet/minecraft/class_2680;Lnet/minecraft/class_1922;Lnet/minecraft/class_2338;Lnet/minecraft/class_3726;)Lnet/minecraft/class_265;"
+    },
+    "com/example/greekmyth/mixin/WorldMixin": {
+      "breakBlock(Lnet/minecraft/util/math/BlockPos;ZLnet/minecraft/entity/Entity;I)Z": "Lnet/minecraft/class_1937;method_30093(Lnet/minecraft/class_2338;ZLnet/minecraft/class_1297;I)Z",
+      "removeBlock(Lnet/minecraft/util/math/BlockPos;Z)Z": "Lnet/minecraft/class_1937;method_8650(Lnet/minecraft/class_2338;Z)Z",
+      "setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;II)Z": "Lnet/minecraft/class_1937;method_30092(Lnet/minecraft/class_2338;Lnet/minecraft/class_2680;II)Z"
     }
   },
   "data": {
     "named:intermediary": {
+      "com/example/aimyth/mixin/ClientFluidRenderingMixin": {
+        "render": "Lnet/minecraft/class_775;method_3347(Lnet/minecraft/class_1920;Lnet/minecraft/class_2338;Lnet/minecraft/class_4588;Lnet/minecraft/class_2680;Lnet/minecraft/class_3610;)V"
+      },
+      "com/example/aimyth/mixin/FallDamageMixin": {
+        "damage": "Lnet/minecraft/class_1657;method_64397(Lnet/minecraft/class_3218;Lnet/minecraft/class_1282;F)Z"
+      },
+      "com/example/aimyth/mixin/LightningMixin": {
+        "damage": "Lnet/minecraft/class_1657;method_64397(Lnet/minecraft/class_3218;Lnet/minecraft/class_1282;F)Z"
+      },
+      "com/example/aimyth/mixin/WaterBlockMixin": {
+        "renderBlock": "Lnet/minecraft/class_776;method_3355(Lnet/minecraft/class_2680;Lnet/minecraft/class_2338;Lnet/minecraft/class_1920;Lnet/minecraft/class_4587;Lnet/minecraft/class_4588;ZLjava/util/List;)V"
+      },
+      "com/example/greekmyth/mixin/ExplosionMixin": {
+        "net.minecraft.world.explosion.Explosion": "net/minecraft/class_1927"
+      },
       "com/example/greekmyth/mixin/FluidBlockMixin": {
         "getCollisionShape": "Lnet/minecraft/class_2404;method_9549(Lnet/minecraft/class_2680;Lnet/minecraft/class_1922;Lnet/minecraft/class_2338;Lnet/minecraft/class_3726;)Lnet/minecraft/class_265;"
       },
       "com/example/greekmyth/mixin/ItemEntityMixin": {
         "tick": "Lnet/minecraft/class_1542;method_5773()V"
       },
+      "com/example/greekmyth/mixin/MultiplayerScreenMixin": {
+        "render": "Lnet/minecraft/class_500;method_25394(Lnet/minecraft/class_332;IIF)V"
+      },
       "com/example/greekmyth/mixin/PlayerEntityMixin": {
         "tick": "Lnet/minecraft/class_1657;method_5773()V"
       },
+      "com/example/greekmyth/mixin/SelectWorldScreenMixin": {
+        "render": "Lnet/minecraft/class_526;method_25394(Lnet/minecraft/class_332;IIF)V"
+      },
+      "com/example/greekmyth/mixin/ServerWorldMixin": {
+        "createExplosion": "Lnet/minecraft/class_3218;method_8454(Lnet/minecraft/class_1297;Lnet/minecraft/class_1282;Lnet/minecraft/class_5362;DDDFZLnet/minecraft/class_1937$class_7867;Lnet/minecraft/class_2394;Lnet/minecraft/class_2394;Lnet/minecraft/class_6880;)V"
+      },
       "com/example/greekmyth/mixin/StriderEntityMixin": {
         "<init>": "Lnet/minecraft/class_4985;<init>(Lnet/minecraft/class_1299;Lnet/minecraft/class_1937;)V"
+      },
+      "com/example/greekmyth/mixin/TitleScreenLogoMixin": {
+        "render": "Lnet/minecraft/class_442;method_25394(Lnet/minecraft/class_332;IIF)V"
+      },
+      "com/example/greekmyth/mixin/TitleScreenLogoReplacer": {
+        "render": "Lnet/minecraft/class_442;method_25394(Lnet/minecraft/class_332;IIF)V"
+      },
+      "com/example/greekmyth/mixin/TitleScreenMixin": {
+        "init": "Lnet/minecraft/class_442;method_25426()V",
+        "render": "Lnet/minecraft/class_442;method_25394(Lnet/minecraft/class_332;IIF)V"
       },
       "com/example/greekmyth/mixin/UndeadWarriorMixin": {
         "getAmbientSound": "Lnet/minecraft/class_1493;method_5994()Lnet/minecraft/class_3414;",
@@ -44,6 +117,11 @@
       },
       "com/example/greekmyth/mixin/WaterBlockMixin": {
         "getCollisionShape": "Lnet/minecraft/class_2404;method_9549(Lnet/minecraft/class_2680;Lnet/minecraft/class_1922;Lnet/minecraft/class_2338;Lnet/minecraft/class_3726;)Lnet/minecraft/class_265;"
+      },
+      "com/example/greekmyth/mixin/WorldMixin": {
+        "breakBlock(Lnet/minecraft/util/math/BlockPos;ZLnet/minecraft/entity/Entity;I)Z": "Lnet/minecraft/class_1937;method_30093(Lnet/minecraft/class_2338;ZLnet/minecraft/class_1297;I)Z",
+        "removeBlock(Lnet/minecraft/util/math/BlockPos;Z)Z": "Lnet/minecraft/class_1937;method_8650(Lnet/minecraft/class_2338;Z)Z",
+        "setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;II)Z": "Lnet/minecraft/class_1937;method_30092(Lnet/minecraft/class_2338;Lnet/minecraft/class_2680;II)Z"
       }
     }
   }

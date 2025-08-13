@@ -18,6 +18,20 @@ public class GreekCreativeInventory {
             content.add(new ItemStack(GreekItems.HADES_SCYTHE));
             content.add(new ItemStack(GreekItems.INFERNO_PEARL));
             
+            // Oracle Tag Items
+            content.add(new ItemStack(GreekItems.ZEUS_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.POSEIDON_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.HADES_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.ARES_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.ATHENA_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.HEPHAESTUS_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.APOLLO_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.ARTEMIS_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.HERMES_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.DIONYSUS_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.APHRODITE_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.DEMETER_ORACLE_TAG));
+            
             // All Soul Items (only the ones that actually exist)
             content.add(new ItemStack(GreekItems.ZOMBIE_SOUL));
             content.add(new ItemStack(GreekItems.SKELETON_SOUL));
@@ -88,6 +102,20 @@ public class GreekCreativeInventory {
         // Add Inferno Pearl to "Tools" tab (like ender pearls)
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(content -> {
             content.add(new ItemStack(GreekItems.INFERNO_PEARL));
+            
+            // Oracle Tag Items (utility items for transforming Oracles)
+            content.add(new ItemStack(GreekItems.ZEUS_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.POSEIDON_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.HADES_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.ARES_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.ATHENA_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.HEPHAESTUS_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.APOLLO_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.ARTEMIS_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.HERMES_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.DIONYSUS_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.APHRODITE_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.DEMETER_ORACLE_TAG));
         });
         
         GreekMythologyMod.LOGGER.info("Successfully registered all Greek Mythology items to creative inventory!");

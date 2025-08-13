@@ -3,7 +3,6 @@ package com.example.greekmyth.item;
 import com.example.greekmyth.GreekMythologyMod;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -63,7 +62,7 @@ public class HadesScytheItem extends Item implements FabricItem {
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (attacker.getWorld() instanceof ServerWorld serverWorld) {
             // Fixed damage for Hades Scythe
-            float damage = 4.0f;
+            float damage = 12.0f;
             
             GreekMythologyMod.LOGGER.info("HADES SCYTHE ATTACK: Damage: {}", damage);
             
@@ -94,77 +93,13 @@ public class HadesScytheItem extends Item implements FabricItem {
                 }
             }
             
-            // Transform skeletons into wither skeletons when hit with wither effect (only on critical hits now)
-            if (target.getType() == EntityType.SKELETON && attacker instanceof ServerPlayerEntity && isCriticalHit) {
-                // Transform skeleton into wither skeleton pet
-                transformSkeletonToWitherSkeleton(serverWorld, target, (ServerPlayerEntity) attacker);
-            }
+            // Skeleton companion functionality removed
         }
     }
     
-        private void transformSkeletonToWitherSkeleton(ServerWorld world, LivingEntity skeleton, ServerPlayerEntity owner) {
-        // Create a wolf entity that will be transformed into an Undead Warrior
-        WolfEntity wolf = EntityType.WOLF.create(world, net.minecraft.entity.SpawnReason.NATURAL);
-        if (wolf != null) {
-            wolf.setPosition(skeleton.getPos());
-            wolf.setYaw(skeleton.getYaw());
-            wolf.setPitch(skeleton.getPitch());
-            wolf.setVelocity(skeleton.getVelocity());
-
-            // Set up the wolf as a pet
-            wolf.setOwner(owner);
-            wolf.setTamed(true, true);
-            wolf.setCustomName(Text.literal("§6" + owner.getName().getString() + "'s Undead Warrior"));
-            wolf.setCustomNameVisible(true);
-
-            // Remove the original skeleton
-            skeleton.discard();
-
-            // Spawn the wolf
-            world.spawnEntity(wolf);
-            
-            // Add a glowing effect to make it look more undead
-            wolf.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 200, 0, false, false));
-            
-            // Add transformation effects
-            for (int i = 0; i < 20; i++) {
-                double x = skeleton.getX() + (world.random.nextDouble() - 0.5) * 2;
-                double y = skeleton.getY() + world.random.nextDouble() * 2;
-                double z = skeleton.getZ() + (world.random.nextDouble() - 0.5) * 2;
-                world.spawnParticles(ParticleTypes.SOUL, x, y, z, 1, 0, 0, 0, 0.1);
-                world.spawnParticles(ParticleTypes.SMOKE, x, y, z, 1, 0, 0, 0, 0.05);
-            }
-            
-            // Play transformation sound
-            world.playSound(null, skeleton.getX(), skeleton.getY(), skeleton.getZ(),
-                SoundEvents.ENTITY_WITHER_AMBIENT, SoundCategory.PLAYERS, 1.0f, 1.2f);
-            
-            GreekMythologyMod.LOGGER.info("HADES SCYTHE: Transformed skeleton into Undead Warrior at ({}, {}, {}) for player {}",
-                skeleton.getX(), skeleton.getY(), skeleton.getZ(), owner.getName().getString());
-        }
-    }
     
-    private void makeWitherSkeletonPet(net.minecraft.entity.mob.WitherSkeletonEntity witherSkeleton, ServerPlayerEntity owner) {
-        // Set custom name that's easy to identify
-        witherSkeleton.setCustomName(Text.literal("§6" + owner.getName().getString() + "'s Enhanced Wither Skeleton"));
-        witherSkeleton.setCustomNameVisible(true);
-        
-        // Clear current target and attacking state
-        witherSkeleton.setTarget(null);
-        witherSkeleton.setAttacking(false);
-        
-        // Make the wither skeleton persistent so it doesn't despawn
-        witherSkeleton.setPersistent();
-        
-        // TEMPORARY: Make it peaceful until we get proper targeting working
-        witherSkeleton.setSilent(true);
-        
-        // Tag the wither skeleton as a pet for the datapack system
-        witherSkeleton.addCommandTag("GreekPet.Pet");
-        witherSkeleton.addCommandTag("GreekPet.WitherSkeleton");
-        
-        GreekMythologyMod.LOGGER.info("HADES SCYTHE: Created enhanced wither skeleton pet for player {} (peaceful mode)", owner.getName().getString());
-    }
+    
+
     
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
@@ -522,7 +457,7 @@ public class HadesScytheItem extends Item implements FabricItem {
     public void appendTooltip(ItemStack stack, Item.TooltipContext context, net.minecraft.component.type.TooltipDisplayComponent displayComponent, java.util.function.Consumer<Text> tooltip, net.minecraft.item.tooltip.TooltipType type) {
         super.appendTooltip(stack, context, displayComponent, tooltip, type);
         
-        float damage = 4.0f;
+        float damage = 12.0f;
         
         tooltip.accept(Text.literal(""));
         tooltip.accept(Text.literal("💀 The scythe of the Lord of the Underworld").formatted(net.minecraft.util.Formatting.GOLD, net.minecraft.util.Formatting.BOLD));
