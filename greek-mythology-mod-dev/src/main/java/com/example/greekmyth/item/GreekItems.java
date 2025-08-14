@@ -1,6 +1,7 @@
 package com.example.greekmyth.item;
 
 import com.example.greekmyth.GreekMythologyMod;
+import com.example.greekmyth.item.CopyStickItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.util.Rarity;
@@ -104,6 +105,9 @@ public class GreekItems {
     
     // No PvP Stick for safe zones
     public static final Identifier NO_PVP_STICK_ID = Identifier.of(GreekMythologyMod.MOD_ID, "no_pvp_stick");
+    
+    // Copy Stick for copying and pasting areas
+    public static final Identifier COPY_STICK_ID = Identifier.of(GreekMythologyMod.MOD_ID, "copy_stick");
 
     
     public static Item ZEUS_BOLT;
@@ -198,6 +202,9 @@ public class GreekItems {
     
     // No PvP Stick for safe zones
     public static Item NO_PVP_STICK;
+    
+    // Copy Stick for copying and pasting areas
+    public static Item COPY_STICK;
 
     
     // Called from mod initializer to ensure this class is loaded.
@@ -528,6 +535,15 @@ public class GreekItems {
                 .registryKey(RegistryKey.of(RegistryKeys.ITEM, NO_PVP_STICK_ID))));
         
         GreekMythologyMod.LOGGER.info("Registered No PvP Stick for safe zones");
+    }
+    
+    private static void registerCopyStick() {
+        // Copy Stick for copying and pasting areas
+        COPY_STICK = Registry.register(Registries.ITEM, COPY_STICK_ID,
+            new CopyStickItem(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)
+                .registryKey(RegistryKey.of(RegistryKeys.ITEM, COPY_STICK_ID))));
+        
+        GreekMythologyMod.LOGGER.info("Registered Copy Stick for copying and pasting areas");
     }
 
     private static void registerDarkAngelElytra() {

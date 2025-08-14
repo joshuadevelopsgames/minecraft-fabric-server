@@ -1,0 +1,104 @@
+Greek Mythology Mod - Version 1.0.178
+Build Date: 2024-08-05
+Build Time: 02:15
+
+CHANGELOG:
+
+COPY STICK SYSTEM:
+- Added new Copy Stick item for copying and pasting areas
+- Left-click to set first corner of area to copy
+- Right-click to set second corner and copy the area
+- Shift + right-click to paste the copied area at target location
+- Maximum copy area size: 50x50x50 blocks (prevents server lag)
+- Skips air blocks to save memory and improve performance
+- Preserves block states and orientations
+- Note: Block entity data (chests, furnaces, etc.) is not copied due to API compatibility
+
+COMMAND INTEGRATION:
+- Added /stick copy command to give players a Copy Stick
+- Copy Stick has aqua color and epic rarity
+- Clear user instructions provided when receiving the stick
+- Consistent with existing stick command system
+
+TECHNICAL IMPLEMENTATION:
+- Created CopyManager class to handle copying and pasting logic
+- Created CopiedArea and BlockData classes for data storage
+- Added CopyStickEvents for handling player interactions
+- Integrated with existing event system and mod initialization
+- Proper error handling and user feedback for all operations
+
+USER EXPERIENCE:
+- Clear messaging for all operations (corner selection, copying, pasting)
+- Helpful instructions displayed when receiving the stick
+- Volume information shown after successful copy operations
+- Error messages for invalid operations (area too large, no copied data)
+- Consistent with existing stick system user experience
+
+PERFORMANCE CONSIDERATIONS:
+- Maximum area size limited to 50x50x50 blocks
+- Air blocks are skipped during copying to save memory
+- Efficient block state copying without complex entity data
+- Proper world bounds checking before pasting
+
+BLOCK PLACEMENT PROTECTION:
+- Enhanced protection zones to prevent both block breaking AND block placement
+- Added ServerPlayerInteractionManagerMixin to intercept block placement attempts
+- Players now receive clear messages when attempting to place blocks in protected zones
+- Block placement protection respects the same global protection toggle as block breaking
+- All players (including zone owners) are prevented from placing blocks when protection is enabled
+
+SECURITY & PERMISSIONS:
+- Updated /visit command permissions for enhanced security
+- Only admins (Level 3+) and owner (Level 4+) can now use /visit commands
+- Admin restrictions: Can only visit jail and overworld dimensions
+- Owner access: Full access to all dimensions (jail, overworld, nether, end)
+- Regular players (Level 0-2) can no longer use /visit commands
+
+DIMENSION ACCESS BREAKDOWN:
+- Jail dimension: Admins (Level 3+) and Owner (Level 4+)
+- Overworld: Admins (Level 3+) and Owner (Level 4+)
+- Nether: Owner only (Level 4+)
+- End: Owner only (Level 4+)
+
+COMMAND UPDATES:
+- /visit command now requires admin permissions (Level 3+)
+- Enhanced permission checking with clear access denied messages
+- Improved logging for security monitoring
+- Removed /inferno command from help text display
+- Added /resetinferno admin command to help text
+
+INFERNO COMMAND SYSTEM:
+- /inferno command removed from help text display
+- Enhanced tracking system to prevent repeat usage by same player
+- Added /resetinferno command (Admin Level 4+) to reset Easter egg for new player
+- Players who have used /inferno before cannot use it again, even after reset
+- Only one non-owner player can claim the command per reset cycle
+
+HELP SYSTEM:
+- Updated help command to show new permission requirements
+- Added admin commands section with clear permission breakdown
+- Updated commands reference documentation
+
+POSEIDON TRIDENT IMPROVEMENTS:
+- Removed debug logging from Riptide III underwater sprinting feature
+- Cleaned up console output for better server performance
+- Maintained all functionality while reducing log spam
+
+TECHNICAL IMPROVEMENTS:
+- Fixed compilation errors in permission checking system
+- Improved code structure for better maintainability
+- Enhanced error handling and user feedback
+- Enhanced InfernoCommandTracker with reset functionality
+- Added /resetinferno command for admins to reset Easter egg
+
+DEPLOYMENT IMPROVEMENTS:
+- Enhanced restart script to automatically clean up old mod files
+- Added automatic removal of old Greek mythology mod versions before server restart
+- Created new deploy.sh script for automated build and deployment process
+- Prevents version conflicts by ensuring only the latest mod version is present
+- Streamlined deployment workflow for future updates
+
+BUILD & VERSIONING:
+- Updated MOD_VERSION to 1.0.178
+- Fixed fabric.mod.json version mismatch
+- Enhanced build process to ensure version consistency

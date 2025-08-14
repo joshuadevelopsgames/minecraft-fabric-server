@@ -445,6 +445,23 @@ public class FavorCommands {
                         return 0;
                     }
                 }))
+            .then(CommandManager.literal("copy")
+                .executes(context -> {
+                    ServerCommandSource source = context.getSource();
+                    try {
+                        ServerPlayerEntity player = source.getPlayerOrThrow();
+                        net.minecraft.item.ItemStack stick = new net.minecraft.item.ItemStack(GreekItems.COPY_STICK);
+                        player.getInventory().insertStack(stick);
+                        player.sendMessage(Text.literal("§b§l[Copy Stick] §r§aYou received a Copy Stick!").formatted(Formatting.GREEN), false);
+                        player.sendMessage(Text.literal("§7Left-click: first corner. Right-click: second corner to copy.").formatted(Formatting.GRAY), false);
+                        player.sendMessage(Text.literal("§7Shift + right-click to paste the copied area.").formatted(Formatting.GRAY), false);
+                        GreekMythologyMod.LOGGER.info("STICK COPY: Player {} received Copy Stick", player.getName().getString());
+                        return 1;
+                    } catch (Exception e) {
+                        source.sendMessage(Text.literal("§c❌ This command can only be used by players!").formatted(Formatting.RED));
+                        return 0;
+                    }
+                }))
         );
         
         // Register zone management commands

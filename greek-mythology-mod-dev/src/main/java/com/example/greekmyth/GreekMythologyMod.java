@@ -28,11 +28,11 @@ public class GreekMythologyMod implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     
     // Version tracking system
-    public static final String MOD_VERSION = "1.0.177";
-    public static final String BUILD_VERSION_TITLE = "Enhanced Zone Protection - Block Placement Prevention";
+    public static final String MOD_VERSION = "1.0.178";
+    public static final String BUILD_VERSION_TITLE = "Copy Stick - Area Copying and Pasting System";
     public static final String BUILD_DATE = "2024-08-05";
-    public static final String BUILD_TIME = "01:30";
-    public static final String BUILD_FEATURES = "Enhanced protection zones to prevent both block breaking AND block placement - Added ServerPlayerInteractionManagerMixin to intercept block placement attempts in protected zones";
+    public static final String BUILD_TIME = "02:15";
+    public static final String BUILD_FEATURES = "Added Copy Stick system for copying and pasting areas - Left-click to set first corner, right-click to set second corner and copy, Shift+right-click to paste - Maximum area size 50x50x50 blocks";
     
     // Soul counting system
     private static final Map<UUID, Integer> playerSoulCounts = new HashMap<>();
@@ -96,6 +96,9 @@ public class GreekMythologyMod implements ModInitializer {
         
         // Register PvP protection events
         com.example.greekmyth.event.PvpProtectionEvents.register();
+        
+        // Register copy stick events
+        com.example.greekmyth.event.CopyStickEvents.register();
         
         // Register Waystone activation gating
         com.example.greekmyth.event.WaystoneActivationEvents.register();
