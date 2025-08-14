@@ -27,13 +27,22 @@ public class MainMenuModifier {
         // Get the button list from the title screen
         var buttons = Screens.getButtons(titleScreen);
 
-        // Custom button removed - keeping only the modified existing buttons
-
-        // You can also modify existing buttons
+        // Modify existing buttons with Greek mythology themes
         for (var button : buttons) {
-            if (button.getMessage().getString().contains("Singleplayer")) {
-                // Modify the singleplayer button text
+            String buttonText = button.getMessage().getString();
+            
+            if (buttonText.contains("Singleplayer")) {
                 button.setMessage(Text.literal("Camp Half-Blood"));
+                LOGGER.info("Modified Singleplayer button to 'Camp Half-Blood'");
+            } else if (buttonText.contains("Multiplayer")) {
+                button.setMessage(Text.literal("Olympus Multiplayer"));
+                LOGGER.info("Modified Multiplayer button to 'Olympus Multiplayer'");
+            } else if (buttonText.contains("Realms")) {
+                button.setMessage(Text.literal("Greek Realms"));
+                LOGGER.info("Modified Realms button to 'Greek Realms'");
+            } else if (buttonText.contains("Options")) {
+                button.setMessage(Text.literal("Godly Settings..."));
+                LOGGER.info("Modified Options button to 'Godly Settings...'");
             }
         }
 

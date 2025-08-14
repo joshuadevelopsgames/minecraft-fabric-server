@@ -28,11 +28,11 @@ public class GreekMythologyMod implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     
     // Version tracking system
-    public static final String MOD_VERSION = "1.0.176";
-    public static final String BUILD_VERSION_TITLE = "Updated /visit Command Permissions";
+    public static final String MOD_VERSION = "1.0.177";
+    public static final String BUILD_VERSION_TITLE = "Enhanced Zone Protection - Block Placement Prevention";
     public static final String BUILD_DATE = "2024-08-05";
-    public static final String BUILD_TIME = "00:40";
-    public static final String BUILD_FEATURES = "Updated /visit command permissions - Only admins (Level 3+) and owner (Level 4+) can use /visit, with admins restricted to jail/overworld and owner having access to all dimensions";
+    public static final String BUILD_TIME = "01:30";
+    public static final String BUILD_FEATURES = "Enhanced protection zones to prevent both block breaking AND block placement - Added ServerPlayerInteractionManagerMixin to intercept block placement attempts in protected zones";
     
     // Soul counting system
     private static final Map<UUID, Integer> playerSoulCounts = new HashMap<>();
@@ -81,6 +81,9 @@ public class GreekMythologyMod implements ModInitializer {
         
         // Register Oracle tag interaction handler
         com.example.greekmyth.event.OracleTagInteractionHandler.register();
+        
+        // Register Invisible nametag handler
+        com.example.greekmyth.event.InvisibleNametagHandler.register();
         
         // Register Merchant transformation handler
         com.example.greekmyth.event.MerchantTransformationHandler.register();

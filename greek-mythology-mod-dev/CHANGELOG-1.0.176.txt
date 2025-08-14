@@ -4,6 +4,14 @@ Build Time: 00:40
 
 CHANGELOG:
 
+BLOCK PLACEMENT PROTECTION:
+- Enhanced protection zones to prevent both block breaking AND block placement
+- Added PlayerBlockPlaceEvents handler to intercept block placement attempts
+- Added canPlayerPlaceBlock method to ZoneManager for placement permission checking
+- Players now receive clear messages when attempting to place blocks in protected zones
+- Block placement protection respects the same global protection toggle as block breaking
+- All players (including zone owners) are prevented from placing blocks when protection is enabled
+
 SECURITY & PERMISSIONS:
 - Updated /visit command permissions for enhanced security
 - Only admins (Level 3+) and owner (Level 4+) can now use /visit commands

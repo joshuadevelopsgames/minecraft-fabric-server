@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "greekmyth",
+  "version": "1.0.177",
+  "name": "Greek Mythology Mod",
+  "description": "A comprehensive Greek mythology mod featuring gods, quests, and mythical creatures",
+  "authors": [
+    "JoshuaDevelopsGames"
+  ],
+  "contact": {
+    "homepage": "https://github.com/joshuadevelopsgames/minecraft-fabric-server",
+    "sources": "https://github.com/joshuadevelopsgames/minecraft-fabric-server"
+  },
+  "license": "MIT",
+  "icon": "assets/greekmyth/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.example.greekmyth.GreekMythologyMod"
+    ],
+    "client": [
+      "com.example.greekmyth.GreekMythologyClientMod"
+    ]
+  },
+  "mixins": [
+    "greekmyth.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.8",
+    "java": ">=17",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

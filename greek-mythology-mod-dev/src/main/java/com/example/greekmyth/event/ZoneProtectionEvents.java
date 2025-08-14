@@ -85,6 +85,7 @@ public class ZoneProtectionEvents {
         });
 
         // Explosion block filtering is implemented via a mixin on Explosion#collectBlocksAndDamageEntities
+        // Block placement protection is implemented via a mixin on ServerPlayerInteractionManager
         
         GreekMythologyMod.LOGGER.info("Zone Protection Events registered!");
     }

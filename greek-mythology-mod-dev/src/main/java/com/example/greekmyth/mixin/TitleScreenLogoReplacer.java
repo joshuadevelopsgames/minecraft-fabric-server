@@ -46,8 +46,8 @@ public class TitleScreenLogoReplacer {
         // Render credits and other text elements
         // This is a simplified version - you can add more text rendering here
         
-        // Render our custom cycling text on top of everything - DISABLED
-        // CustomTitleScreenRenderer.renderCyclingText(context, screen.width, screen.height, 0.0f);
+        // Render our custom cycling text on top of everything
+        CustomTitleScreenRenderer.renderCyclingText(context, screen.width, screen.height, 0.0f);
     }
     
 

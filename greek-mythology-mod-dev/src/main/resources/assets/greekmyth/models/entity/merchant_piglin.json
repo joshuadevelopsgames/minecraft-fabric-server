@@ -1,0 +1,90 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.merchant_piglin",
+        "texture_width": 64,
+        "texture_height": 64
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [0, 0, 0]
+        },
+        {
+          "name": "body",
+          "parent": "root",
+          "pivot": [0, 12, 0],
+          "cubes": [
+            {
+              "origin": [-4, 0, -2],
+              "size": [8, 12, 4],
+              "uv": [16, 16]
+            }
+          ]
+        },
+        {
+          "name": "head",
+          "parent": "root",
+          "pivot": [0, 24, 0],
+          "cubes": [
+            {
+              "origin": [-4, 24, -4],
+              "size": [8, 8, 8],
+              "uv": [0, 0]
+            }
+          ]
+        },
+        {
+          "name": "leftArm",
+          "parent": "root",
+          "pivot": [-5, 22, 0],
+          "cubes": [
+            {
+              "origin": [-9, 12, -2],
+              "size": [4, 12, 4],
+              "uv": [40, 16]
+            }
+          ]
+        },
+        {
+          "name": "rightArm",
+          "parent": "root",
+          "pivot": [5, 22, 0],
+          "cubes": [
+            {
+              "origin": [5, 12, -2],
+              "size": [4, 12, 4],
+              "uv": [40, 16]
+            }
+          ]
+        },
+        {
+          "name": "leftLeg",
+          "parent": "root",
+          "pivot": [-2, 12, 0],
+          "cubes": [
+            {
+              "origin": [-2, 0, -2],
+              "size": [4, 12, 4],
+              "uv": [16, 48]
+            }
+          ]
+        },
+        {
+          "name": "rightLeg",
+          "parent": "root",
+          "pivot": [2, 12, 0],
+          "cubes": [
+            {
+              "origin": [2, 0, -2],
+              "size": [4, 12, 4],
+              "uv": [0, 48]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+} 

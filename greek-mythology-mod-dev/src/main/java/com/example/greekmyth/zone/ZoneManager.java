@@ -170,6 +170,24 @@ public class ZoneManager {
     }
     
     /**
+     * Check if a player can place a block at a position
+     */
+    public static boolean canPlayerPlaceBlock(ServerPlayerEntity player, BlockPos pos) {
+        // If protection is disabled globally, allow all placements
+        if (!protectionEnabled) {
+            return true;
+        }
+        
+        for (ProtectedZone zone : protectedZones.values()) {
+            if (zone.contains(pos)) {
+                // Deny ALL players (including zone owners) when protection is enabled
+                return false;
+            }
+        }
+        return true; // Not in any protected zone
+    }
+    
+    /**
      * Remove a protected zone (for zone owner or admins)
      */
     public static boolean removeZone(ServerPlayerEntity player, String zoneId) {

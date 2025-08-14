@@ -31,6 +31,7 @@ public class GreekCreativeInventory {
             content.add(new ItemStack(GreekItems.DIONYSUS_ORACLE_TAG));
             content.add(new ItemStack(GreekItems.APHRODITE_ORACLE_TAG));
             content.add(new ItemStack(GreekItems.DEMETER_ORACLE_TAG));
+            content.add(new ItemStack(GreekItems.INVISIBLE_NAMETAG));
             
             // All Soul Items (only the ones that actually exist)
             content.add(new ItemStack(GreekItems.ZOMBIE_SOUL));

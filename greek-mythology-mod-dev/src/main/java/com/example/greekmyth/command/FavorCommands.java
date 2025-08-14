@@ -724,10 +724,14 @@ public class FavorCommands {
                                 displayName = "§6§lDemeter Oracle Tag";
                                 color = "§6";
                                 break;
-
+                            case "invisible":
+                                tagItem = new ItemStack(GreekItems.INVISIBLE_NAMETAG);
+                                displayName = "§7§lInvisible Nametag";
+                                color = "§7";
+                                break;
                             default:
                                 player.sendMessage(Text.literal("§c❌ Unknown god: " + godName).formatted(Formatting.RED), false);
-                                player.sendMessage(Text.literal("§7Available gods: zeus, poseidon, hades, ares, athena, hephaestus, apollo, artemis, hermes, dionysus, aphrodite, demeter").formatted(Formatting.GRAY), false);
+                                player.sendMessage(Text.literal("§7Available gods: zeus, poseidon, hades, ares, athena, hephaestus, apollo, artemis, hermes, dionysus, aphrodite, demeter, invisible").formatted(Formatting.GRAY), false);
                                 return 0;
                         }
                         
@@ -854,7 +858,8 @@ public class FavorCommands {
         player.sendMessage(Text.literal("§b§l🔮 ORACLE MANAGEMENT:").formatted(Formatting.AQUA), false);
         player.sendMessage(Text.literal("§7/erase §8- Delete the nearest entity").formatted(Formatting.GRAY), false);
         player.sendMessage(Text.literal("§7/nametag <god> §8- Get Oracle tag for specific god").formatted(Formatting.GRAY), false);
-        player.sendMessage(Text.literal("§7§8Available gods: zeus, poseidon, hades, ares, athena, hephaestus, apollo, artemis, hermes, dionysus, aphrodite, demeter").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7/nametag invisible §8- Get invisible nametag (prevents mob despawning)").formatted(Formatting.GRAY), false);
+        player.sendMessage(Text.literal("§7§8Available gods: zeus, poseidon, hades, ares, athena, hephaestus, apollo, artemis, hermes, dionysus, aphrodite, demeter, invisible").formatted(Formatting.GRAY), false);
         player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
         // Zone Protection Commands
         player.sendMessage(Text.literal("§6§l🛡️ ZONE PROTECTION:").formatted(Formatting.GOLD), false);

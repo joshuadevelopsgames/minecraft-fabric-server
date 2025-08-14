@@ -8,7 +8,8 @@
     "ItemEntityMixin",
     "PlayerEntityMixin",
     "FluidBlockMixin",
-    "StriderEntityMixin"
+    "StriderEntityMixin",
+    "ServerPlayerInteractionManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
