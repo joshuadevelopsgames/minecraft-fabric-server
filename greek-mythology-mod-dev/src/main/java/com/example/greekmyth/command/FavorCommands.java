@@ -74,6 +74,8 @@ public class FavorCommands {
                 }))
             );
         
+
+        
         // Register the /inferno Easter egg command (hidden from help)
         dispatcher.register(CommandManager.literal("inferno")
             // NO .requires() - allows all players to use it
@@ -361,20 +363,22 @@ public class FavorCommands {
                             source.sendMessage(Text.literal("§c❌ End not available!").formatted(Formatting.RED));
                             return 0;
                         }
-                        BlockPos spawnPos = end.getSpawnPos();
-                        float spawnYaw = end.getSpawnAngle();
+                        // Use custom coordinates: 8 64 -0.3
+                        double x = 8.0;
+                        double y = 64.0;
+                        double z = -0.3;
                         player.teleport(end,
-                            spawnPos.getX() + 0.5,
-                            spawnPos.getY(),
-                            spawnPos.getZ() + 0.5,
+                            x,
+                            y,
+                            z,
                             java.util.Set.of(),
-                            spawnYaw,
+                            0.0f,
                             0.0f,
                             false);
-                        player.sendMessage(Text.literal("§a§l[Teleport] §r§aTeleported to End spawn!").formatted(Formatting.GREEN), false);
-                        player.sendMessage(Text.literal("§7Position: " + spawnPos.getX() + ", " + spawnPos.getY() + ", " + spawnPos.getZ()).formatted(Formatting.GRAY), false);
-                        GreekMythologyMod.LOGGER.info("VISIT COMMAND: Player {} teleported to end spawn at {}",
-                            player.getName().getString(), spawnPos);
+                        player.sendMessage(Text.literal("§a§l[Teleport] §r§aTeleported to End!").formatted(Formatting.GREEN), false);
+                        player.sendMessage(Text.literal("§7Position: " + x + ", " + y + ", " + z).formatted(Formatting.GRAY), false);
+                        GreekMythologyMod.LOGGER.info("VISIT COMMAND: Player {} teleported to end at ({}, {}, {})",
+                            player.getName().getString(), x, y, z);
                         return 1;
                     } catch (Exception e) {
                         source.sendMessage(Text.literal("§c❌ This command can only be used by players!").formatted(Formatting.RED));
@@ -927,6 +931,9 @@ public class FavorCommands {
         player.sendMessage(Text.literal("").formatted(Formatting.GRAY), false);
         player.sendMessage(Text.literal("§7§oUse /greekmyth list to see this help again").formatted(Formatting.GRAY), false);
     }
+    
+
+
     
     /**
      * Get the nearest entity to a player
