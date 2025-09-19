@@ -1,37 +1,98 @@
-# Ignore mod jars and server outputs
-*.jar
-*.log
-*.zip
-*.gz
-*.tmp
-*.bak
+# Build artifacts
+build/
+.gradle/
+*.war
+*.ear
+*.class
 
-# Ignore game data
-world/
-world_nether/
-world_the_end/
-logs/
-crash-reports/
-cache/
-.DS_Store
-
-# Server-specific files
-usercache.json
-whitelist.json
-banned-ips.json
-banned-players.json
-ops.json
-server.properties
-eula.txt
-
-# Optional: ignore packwiz generated cache if you have it
-.packwizcache/
+# Allow specific mod JARs
+!mods/kangas-shop-mod-*.jar
 
 # IDE files
-.vscode/
 .idea/
-*.swp
-*.swo
+.vscode/
+*.iml
+*.ipr
+*.iws
 
 # OS files
+.DS_Store
 Thumbs.db
+
+# Minecraft server files
+run/
+logs/
+crash-reports/
+world/
+world-*/
+backup/
+*.log
+
+# Test directories
+test_*/
+thrown_item_*/
+vanilla_*/
+visible_effects/
+fresh-dev-server/
+test-server/
+vanilla-test-client/
+
+# Development directories
+AI_Mythology/
+greek-mythology-mod-dev/
+greek-mythology-v*/
+custom-npc-mod/
+day-night-datapack/
+day-night-mod/
+floating-text-mod/
+role-management-mod/
+voice-mod-integration/
+warp-system/
+
+# Temporary files
+temp-*/
+ambrosia-extract/
+intime_data/
+luckperms-analysis/
+modpack-exports/
+patch/
+slf4j-patch/
+world-backup-*/
+
+# Config files (keep some, ignore others)
+config/balm-*.toml
+config/entityculling.json
+config/iris-*.json
+config/iris.properties
+config/modmenu.json
+config/optiboxes.json
+config/options.txt
+config/servers.json
+config/skinlayers.json
+config/sodium-*.json
+config/sodium-*.properties
+config/waystones-*.toml
+config/yacl.json5
+
+# Documentation files (keep some, ignore others)
+*.md
+!README.md
+!CHANGELOG.md
+
+# Resource packs
+*Resource Pack/
+*Texture Pack/
+
+# Other development files
+*.png
+*.txt
+!eula.txt
+!server.properties
+!ops.json
+!whitelist.json
+!banned-*.json
+!usercache.json
+!usernamecache.json
+
+# Git submodules
+fabric-api-src/
