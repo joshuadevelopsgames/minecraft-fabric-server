@@ -1,0 +1,11 @@
+{
+    "type": "greekmyth:shadow_realm",
+    "generator": {
+        "type": "minecraft:noise",
+        "settings": "greekmyth:shadow_realm_void",
+        "biome_source": {
+            "type": "minecraft:fixed",
+            "biome": "greekmyth:shadow_realm_void"
+        }
+    }
+}

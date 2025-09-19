@@ -1,0 +1,10 @@
+name = "Greek Mythology Modpack"
+version = "1.0.81"
+icon = "pack.png"
+
+[versions]
+acceptable-game-versions = ["1.21.8"]
+
+[metadata]
+description = "Greek Mythology modpack with skeleton companion functionality removed"
+authors = ["Joshua"] 

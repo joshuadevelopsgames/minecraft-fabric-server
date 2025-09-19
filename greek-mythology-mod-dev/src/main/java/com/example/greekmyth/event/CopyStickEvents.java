@@ -60,3 +60,4 @@ public class CopyStickEvents {
         GreekMythologyMod.LOGGER.info("Copy Stick Events registered!");
     }
 }
+

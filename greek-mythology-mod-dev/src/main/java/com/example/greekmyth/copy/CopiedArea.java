@@ -61,3 +61,4 @@ public class CopiedArea {
         return width * height * depth;
     }
 }
+

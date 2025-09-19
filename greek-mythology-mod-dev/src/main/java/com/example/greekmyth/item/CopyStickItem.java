@@ -16,3 +16,4 @@ public class CopyStickItem extends Item {
         return Text.literal("§b§lCopy Stick").formatted(Formatting.AQUA, Formatting.BOLD);
     }
 }
+
