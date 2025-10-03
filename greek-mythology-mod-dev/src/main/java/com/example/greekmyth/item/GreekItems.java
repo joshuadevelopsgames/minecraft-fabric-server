@@ -19,6 +19,9 @@ public class GreekItems {
     public static final Identifier ARES_BATTLE_AXE_ID = Identifier.of(GreekMythologyMod.MOD_ID, "ares_battle_axe");
     public static final Identifier INFERNO_PEARL_ID = Identifier.of(GreekMythologyMod.MOD_ID, "inferno_pearl");
     
+    // Greek Coins
+    public static final Identifier GREEK_COIN_ID = Identifier.of(GreekMythologyMod.MOD_ID, "greek_coin");
+    
     // Soul Items
     public static final Identifier ZOMBIE_SOUL_ID = Identifier.of(GreekMythologyMod.MOD_ID, "zombie_soul");
     public static final Identifier SKELETON_SOUL_ID = Identifier.of(GreekMythologyMod.MOD_ID, "skeleton_soul");
@@ -115,6 +118,9 @@ public class GreekItems {
     public static Item HADES_SCYTHE;
     public static Item ARES_BATTLE_AXE;
     public static Item INFERNO_PEARL;
+    
+    // Greek Coins
+    public static Item GREEK_COIN;
     
     // Soul Items
     public static Item ZOMBIE_SOUL;
@@ -267,6 +273,16 @@ public class GreekItems {
         INFERNO_PEARL = Registry.register(Registries.ITEM, INFERNO_PEARL_ID,
             new InfernoPearlItem(pearlSettings));
         GreekMythologyMod.LOGGER.info("Registered Inferno Pearl via factory with corruption abilities");
+        
+        // Greek Coin
+        Item.Settings coinSettings = new Item.Settings()
+            .maxCount(64)
+            .rarity(Rarity.RARE)
+            .registryKey(RegistryKey.of(RegistryKeys.ITEM, GREEK_COIN_ID));
+
+        GREEK_COIN = Registry.register(Registries.ITEM, GREEK_COIN_ID,
+            new Item(coinSettings));
+        GreekMythologyMod.LOGGER.info("Registered Greek Coin for shrine offerings");
         
         // Register Soul Items
         registerSoulItems();

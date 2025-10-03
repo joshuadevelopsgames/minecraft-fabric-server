@@ -1,0 +1,19 @@
+name = "Greek Mythology Modpack"
+pack-version = "1.21.9-Clean"
+description = "A comprehensive Greek Mythology modpack featuring custom content, time management, and enhanced gameplay mechanics."
+author = "Joshua"
+version = "1.21.9-Clean"
+[mods]
+fabric-api = { version = "0.134.0+1.21.9", required = true }
+greek-mythology = { version = "1.0.174-UNIFIED-PARTICLES", required = true }
+intime-mod = { version = "2.0.0", required = true }
+kangas-shop-mod = { version = "3.0.30", required = true }
+player-roles = { version = "1.0.0", required = true }
+[quilt]
+loader = { version = "0.16.14" }
+[forge]
+version = "1.21.9"
+[fabric]
+loader = { version = "0.16.14" }
+[neoforge]
+version = "1.21.9"

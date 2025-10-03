@@ -1,0 +1,11 @@
+pluginManagement {
+    repositories {
+        maven { url 'https://maven.fabricmc.net/' }
+        gradlePluginPortal()
+        mavenCentral()
+    }
+    plugins {
+        id 'fabric-loom' version '1.11-SNAPSHOT'
+    }
+}
+rootProject.name = 'greek-mythology'

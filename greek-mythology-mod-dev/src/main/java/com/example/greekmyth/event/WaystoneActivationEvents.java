@@ -1,6 +1,7 @@
 package com.example.greekmyth.event;
 
 import com.example.greekmyth.GreekMythologyMod;
+import com.example.greekmyth.shrine.ShrineSystem;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.item.ItemStack;
@@ -46,6 +47,9 @@ public final class WaystoneActivationEvents {
     }
 
     public static void register() {
+        // TEMPORARILY DISABLED: Waystone interference causing crashes
+        // TODO: Re-enable with proper compatibility once waystone issues are resolved
+        /*
         // Require holding an Ender Eye and right-clicking a Waystone block; consume one Eye and allow default behavior
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
             if (!(world instanceof ServerWorld serverWorld)) {
@@ -62,6 +66,15 @@ public final class WaystoneActivationEvents {
             // Only target waystones blocks
             if (!"waystones".equals(blockId.getNamespace()) || !blockId.getPath().contains("waystone")) {
                 return ActionResult.PASS;
+            }
+
+            // Check if this is a shrine first
+            if (ShrineSystem.isShrine(pos)) {
+                // Handle shrine interaction
+                if (ShrineSystem.handleShrineActivation(serverPlayer, pos, world)) {
+                    return ActionResult.SUCCESS; // Consume the interaction (player made offering)
+                }
+                // If shrine system returns false, continue with normal waystone logic
             }
 
             // Check if this is a free-access waypoint (spawn or wilderness)
@@ -94,8 +107,11 @@ public final class WaystoneActivationEvents {
             // Allow Waystones to handle the click normally (open GUI / activate)
             return ActionResult.PASS;
         });
+        */
 
-        // Disable Waystones scrolls/warp items; instruct to use Ender Eye instead
+        // Temporarily disable waystone item blocking to fix hotbar crash
+        // TODO: Re-enable with more specific filtering once hotbar issue is resolved
+        /*
         UseItemCallback.EVENT.register((player, world, hand) -> {
             ItemStack stack = player.getStackInHand(hand);
             Identifier itemId = Registries.ITEM.getId(stack.getItem());
@@ -110,8 +126,9 @@ public final class WaystoneActivationEvents {
             }
             return ActionResult.PASS;
         });
+        */
 
-        GreekMythologyMod.LOGGER.info("Waystone interaction gated: Ender Eye required for most waypoints; spawn and wilderness waypoints are free access");
+        GreekMythologyMod.LOGGER.info("Waystone interaction temporarily disabled to fix compatibility issues");
     }
 }
 

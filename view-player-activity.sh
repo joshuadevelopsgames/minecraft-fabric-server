@@ -139,3 +139,5 @@ show_log "$LOG_FILE" "$LINES" "$SEARCH_TERM"
 
 
 
+
+

@@ -67,6 +67,7 @@ public class GreekMythologyMod implements ModInitializer {
         
         // Initialize Shadow Realm system
         com.example.greekmyth.dimension.ShadowRealmDimensionManager.init();
+        com.example.greekmyth.dimension.SkyblockDimensionManager.init();
         
         ModEvents.register();
         UndeadWarriorEvents.register();
@@ -102,7 +103,10 @@ public class GreekMythologyMod implements ModInitializer {
         
         // Register Waystone activation gating
         com.example.greekmyth.event.WaystoneActivationEvents.register();
-
+        
+        // Initialize shrine system
+        com.example.greekmyth.shrine.ShrineSystem.initializeDefaultShrines();
+        
         // Register Shadow Realm events for one-way world syncing
         com.example.greekmyth.event.ShadowRealmEvents.register();
 
@@ -119,10 +123,14 @@ public class GreekMythologyMod implements ModInitializer {
             com.example.greekmyth.pvp.PvpZoneManager.initialize(server);
             // Register the shadow realm dimension
             ShadowRealmDimensionManager.registerDimension(server);
+            // Register the Tartarus jail dimension
+            com.example.greekmyth.jail.TartarusJailManager.registerDimension(server);
+            // Register the skyblock dimension
+            com.example.greekmyth.dimension.SkyblockDimensionManager.registerDimension(server);
             // Initialize the roles system
             com.example.greekmyth.roles.RolesManager.init();
             // Waystone tracker no longer needed; interaction is per-use with Eye consumption
-            LOGGER.info("Oracle Registry, Zone Manager, PvP Zone Manager, and Roles Manager initialized on server start");
+            LOGGER.info("Oracle Registry, Zone Manager, PvP Zone Manager, Roles Manager, and Skyblock Dimension initialized on server start");
         });
         
         // Oracle Altar system temporarily disabled due to block registration issues
@@ -136,6 +144,22 @@ public class GreekMythologyMod implements ModInitializer {
         // Register commands
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             LOGGER.info("Registering Greek Mythology commands...");
+            
+            // Simple skyblock command for testing
+            dispatcher.register(net.minecraft.server.command.CommandManager.literal("skyblock")
+                .executes(context -> {
+                    context.getSource().sendMessage(net.minecraft.text.Text.literal("§6§l[Skyblock] §r§aSkyblock timezone command works!"));
+                    return 1;
+                }));
+            LOGGER.info("Simple skyblock command registered successfully");
+            
+            // Test command to verify callback is working
+            dispatcher.register(net.minecraft.server.command.CommandManager.literal("testcallback2")
+                .executes(context -> {
+                    context.getSource().sendMessage(net.minecraft.text.Text.literal("Command registration callback 2 is working!"));
+                    return 1;
+                }));
+            LOGGER.info("Test callback 2 command registered");
             
             // Register help command
             dispatcher.register(net.minecraft.server.command.CommandManager.literal("help")
@@ -155,6 +179,9 @@ public class GreekMythologyMod implements ModInitializer {
             
             // Register class management commands (god selection, class info, etc.)
             com.example.greekmyth.command.ClassCommands.register(dispatcher);
+            
+            // Register shrine management commands
+            com.example.greekmyth.command.ShrineCommands.register(dispatcher);
             
             // Register the /jail command
             dispatcher.register(net.minecraft.server.command.CommandManager.literal("jail")
@@ -356,6 +383,33 @@ public class GreekMythologyMod implements ModInitializer {
                 .executes(context -> {
                     return showGreekMythologyVersion(context.getSource());
                 }));
+            
+            // Register skyblock commands
+            LOGGER.info("Registering Skyblock commands...");
+            try {
+                // Test simple command first
+                dispatcher.register(net.minecraft.server.command.CommandManager.literal("skyblocktest")
+                    .executes(context -> {
+                        context.getSource().sendMessage(net.minecraft.text.Text.literal("Skyblock test command works!"));
+                        return 1;
+                    }));
+                LOGGER.info("Skyblock test command registered");
+                
+                // Register simple skyblock command directly
+                dispatcher.register(net.minecraft.server.command.CommandManager.literal("skyblock")
+                    .executes(context -> {
+                        context.getSource().sendMessage(net.minecraft.text.Text.literal("§6§l[Skyblock] §r§aTeleporting to the Skyblock timezone..."));
+                        return 1;
+                    }));
+                LOGGER.info("Simple skyblock command registered");
+                
+                LOGGER.info("About to call SkyblockCommands.register()");
+                com.example.greekmyth.command.SkyblockCommands.register(dispatcher);
+                LOGGER.info("Skyblock commands registration completed successfully");
+            } catch (Exception e) {
+                LOGGER.error("Failed to register Skyblock commands", e);
+                e.printStackTrace();
+            }
             
             LOGGER.info("Greek Mythology commands registered successfully!");
         });

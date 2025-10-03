@@ -1,3 +1,36 @@
 {
-  "version": "1.0.89"
-} 
+  "schemaVersion": 1,
+  "id": "kangas_shop",
+  "version": "${version}",
+  "name": "In Time Mod",
+  "description": "A Minecraft mod with YACL3 shop GUI, time currency, and role management",
+  "authors": ["Your Name"],
+  "contact": {
+    "homepage": "https://github.com/yourusername/intime-mod",
+    "sources": "https://github.com/yourusername/intime-mod"
+  },
+  "license": "MIT",
+  "icon": "assets/intime/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.intime.InTimeMod",
+      "com.timekeep.market.TimeMarketMod"
+    ],
+    "client": [
+      "com.intime.client.InTimeClientMod"
+    ]
+  },
+  "mixins": [
+    "intime.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.17.2",
+    "minecraft": "~1.21.9",
+    "java": ">=17",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

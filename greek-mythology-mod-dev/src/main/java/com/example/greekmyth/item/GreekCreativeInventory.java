@@ -18,6 +18,9 @@ public class GreekCreativeInventory {
             content.add(new ItemStack(GreekItems.HADES_SCYTHE));
             content.add(new ItemStack(GreekItems.INFERNO_PEARL));
             
+            // Greek Coins
+            content.add(new ItemStack(GreekItems.GREEK_COIN));
+            
             // Oracle Tag Items
             content.add(new ItemStack(GreekItems.ZEUS_ORACLE_TAG));
             content.add(new ItemStack(GreekItems.POSEIDON_ORACLE_TAG));

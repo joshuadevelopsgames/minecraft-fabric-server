@@ -1,0 +1,189 @@
+{
+  "enableShop": true,
+  "allowBuying": true,
+  "allowSelling": true,
+  "maxItemsPerTransaction": 64,
+  "sellPriceMultiplier": 0.5,
+  "shopTitle": "Kanga\u0027s Time Shop",
+  "shopSubtitle": "Time is currency!",
+  "buyItems": {
+    "bread": {
+      "itemId": "minecraft:bread",
+      "price": 5,
+      "category": "simple"
+    },
+    "netherite_ingot": {
+      "itemId": "minecraft:netherite_ingot",
+      "price": 600,
+      "category": "rare"
+    },
+    "totem_of_undying": {
+      "itemId": "minecraft:totem_of_undying",
+      "price": 500,
+      "category": "special"
+    },
+    "cooked_beef": {
+      "itemId": "minecraft:cooked_beef",
+      "price": 8,
+      "category": "simple"
+    },
+    "iron_ingot": {
+      "itemId": "minecraft:iron_ingot",
+      "price": 15,
+      "category": "simple"
+    },
+    "nether_star": {
+      "itemId": "minecraft:nether_star",
+      "price": 3600,
+      "category": "rare"
+    },
+    "apple": {
+      "itemId": "minecraft:apple",
+      "price": 3,
+      "category": "simple"
+    },
+    "diamond": {
+      "itemId": "minecraft:diamond",
+      "price": 300,
+      "category": "rare"
+    },
+    "enchanted_golden_apple": {
+      "itemId": "minecraft:enchanted_golden_apple",
+      "price": 120,
+      "category": "special"
+    },
+    "elytra": {
+      "itemId": "minecraft:elytra",
+      "price": 1800,
+      "category": "rare"
+    },
+    "gold_ingot": {
+      "itemId": "minecraft:gold_ingot",
+      "price": 30,
+      "category": "medium"
+    },
+    "experience_bottle": {
+      "itemId": "minecraft:experience_bottle",
+      "price": 60,
+      "category": "medium"
+    },
+    "heart_of_the_sea": {
+      "itemId": "minecraft:heart_of_the_sea",
+      "price": 4800,
+      "category": "special"
+    },
+    "lapis_lazuli": {
+      "itemId": "minecraft:lapis_lazuli",
+      "price": 12,
+      "category": "medium"
+    },
+    "coal": {
+      "itemId": "minecraft:coal",
+      "price": 2,
+      "category": "simple"
+    },
+    "emerald": {
+      "itemId": "minecraft:emerald",
+      "price": 45,
+      "category": "medium"
+    },
+    "redstone": {
+      "itemId": "minecraft:redstone",
+      "price": 10,
+      "category": "medium"
+    }
+  },
+  "sellItems": {
+    "bread": {
+      "itemId": "minecraft:bread",
+      "price": 2,
+      "category": "simple"
+    },
+    "netherite_ingot": {
+      "itemId": "minecraft:netherite_ingot",
+      "price": 300,
+      "category": "rare"
+    },
+    "totem_of_undying": {
+      "itemId": "minecraft:totem_of_undying",
+      "price": 250,
+      "category": "special"
+    },
+    "cooked_beef": {
+      "itemId": "minecraft:cooked_beef",
+      "price": 4,
+      "category": "simple"
+    },
+    "iron_ingot": {
+      "itemId": "minecraft:iron_ingot",
+      "price": 7,
+      "category": "simple"
+    },
+    "nether_star": {
+      "itemId": "minecraft:nether_star",
+      "price": 1800,
+      "category": "rare"
+    },
+    "apple": {
+      "itemId": "minecraft:apple",
+      "price": 1,
+      "category": "simple"
+    },
+    "diamond": {
+      "itemId": "minecraft:diamond",
+      "price": 150,
+      "category": "rare"
+    },
+    "enchanted_golden_apple": {
+      "itemId": "minecraft:enchanted_golden_apple",
+      "price": 60,
+      "category": "special"
+    },
+    "elytra": {
+      "itemId": "minecraft:elytra",
+      "price": 900,
+      "category": "rare"
+    },
+    "gold_ingot": {
+      "itemId": "minecraft:gold_ingot",
+      "price": 15,
+      "category": "medium"
+    },
+    "experience_bottle": {
+      "itemId": "minecraft:experience_bottle",
+      "price": 30,
+      "category": "medium"
+    },
+    "heart_of_the_sea": {
+      "itemId": "minecraft:heart_of_the_sea",
+      "price": 2400,
+      "category": "special"
+    },
+    "lapis_lazuli": {
+      "itemId": "minecraft:lapis_lazuli",
+      "price": 6,
+      "category": "medium"
+    },
+    "coal": {
+      "itemId": "minecraft:coal",
+      "price": 1,
+      "category": "simple"
+    },
+    "emerald": {
+      "itemId": "minecraft:emerald",
+      "price": 22,
+      "category": "medium"
+    },
+    "redstone": {
+      "itemId": "minecraft:redstone",
+      "price": 5,
+      "category": "medium"
+    }
+  },
+  "shopCategories": [
+    "simple",
+    "medium",
+    "rare",
+    "special"
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "greekmyth",
-  "version": "1.0.178",
+  "version": "1.0.179",
   "name": "Greek Mythology Mod",
   "description": "A comprehensive Greek mythology mod featuring gods, quests, and mythical creatures",
   "authors": [
@@ -27,7 +27,7 @@
   ],
   "depends": {
     "fabricloader": ">=0.16.0",
-    "minecraft": "~1.21.8",
+    "minecraft": "~1.21.9",
     "java": ">=17",
     "fabric-api": "*"
   },
@@ -35,4 +35,6 @@
     "another-mod": "*"
   }
 }
+
+
 

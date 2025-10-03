@@ -19,7 +19,8 @@ public enum God {
     HEPHAESTUS("Hephaestus", "God of Fire", "Fire, Crafting, Technology", false, "🔥"),
     APHRODITE("Aphrodite", "Goddess of Love", "Love, Beauty, Desire", false, "💕"),
     DEMETER("Demeter", "Goddess of Harvest", "Agriculture, Harvest, Nature", false, "🌾"),
-    DIONYSUS("Dionysus", "God of Wine", "Wine, Madness, Theater", false, "🍷");
+    DIONYSUS("Dionysus", "God of Wine", "Wine, Madness, Theater", false, "🍷"),
+    MR_SVOB("Mr. Svob", "The Oracle Master", "Wisdom, Teaching, Guidance", false, "🎓");
 
     private final String displayName;
     private final String title;

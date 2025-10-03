@@ -256,4 +256,32 @@ public class TartarusJailManager {
     public static RegistryKey<World> getTartarusDimension() {
         return TARTARUS_DIMENSION;
     }
-} 
+    
+    /**
+     * Register the Tartarus jail dimension with the server
+     */
+    public static void registerDimension(net.minecraft.server.MinecraftServer server) {
+        try {
+            // Check if Tartarus already exists
+            ServerWorld existingTartarus = server.getWorld(TARTARUS_DIMENSION);
+            if (existingTartarus != null) {
+                GreekMythologyMod.LOGGER.info("TARTARUS: Tartarus dimension already exists");
+                return;
+            }
+
+            // Get the overworld to use as a template
+            ServerWorld overworld = server.getWorld(net.minecraft.world.World.OVERWORLD);
+            if (overworld == null) {
+                GreekMythologyMod.LOGGER.warn("TARTARUS: Cannot register Tartarus - overworld not found");
+                return;
+            }
+
+            // For now, just log that we're ready to create the dimension
+            // The actual dimension creation will happen when a player first tries to access it
+            GreekMythologyMod.LOGGER.info("TARTARUS: Tartarus dimension ready for creation");
+
+        } catch (Exception e) {
+            GreekMythologyMod.LOGGER.error("TARTARUS: Failed to register Tartarus dimension", e);
+        }
+    }
+}
