@@ -43,7 +43,38 @@ public class ParticleData {
         SOUL_FIRE_FLAME("soul_fire_flame", ParticleTypes.SOUL_FIRE_FLAME),
         FLAME("flame", ParticleTypes.FLAME),
         CAMPFIRE_COSY_SMOKE("campfire_cosy_smoke", ParticleTypes.CAMPFIRE_COSY_SMOKE),
-        CAMPFIRE_SIGNAL_SMOKE("campfire_signal_smoke", ParticleTypes.CAMPFIRE_SIGNAL_SMOKE);
+        CAMPFIRE_SIGNAL_SMOKE("campfire_signal_smoke", ParticleTypes.CAMPFIRE_SIGNAL_SMOKE),
+        DRAGON_BREATH("dragon_breath", ParticleTypes.DRAGON_BREATH),
+        END_ROD("end_rod", ParticleTypes.END_ROD),
+        ELECTRIC_SPARK("electric_spark", ParticleTypes.ELECTRIC_SPARK),
+        WAX_ON("wax_on", ParticleTypes.WAX_ON),
+        WAX_OFF("wax_off", ParticleTypes.WAX_OFF),
+        SCRAPE("scrape", ParticleTypes.SCRAPE),
+        DUST("dust", ParticleTypes.DUST),
+        FALLING_DUST("falling_dust", ParticleTypes.FALLING_DUST),
+        BLOCK("block", ParticleTypes.BLOCK),
+        ITEM("item", ParticleTypes.ITEM),
+        VIBRATION("vibration", ParticleTypes.VIBRATION),
+        SWEEP_ATTACK("sweep_attack", ParticleTypes.SWEEP_ATTACK),
+        TOTEM("totem", ParticleTypes.TOTEM_OF_UNDYING),
+        SPIT("spit", ParticleTypes.SPIT),
+        SQUID_INK("squid_ink", ParticleTypes.SQUID_INK),
+        BUBBLE_POP("bubble_pop", ParticleTypes.BUBBLE_POP),
+        CURRENT_DOWN("current_down", ParticleTypes.CURRENT_DOWN),
+        BUBBLE_COLUMN_UP("bubble_column_up", ParticleTypes.BUBBLE_COLUMN_UP),
+        NAUTILUS("nautilus", ParticleTypes.NAUTILUS),
+        DOLPHIN("dolphin", ParticleTypes.DOLPHIN),
+        CAMPFIRE_SMOKE("campfire_smoke", ParticleTypes.CAMPFIRE_SMOKE),
+        CLOUD("cloud", ParticleTypes.CLOUD),
+        COMPOSTER("composter", ParticleTypes.COMPOSTER),
+        HONEY("honey", ParticleTypes.HONEY),
+        DRIPPING_HONEY("dripping_honey", ParticleTypes.DRIPPING_HONEY),
+        FALLING_HONEY("falling_honey", ParticleTypes.FALLING_HONEY),
+        LANDING_HONEY("landing_honey", ParticleTypes.LANDING_HONEY),
+        FALLING_NECTAR("falling_nectar", ParticleTypes.FALLING_NECTAR),
+        FALLING_SPORE_BLOSSOM("falling_spore_blossom", ParticleTypes.FALLING_SPORE_BLOSSOM),
+        SPORE_BLOSSOM_AIR("spore_blossom_air", ParticleTypes.SPORE_BLOSSOM_AIR),
+        CHERRY_LEAVES("cherry_leaves", ParticleTypes.CHERRY_LEAVES);
         
         private final String name;
         private final net.minecraft.particle.ParticleType<?> particleType;
@@ -110,10 +141,12 @@ public class ParticleData {
     }
     
     public ParticleData() {
-        // Add some default particles
+        // Add some default magical particles
         addParticle("heart", new ParticleConfig(ParticleType.HEART, 1, 0.1, 0.0));
-        addParticle("happy_villager", new ParticleConfig(ParticleType.HAPPY_VILLAGER, 1, 0.1, 0.0));
+        addParticle("enchant", new ParticleConfig(ParticleType.ENCHANT, 2, 0.3, 0.1));
         addParticle("flame", new ParticleConfig(ParticleType.FLAME, 3, 0.2, 0.05));
+        addParticle("soul", new ParticleConfig(ParticleType.SOUL, 2, 0.4, 0.08));
+        addParticle("electric_spark", new ParticleConfig(ParticleType.ELECTRIC_SPARK, 1, 0.2, 0.15));
     }
     
     public boolean isEnabled() {

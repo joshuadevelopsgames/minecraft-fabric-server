@@ -51,30 +51,86 @@ public class ParticleManager {
         }
         
         Vec3d playerPos = player.getPos();
-        Vec3d particlePos = calculateParticlePosition(playerPos, data.getSlot());
         
+        // Spawn particles in different positions for variety
         for (String particleName : data.getActiveParticles()) {
             ParticleData.ParticleConfig config = data.getParticleConfig(particleName);
             if (config != null) {
-                spawnParticle(world, particlePos, config);
+                // Create multiple positions for each particle type
+                for (int i = 0; i < config.getCount(); i++) {
+                    Vec3d particlePos = calculateParticlePosition(playerPos, data.getSlot());
+                    spawnParticle(world, particlePos, config);
+                }
             }
         }
+        
+        // Add special combination effects
+        spawnCombinationEffects(world, playerPos, data);
     }
     
     private Vec3d calculateParticlePosition(Vec3d playerPos, ParticleData.ParticleSlot slot) {
         switch (slot) {
             case ABOVE:
-                return playerPos.add(0, 2.5, 0);
-            case BELOW:
-                return playerPos.add(0, -0.5, 0);
-            case AROUND:
-            default:
-                // Random position around the player
+                // Create a halo effect above the player
                 double angle = random.nextDouble() * 2 * Math.PI;
-                double radius = 1.0 + random.nextDouble() * 0.5;
+                double radius = 0.5 + random.nextDouble() * 0.8;
                 double x = Math.cos(angle) * radius;
                 double z = Math.sin(angle) * radius;
-                return playerPos.add(x, 0.5 + random.nextDouble() * 1.5, z);
+                return playerPos.add(x, 2.0 + random.nextDouble() * 1.0, z);
+            case BELOW:
+                // Create a ground effect below the player
+                double groundAngle = random.nextDouble() * 2 * Math.PI;
+                double groundRadius = 0.3 + random.nextDouble() * 0.7;
+                double groundX = Math.cos(groundAngle) * groundRadius;
+                double groundZ = Math.sin(groundAngle) * groundRadius;
+                return playerPos.add(groundX, -0.2 + random.nextDouble() * 0.3, groundZ);
+            case AROUND:
+            default:
+                // Create a swirling effect around the player
+                double swirlAngle = random.nextDouble() * 2 * Math.PI;
+                double swirlRadius = 0.8 + random.nextDouble() * 1.2;
+                double swirlX = Math.cos(swirlAngle) * swirlRadius;
+                double swirlZ = Math.sin(swirlAngle) * swirlRadius;
+                return playerPos.add(swirlX, 0.5 + random.nextDouble() * 1.8, swirlZ);
+        }
+    }
+    
+    private void spawnCombinationEffects(ServerWorld world, Vec3d playerPos, ParticleData data) {
+        // Create special effects when multiple particle types are active
+        int activeCount = data.getActiveParticles().size();
+        
+        if (activeCount >= 3) {
+            // Create a magical aura effect
+            for (int i = 0; i < 5; i++) {
+                double angle = (i * 2 * Math.PI) / 5.0;
+                double radius = 1.5;
+                double x = Math.cos(angle) * radius;
+                double z = Math.sin(angle) * radius;
+                Vec3d auraPos = playerPos.add(x, 1.0, z);
+                
+                world.spawnParticles(
+                    net.minecraft.particle.ParticleTypes.ENCHANT,
+                    auraPos.x, auraPos.y, auraPos.z,
+                    1, 0.0, 0.1, 0.0, 0.0
+                );
+            }
+        }
+        
+        if (activeCount >= 5) {
+            // Create a powerful magical effect
+            for (int i = 0; i < 8; i++) {
+                double angle = (i * 2 * Math.PI) / 8.0;
+                double radius = 2.0;
+                double x = Math.cos(angle) * radius;
+                double z = Math.sin(angle) * radius;
+                Vec3d powerPos = playerPos.add(x, 0.5, z);
+                
+                world.spawnParticles(
+                    net.minecraft.particle.ParticleTypes.PORTAL,
+                    powerPos.x, powerPos.y, powerPos.z,
+                    1, 0.0, 0.2, 0.0, 0.0
+                );
+            }
         }
     }
     
@@ -87,9 +143,9 @@ public class ParticleManager {
         double velocityY = (random.nextDouble() - 0.5) * config.getSpread();
         double velocityZ = (random.nextDouble() - 0.5) * config.getSpread();
         
-        // For now, just use FLAME particles as a test
+        // Use the actual particle type from the config
         world.spawnParticles(
-            net.minecraft.particle.ParticleTypes.FLAME,
+            config.getType().getParticleType(),
             x, y, z,
             config.getCount(),
             velocityX, velocityY, velocityZ,
@@ -158,8 +214,18 @@ public class ParticleManager {
             }
             
             String json = new String(java.nio.file.Files.readAllBytes(file.toPath()));
-            // For now, just start with empty particles
-            // TODO: Implement JSON deserialization for ParticleData
+            if (json.trim().isEmpty()) {
+                return;
+            }
+            
+            // Parse the JSON and load particle data
+            com.google.gson.reflect.TypeToken<Map<String, ParticleData>> typeToken = 
+                new com.google.gson.reflect.TypeToken<Map<String, ParticleData>>() {};
+            Map<String, ParticleData> loadedParticles = GSON.fromJson(json, typeToken.getType());
+            
+            if (loadedParticles != null) {
+                playerParticles.putAll(loadedParticles);
+            }
         } catch (Exception e) {
             System.err.println("Failed to load particles: " + e.getMessage());
         }

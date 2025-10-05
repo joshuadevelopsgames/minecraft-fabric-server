@@ -15,7 +15,8 @@
   "entrypoints": {
     "main": [
       "com.intime.InTimeMod",
-      "com.timekeep.market.TimeMarketMod"
+      "com.timekeep.market.TimeMarketMod",
+      "com.example.particleunified.UnifiedParticlesMod"
     ],
     "client": [
       "com.intime.client.InTimeClientMod"
@@ -26,8 +27,8 @@
   ],
   "depends": {
     "fabricloader": ">=0.17.2",
-    "minecraft": "~1.21.9",
-    "java": ">=17",
+    "minecraft": ">=1.21.9- <1.21.10-",
+    "java": ">=21",
     "fabric-api": "*"
   },
   "suggests": {

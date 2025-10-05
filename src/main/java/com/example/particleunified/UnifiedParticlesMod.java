@@ -162,7 +162,53 @@ public class UnifiedParticlesMod implements ModInitializer {
                     
                     context.getSource().sendFeedback(() -> Text.literal(message.toString()), false);
                     return 1;
-                })));
+                }))
+            .then(CommandManager.literal("preset")
+                .then(CommandManager.literal("magical")
+                    .executes(context -> {
+                        ParticleManager particleManager = ParticleManager.getServerState(context.getSource().getServer());
+                        String playerName = context.getSource().getPlayerOrThrow().getName().getString();
+                        
+                        // Clear existing particles and add magical preset
+                        particleManager.resetPlayerParticles(playerName);
+                        particleManager.addParticleToPlayer(playerName, "enchant", ParticleData.ParticleType.ENCHANT);
+                        particleManager.addParticleToPlayer(playerName, "soul", ParticleData.ParticleType.SOUL);
+                        particleManager.addParticleToPlayer(playerName, "portal", ParticleData.ParticleType.PORTAL);
+                        particleManager.addParticleToPlayer(playerName, "electric_spark", ParticleData.ParticleType.ELECTRIC_SPARK);
+                        
+                        context.getSource().sendFeedback(() -> Text.literal("Applied magical particle preset"), false);
+                        return 1;
+                    }))
+                .then(CommandManager.literal("fire")
+                    .executes(context -> {
+                        ParticleManager particleManager = ParticleManager.getServerState(context.getSource().getServer());
+                        String playerName = context.getSource().getPlayerOrThrow().getName().getString();
+                        
+                        // Clear existing particles and add fire preset
+                        particleManager.resetPlayerParticles(playerName);
+                        particleManager.addParticleToPlayer(playerName, "flame", ParticleData.ParticleType.FLAME);
+                        particleManager.addParticleToPlayer(playerName, "soul_fire_flame", ParticleData.ParticleType.SOUL_FIRE_FLAME);
+                        particleManager.addParticleToPlayer(playerName, "lava", ParticleData.ParticleType.LAVA);
+                        particleManager.addParticleToPlayer(playerName, "smoke", ParticleData.ParticleType.SMOKE);
+                        
+                        context.getSource().sendFeedback(() -> Text.literal("Applied fire particle preset"), false);
+                        return 1;
+                    }))
+                .then(CommandManager.literal("nature")
+                    .executes(context -> {
+                        ParticleManager particleManager = ParticleManager.getServerState(context.getSource().getServer());
+                        String playerName = context.getSource().getPlayerOrThrow().getName().getString();
+                        
+                        // Clear existing particles and add nature preset
+                        particleManager.resetPlayerParticles(playerName);
+                        particleManager.addParticleToPlayer(playerName, "happy_villager", ParticleData.ParticleType.HAPPY_VILLAGER);
+                        particleManager.addParticleToPlayer(playerName, "cherry_leaves", ParticleData.ParticleType.CHERRY_LEAVES);
+                        particleManager.addParticleToPlayer(playerName, "falling_spore_blossom", ParticleData.ParticleType.FALLING_SPORE_BLOSSOM);
+                        particleManager.addParticleToPlayer(playerName, "honey", ParticleData.ParticleType.HONEY);
+                        
+                        context.getSource().sendFeedback(() -> Text.literal("Applied nature particle preset"), false);
+                        return 1;
+                    })));
         
         // Legacy playerparticles command aliases
         dispatcher.register(CommandManager.literal("playerparticles")
