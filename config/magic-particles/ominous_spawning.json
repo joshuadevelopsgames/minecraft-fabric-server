@@ -1,0 +1,14 @@
+{
+  "name": "Ominous Spawning",
+  "particles": [
+    {
+      "count": 3,
+      "pos": [0.0, 0.0, 0.0],
+      "delta": [0.5, 0.5, 0.5],
+      "type": "simple",
+      "particle_type": {
+        "type": "minecraft:ominous_spawning"
+      }
+    }
+  ]
+}
