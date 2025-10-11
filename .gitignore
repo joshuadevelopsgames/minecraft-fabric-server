@@ -95,4 +95,4 @@ config/yacl.json5
 !usernamecache.json
 
 # Git submodules
-fabric-api-src/
+fabric-api-src/mods/greek-mythology-2.0.3.jar
