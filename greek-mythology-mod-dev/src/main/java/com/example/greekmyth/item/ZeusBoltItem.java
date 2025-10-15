@@ -71,7 +71,7 @@ public class ZeusBoltItem extends Item implements FabricItem {
     @Override
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         // Apply enhanced damage to penetrate netherite armor (15.0 damage)
-        if (attacker.getWorld() instanceof ServerWorld serverWorld) {
+        if (attacker.getEntityWorld() instanceof ServerWorld serverWorld) {
             target.damage(serverWorld, serverWorld.getDamageSources().generic(), 15.0f);
         }
     }
@@ -96,12 +96,12 @@ public class ZeusBoltItem extends Item implements FabricItem {
         ItemStack stack = user.getStackInHand(hand);
         
         GreekMythologyMod.LOGGER.info("=== ZEUS BOLT USE METHOD CALLED ===");
-        GreekMythologyMod.LOGGER.info("World isClient: {}", world.isClient);
+        GreekMythologyMod.LOGGER.info("World isClient: {}", world.isClient());
         GreekMythologyMod.LOGGER.info("Player: {}", user.getName().getString());
         GreekMythologyMod.LOGGER.info("Hand: {}", hand);
         GreekMythologyMod.LOGGER.info("Stack: {}", stack.toString());
         
-        if (world.isClient) {
+        if (world.isClient()) {
             GreekMythologyMod.LOGGER.info("Zeus Bolt used on CLIENT side");
             return ActionResult.SUCCESS;
         }

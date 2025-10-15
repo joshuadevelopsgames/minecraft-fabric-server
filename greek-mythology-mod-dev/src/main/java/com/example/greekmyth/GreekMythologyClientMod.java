@@ -1,7 +1,7 @@
 package com.example.greekmyth;
 
 import com.example.greekmyth.client.MainMenuModifier;
-import com.example.greekmyth.client.render.MerchantPiglinRenderer;
+// import com.example.greekmyth.client.render.MerchantPiglinRenderer; // DISABLED FOR 1.21.9
 import com.example.greekmyth.entity.GreekEntityTypes;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -24,7 +24,7 @@ public class GreekMythologyClientMod implements ClientModInitializer {
         MainMenuModifier.init();
         
         // Register custom entity renderer for merchant piglin
-        EntityRendererRegistry.register(GreekEntityTypes.MERCHANT_PIGLIN, MerchantPiglinRenderer::new);
+        // DISABLED FOR 1.21.9: EntityRendererRegistry.register(GreekEntityTypes.MERCHANT_PIGLIN, MerchantPiglinRenderer::new);
         
         LOGGER.info("Custom entity renderer registered for merchant piglin");
         LOGGER.info("Custom texture ready: merchant_piglin.png");

@@ -1,0 +1,77 @@
+{
+  "name": "Red Glass",
+  "particles": [
+    {
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.25,
+        0.1,
+        0.25
+      ],
+      "speed": 0.002,
+      "type": "simple",
+      "particle_type": {
+        "type": "minecraft:block",
+        "block_state": "orange_stained_glass"
+      }
+    },
+    {
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.25,
+        0.1,
+        0.25
+      ],
+      "speed": 0.002,
+      "type": "simple",
+      "particle_type": {
+        "type": "minecraft:block",
+        "block_state": "white_stained_glass"
+      }
+    },
+    {
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.25,
+        0.1,
+        0.25
+      ],
+      "speed": 0.002,
+      "type": "simple",
+      "particle_type": {
+        "type": "minecraft:block",
+        "block_state": "red_stained_glass"
+      }
+    },
+    {
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.25,
+        0.1,
+        0.25
+      ],
+      "speed": 0.002,
+      "type": "simple",
+      "particle_type": {
+        "type": "minecraft:block",
+        "block_state": "yellow_stained_glass"
+      }
+    }
+  ]
+}

@@ -172,7 +172,7 @@ public class SoulHarvester {
             ItemStack soulStack = new ItemStack(soulItem, 1);
             
             // Drop the soul as loot at the entity's death location
-            Vec3d position = entity.getPos();
+            Vec3d position = new Vec3d(entity.getX(), entity.getY(), entity.getZ());
             world.spawnEntity(new net.minecraft.entity.ItemEntity(
                 world, 
                 position.x, 

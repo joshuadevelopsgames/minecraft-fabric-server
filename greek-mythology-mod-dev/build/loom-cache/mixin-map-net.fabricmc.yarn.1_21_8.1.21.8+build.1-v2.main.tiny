@@ -1,3 +1,0 @@
-v1	named	intermediary
-FIELD	com/example/greekmyth/mixin/ServerPlayerInteractionManagerMixin	Lnet/minecraft/server/network/ServerPlayerEntity;	player	field_14008
-FIELD	com/example/greekmyth/mixin/ServerPlayerInteractionManagerMixin	Lnet/minecraft/server/world/ServerWorld;	world	field_14007

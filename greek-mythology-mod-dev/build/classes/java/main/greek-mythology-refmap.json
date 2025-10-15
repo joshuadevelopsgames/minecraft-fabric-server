@@ -21,20 +21,14 @@
     "com/example/greekmyth/mixin/ItemEntityMixin": {
       "tick": "Lnet/minecraft/class_1542;method_5773()V"
     },
-    "com/example/greekmyth/mixin/MultiplayerScreenMixin": {
-      "render": "Lnet/minecraft/class_500;method_25394(Lnet/minecraft/class_332;IIF)V"
-    },
     "com/example/greekmyth/mixin/PlayerEntityMixin": {
       "tick": "Lnet/minecraft/class_1657;method_5773()V"
-    },
-    "com/example/greekmyth/mixin/SelectWorldScreenMixin": {
-      "render": "Lnet/minecraft/class_526;method_25394(Lnet/minecraft/class_332;IIF)V"
     },
     "com/example/greekmyth/mixin/ServerPlayerInteractionManagerMixin": {
       "interactBlock": "Lnet/minecraft/class_3225;method_14262(Lnet/minecraft/class_3222;Lnet/minecraft/class_1937;Lnet/minecraft/class_1799;Lnet/minecraft/class_1268;Lnet/minecraft/class_3965;)Lnet/minecraft/class_1269;"
     },
     "com/example/greekmyth/mixin/ServerWorldMixin": {
-      "createExplosion": "Lnet/minecraft/class_3218;method_8454(Lnet/minecraft/class_1297;Lnet/minecraft/class_1282;Lnet/minecraft/class_5362;DDDFZLnet/minecraft/class_1937$class_7867;Lnet/minecraft/class_2394;Lnet/minecraft/class_2394;Lnet/minecraft/class_6880;)V"
+      "createExplosion": "Lnet/minecraft/class_3218;method_8454(Lnet/minecraft/class_1297;Lnet/minecraft/class_1282;Lnet/minecraft/class_5362;DDDFZLnet/minecraft/class_1937$class_7867;Lnet/minecraft/class_2394;Lnet/minecraft/class_2394;Lnet/minecraft/class_6012;Lnet/minecraft/class_6880;)V"
     },
     "com/example/greekmyth/mixin/StriderEntityMixin": {
       "<init>": "Lnet/minecraft/class_4985;<init>(Lnet/minecraft/class_1299;Lnet/minecraft/class_1937;)V"
@@ -87,20 +81,14 @@
       "com/example/greekmyth/mixin/ItemEntityMixin": {
         "tick": "Lnet/minecraft/class_1542;method_5773()V"
       },
-      "com/example/greekmyth/mixin/MultiplayerScreenMixin": {
-        "render": "Lnet/minecraft/class_500;method_25394(Lnet/minecraft/class_332;IIF)V"
-      },
       "com/example/greekmyth/mixin/PlayerEntityMixin": {
         "tick": "Lnet/minecraft/class_1657;method_5773()V"
-      },
-      "com/example/greekmyth/mixin/SelectWorldScreenMixin": {
-        "render": "Lnet/minecraft/class_526;method_25394(Lnet/minecraft/class_332;IIF)V"
       },
       "com/example/greekmyth/mixin/ServerPlayerInteractionManagerMixin": {
         "interactBlock": "Lnet/minecraft/class_3225;method_14262(Lnet/minecraft/class_3222;Lnet/minecraft/class_1937;Lnet/minecraft/class_1799;Lnet/minecraft/class_1268;Lnet/minecraft/class_3965;)Lnet/minecraft/class_1269;"
       },
       "com/example/greekmyth/mixin/ServerWorldMixin": {
-        "createExplosion": "Lnet/minecraft/class_3218;method_8454(Lnet/minecraft/class_1297;Lnet/minecraft/class_1282;Lnet/minecraft/class_5362;DDDFZLnet/minecraft/class_1937$class_7867;Lnet/minecraft/class_2394;Lnet/minecraft/class_2394;Lnet/minecraft/class_6880;)V"
+        "createExplosion": "Lnet/minecraft/class_3218;method_8454(Lnet/minecraft/class_1297;Lnet/minecraft/class_1282;Lnet/minecraft/class_5362;DDDFZLnet/minecraft/class_1937$class_7867;Lnet/minecraft/class_2394;Lnet/minecraft/class_2394;Lnet/minecraft/class_6012;Lnet/minecraft/class_6880;)V"
       },
       "com/example/greekmyth/mixin/StriderEntityMixin": {
         "<init>": "Lnet/minecraft/class_4985;<init>(Lnet/minecraft/class_1299;Lnet/minecraft/class_1937;)V"

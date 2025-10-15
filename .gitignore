@@ -96,3 +96,4 @@ config/yacl.json5
 
 # Git submodules
 fabric-api-src/mods/greek-mythology-2.0.3.jar
+mods/greek-mythology*.jar

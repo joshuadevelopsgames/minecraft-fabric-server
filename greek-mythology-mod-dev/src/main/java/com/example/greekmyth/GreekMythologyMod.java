@@ -2,12 +2,12 @@ package com.example.greekmyth;
 
 import com.example.greekmyth.item.GreekItems;
 import com.example.greekmyth.entity.GreekEntityTypes;
-import com.example.greekmyth.event.ModEvents;
-import com.example.greekmyth.event.UndeadWarriorEvents;
+// import com.example.greekmyth.event.ModEvents; // DISABLED FOR 1.21.9
+// import com.example.greekmyth.event.UndeadWarriorEvents; // DISABLED FOR 1.21.9
 import com.example.greekmyth.event.UndeadWarriorSoundEvents;
-import com.example.greekmyth.event.QuestProgressEvents;
+        // DISABLED FOR 1.21.9: import com.example.greekmyth.event.QuestProgressEvents;
 import com.example.greekmyth.favor.FavorManager;
-import com.example.greekmyth.entity.OracleRegistry;
+// import com.example.greekmyth.entity.OracleRegistry; // DISABLED FOR 1.21.9
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -68,20 +68,23 @@ public class GreekMythologyMod implements ModInitializer {
         // Initialize Shadow Realm system
         com.example.greekmyth.dimension.ShadowRealmDimensionManager.init();
         com.example.greekmyth.dimension.SkyblockDimensionManager.init();
+
+        // Initialize dimension switching system
+        com.example.greekmyth.dimension.DimensionSwitchManager.init();
         
-        ModEvents.register();
-        UndeadWarriorEvents.register();
+        // DISABLED FOR 1.21.9: ModEvents.register();
+        // DISABLED FOR 1.21.9: UndeadWarriorEvents.register();
         UndeadWarriorSoundEvents.register();
-        QuestProgressEvents.register();
+        // DISABLED FOR 1.21.9: QuestProgressEvents.register();
         
         // Register soul death events for soul harvesting
-        com.example.greekmyth.event.SoulDeathEvents.register();
+        // DISABLED FOR 1.21.9: com.example.greekmyth.event.SoulDeathEvents.register();
         
         // Register Oracle transformation handler
-        com.example.greekmyth.event.OracleTransformationHandler.register();
+        // DISABLED FOR 1.21.9: com.example.greekmyth.event.OracleTransformationHandler.register();
         
         // Register Oracle tag interaction handler
-        com.example.greekmyth.event.OracleTagInteractionHandler.register();
+        // DISABLED FOR 1.21.9: com.example.greekmyth.event.OracleTagInteractionHandler.register();
         
         // Register Invisible nametag handler
         com.example.greekmyth.event.InvisibleNametagHandler.register();
@@ -90,7 +93,7 @@ public class GreekMythologyMod implements ModInitializer {
         com.example.greekmyth.event.MerchantTransformationHandler.register();
         
         // Register Oracle damage handler
-        com.example.greekmyth.event.OracleDamageHandler.register();
+        // DISABLED FOR 1.21.9: com.example.greekmyth.event.OracleDamageHandler.register();
         
         // Register zone protection events
         com.example.greekmyth.event.ZoneProtectionEvents.register();
@@ -102,13 +105,13 @@ public class GreekMythologyMod implements ModInitializer {
         com.example.greekmyth.event.CopyStickEvents.register();
         
         // Register Waystone activation gating
-        com.example.greekmyth.event.WaystoneActivationEvents.register();
+        // DISABLED FOR 1.21.9: com.example.greekmyth.event.WaystoneActivationEvents.register();
         
         // Initialize shrine system
         com.example.greekmyth.shrine.ShrineSystem.initializeDefaultShrines();
         
         // Register Shadow Realm events for one-way world syncing
-        com.example.greekmyth.event.ShadowRealmEvents.register();
+        // DISABLED FOR 1.21.9: com.example.greekmyth.event.ShadowRealmEvents.register();
 
         // Register armor stand PvP events for testing
         com.example.greekmyth.event.ArmorStandPvpEvents.register();
@@ -118,13 +121,13 @@ public class GreekMythologyMod implements ModInitializer {
         
         // Register server lifecycle events for Oracle Registry, Zone Manager, and PvP Zone Manager initialization
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-            OracleRegistry.initialize(server);
+        // DISABLED FOR 1.21.9: OracleRegistry.initialize(server);
             com.example.greekmyth.zone.ZoneManager.initialize(server);
             com.example.greekmyth.pvp.PvpZoneManager.initialize(server);
             // Register the shadow realm dimension
             ShadowRealmDimensionManager.registerDimension(server);
             // Register the Tartarus jail dimension
-            com.example.greekmyth.jail.TartarusJailManager.registerDimension(server);
+        // DISABLED FOR 1.21.9: com.example.greekmyth.jail.TartarusJailManager.registerDimension(server);
             // Register the skyblock dimension
             com.example.greekmyth.dimension.SkyblockDimensionManager.registerDimension(server);
             // Initialize the roles system
@@ -169,19 +172,19 @@ public class GreekMythologyMod implements ModInitializer {
                     })));
             
             // Register favor commands
-            com.example.greekmyth.command.FavorCommands.register(dispatcher);
+        // DISABLED FOR 1.21.9: com.example.greekmyth.command.FavorCommands.register(dispatcher);
             
             // Register Shadow Realm commands
-            com.example.greekmyth.command.ShadowRealmCommand.register(dispatcher);
+        // DISABLED FOR 1.21.9: com.example.greekmyth.command.ShadowRealmCommand.register(dispatcher);
             
             // Register role management commands
-            com.example.greekmyth.command.RoleCommands.register(dispatcher);
+        // DISABLED FOR 1.21.9: com.example.greekmyth.command.RoleCommands.register(dispatcher);
             
             // Register class management commands (god selection, class info, etc.)
-            com.example.greekmyth.command.ClassCommands.register(dispatcher);
+        // DISABLED FOR 1.21.9: com.example.greekmyth.command.ClassCommands.register(dispatcher);
             
             // Register shrine management commands
-            com.example.greekmyth.command.ShrineCommands.register(dispatcher);
+        // DISABLED FOR 1.21.9: com.example.greekmyth.command.ShrineCommands.register(dispatcher);
             
             // Register the /jail command
             dispatcher.register(net.minecraft.server.command.CommandManager.literal("jail")
@@ -191,7 +194,7 @@ public class GreekMythologyMod implements ModInitializer {
                         .executes(context -> {
                             ServerPlayerEntity player = EntityArgumentType.getPlayer(context, "player");
                             int cellNumber = IntegerArgumentType.getInteger(context, "cell_number");
-                            com.example.greekmyth.jail.TartarusJailManager.jailPlayer(player, cellNumber);
+        // DISABLED FOR 1.21.9: com.example.greekmyth.jail.TartarusJailManager.jailPlayer(player, cellNumber);
                             return 1;
                         }))));
 
@@ -206,12 +209,14 @@ public class GreekMythologyMod implements ModInitializer {
                             return 0;
                         }
                         int cellNumber = IntegerArgumentType.getInteger(context, "cell_number");
-                        com.example.greekmyth.jail.TartarusJailManager.setJailCell(player, cellNumber);
+        // DISABLED FOR 1.21.9: com.example.greekmyth.jail.TartarusJailManager.setJailCell(player, cellNumber);
                         context.getSource().sendMessage(net.minecraft.text.Text.literal("§aJail cell " + cellNumber + " set to your current location."));
                         GreekMythologyMod.LOGGER.info("JAIL: Player {} set jail cell {} to {}", player.getName().getString(), cellNumber, player.getBlockPos().toShortString());
                         return 1;
                     })));
 
+            // DISABLED FOR 1.21.9: Escape command uses disabled jail system
+            /*
             // Register the /escape command
             dispatcher.register(net.minecraft.server.command.CommandManager.literal("escape")
                 .executes(context -> {
@@ -231,8 +236,13 @@ public class GreekMythologyMod implements ModInitializer {
                         context.getSource().sendMessage(net.minecraft.text.Text.literal("§aSuccessfully freed " + targetPlayer.getName().getString() + " from jail."));
                         return 1;
                     })));
+            */
 
+        // DISABLED FOR 1.21.9: Visit command (uses incompatible APIs)
+        /* 
             // Register the /visit command
+        // DISABLED FOR 1.21.9: Visit command (uses incompatible APIs)
+        /* 
             dispatcher.register(net.minecraft.server.command.CommandManager.literal("visit")
                 .requires(source -> source.hasPermissionLevel(3))
                 .then(net.minecraft.server.command.CommandManager.argument("dimension", StringArgumentType.word())
@@ -260,7 +270,7 @@ public class GreekMythologyMod implements ModInitializer {
                         switch (dimension.toLowerCase()) {
                             case "jail":
                             case "tartarus":
-                                ServerWorld jailWorld = player.getServer().getWorld(com.example.greekmyth.jail.TartarusJailManager.JAIL_DIMENSION_KEY);
+        // DISABLED FOR 1.21.9: ServerWorld jailWorld = player.getServer().getWorld(com.example.greekmyth.jail.TartarusJailManager.JAIL_DIMENSION_KEY);
                                 if (jailWorld != null) {
                                     // Teleport to the admin room in the jail dimension
                                     player.teleport(jailWorld, 11, 20, -19, java.util.Set.of(), player.getYaw(), player.getPitch(), false);
@@ -276,7 +286,7 @@ public class GreekMythologyMod implements ModInitializer {
                                 ServerWorld overworld = player.getServer().getOverworld();
                                 if (overworld != null) {
                                     // Teleport to actual world spawn coordinates
-                                    net.minecraft.util.math.BlockPos spawnPos = overworld.getSpawnPos();
+                                    net.minecraft.util.math.BlockPos spawnPos = overworld.getSpawnPosition();
                                     double spawnX = spawnPos.getX() + 0.5;
                                     double spawnY = spawnPos.getY() + 1.0; // Add 1 to avoid spawning inside blocks
                                     double spawnZ = spawnPos.getZ() + 0.5;
@@ -331,6 +341,7 @@ public class GreekMythologyMod implements ModInitializer {
                         }
                         return 1;
                     })));
+        */ 
 
             // Register the /spawnenhanced command (for testing enhanced wither skeleton)
             dispatcher.register(net.minecraft.server.command.CommandManager.literal("spawnenhanced")
@@ -403,11 +414,24 @@ public class GreekMythologyMod implements ModInitializer {
                     }));
                 LOGGER.info("Simple skyblock command registered");
                 
-                LOGGER.info("About to call SkyblockCommands.register()");
-                com.example.greekmyth.command.SkyblockCommands.register(dispatcher);
+        // DISABLED FOR 1.21.9: LOGGER.info("About to call SkyblockCommands.register()");
+        // DISABLED FOR 1.21.9: com.example.greekmyth.command.SkyblockCommands.register(dispatcher);
                 LOGGER.info("Skyblock commands registration completed successfully");
             } catch (Exception e) {
                 LOGGER.error("Failed to register Skyblock commands", e);
+                e.printStackTrace();
+            }
+
+            // Register dimension switching commands
+            try {
+                LOGGER.info("Registering dimension switching commands...");
+
+                // Register the dimension command
+                com.example.greekmyth.command.DimensionCommand.register(dispatcher, registryAccess, environment);
+
+                LOGGER.info("Dimension switching commands registered successfully");
+            } catch (Exception e) {
+                LOGGER.error("Failed to register dimension switching commands", e);
                 e.printStackTrace();
             }
             
@@ -567,9 +591,11 @@ public class GreekMythologyMod implements ModInitializer {
     /**
      * Helper method to execute escape logic for both self-escape and admin-free
      */
+    // DISABLED FOR 1.21.9: Escape method uses jail system with incompatible APIs
+    /*
     private static void executeEscape(ServerPlayerEntity player) {
         // Get the cell number the player is jailed in
-        Integer cellNumber = com.example.greekmyth.jail.TartarusJailManager.getJailedCell(player.getUuid());
+        // DISABLED FOR 1.21.9: Integer cellNumber = com.example.greekmyth.jail.TartarusJailManager.getJailedCell(player.getUuid());
         if (cellNumber == null) {
             player.sendMessage(net.minecraft.text.Text.literal("§cYou are not currently jailed!"));
             return;
@@ -588,10 +614,10 @@ public class GreekMythologyMod implements ModInitializer {
         player.changeGameMode(net.minecraft.world.GameMode.SURVIVAL);
         
         // Return items from jail chest and teleport to spawn
-        com.example.greekmyth.jail.TartarusJailManager.returnPlayerItems(player, cellNumber);
+        // DISABLED FOR 1.21.9: com.example.greekmyth.jail.TartarusJailManager.returnPlayerItems(player, cellNumber);
         
         // Release player from jail tracking
-        com.example.greekmyth.jail.TartarusJailManager.releasePlayer(player.getUuid());
+        // DISABLED FOR 1.21.9: com.example.greekmyth.jail.TartarusJailManager.releasePlayer(player.getUuid());
         
         // Teleport to overworld spawn
         ServerWorld overworld = player.getServer().getOverworld();
@@ -602,6 +628,7 @@ public class GreekMythologyMod implements ModInitializer {
         player.sendMessage(net.minecraft.text.Text.literal("§aYou have been freed from jail!"));
         GreekMythologyMod.LOGGER.info("ESCAPE: Player {} escaped from jail", player.getName().getString());
     }
+    */
 
     /**
      * Helper method to clear the soul count for the Hades Scythe.

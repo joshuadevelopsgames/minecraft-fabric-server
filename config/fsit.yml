@@ -1,0 +1,24 @@
+version: 4
+use-server: false
+sitting:
+  behaviour: gravity
+  should-center: false
+on-use:
+  sitting: true
+  riding: true
+  range: 2
+  check-suffocation: true
+  blocks:
+  - '#slabs'
+  - '#stairs'
+  - '#logs'
+  - '#fences'
+on-sneak:
+  sitting: true
+  crawling: true
+  min-pitch: 60.0
+  window: 7
+commands:
+  root: true
+  sit: true
+  crawl: true

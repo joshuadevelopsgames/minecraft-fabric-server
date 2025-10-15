@@ -60,7 +60,7 @@ public class HadesScytheItem extends Item implements FabricItem {
     // Add weapon damage functionality
     @Override
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (attacker.getWorld() instanceof ServerWorld serverWorld) {
+        if (attacker.getEntityWorld() instanceof ServerWorld serverWorld) {
             // Fixed damage for Hades Scythe
             float damage = 12.0f;
             
@@ -105,12 +105,12 @@ public class HadesScytheItem extends Item implements FabricItem {
         ItemStack stack = user.getStackInHand(hand);
 
         GreekMythologyMod.LOGGER.info("=== HADES SCYTHE USE METHOD CALLED ===");
-        GreekMythologyMod.LOGGER.info("World isClient: {}", world.isClient);
+        GreekMythologyMod.LOGGER.info("World isClient: {}", world.isClient());
         GreekMythologyMod.LOGGER.info("Player: {}", user.getName().getString());
         GreekMythologyMod.LOGGER.info("Hand: {}", hand);
         GreekMythologyMod.LOGGER.info("Stack: {}", stack.toString());
 
-        if (world.isClient) {
+        if (world.isClient()) {
             GreekMythologyMod.LOGGER.info("Hades Scythe used on CLIENT side");
             return ActionResult.SUCCESS;
         }
@@ -186,7 +186,7 @@ public class HadesScytheItem extends Item implements FabricItem {
             // Soul Harvest - Apply wither effects to target area (souls drop on death only)
             if (infinite || currentCharges > 0) {
                 GreekMythologyMod.LOGGER.info("SOUL HARVEST: Applying wither effects to target area");
-                harvestSouls(serverWorld, user, user.getPos());
+                harvestSouls(serverWorld, user, new Vec3d(user.getX(), user.getY(), user.getZ()));
 
                 if (!infinite) {
                     consumeCharge(stack, currentDamage, user);
@@ -267,7 +267,7 @@ public class HadesScytheItem extends Item implements FabricItem {
 
 
     private void createDeathMist(ServerWorld world, PlayerEntity user) {
-        Vec3d userPos = user.getPos();
+        Vec3d userPos = new Vec3d(user.getX(), user.getY(), user.getZ());
 
         // Create expanding death mist
         for (int wave = 1; wave <= 3; wave++) {
@@ -310,7 +310,7 @@ public class HadesScytheItem extends Item implements FabricItem {
     }
 
     private void createUnderworldPortal(ServerWorld world, PlayerEntity user) {
-        Vec3d userPos = user.getPos();
+        Vec3d userPos = new Vec3d(user.getX(), user.getY(), user.getZ());
         ServerPlayerEntity serverUser = (ServerPlayerEntity) user;
         
         // Determine target dimension and position

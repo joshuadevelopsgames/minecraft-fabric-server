@@ -1,5 +1,6 @@
 package com.example.greekmyth.item;
 
+import net.minecraft.util.math.Vec3d;
 import com.example.greekmyth.GreekMythologyMod;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.thrown.EnderPearlEntity;
@@ -44,15 +45,15 @@ public class InfernoPearlItem extends Item {
                     // DON'T call super.onCollision() - that does teleportation!
                     // Instead, do our custom fire logic
                     
-                    if (!this.getWorld().isClient) {
+                    if (!this.getEntityWorld().isClient()) {
                         BlockPos impactPos = BlockPos.ofFloored(hitResult.getPos());
                         
                         // Play impact sound
-                        this.getWorld().playSound(null, impactPos.getX(), impactPos.getY(), impactPos.getZ(), 
+                        this.getEntityWorld().playSound(null, impactPos.getX(), impactPos.getY(), impactPos.getZ(), 
                             SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.NEUTRAL, 1.0F, 1.0F);
                         
                         // Create fire particles
-                        ServerWorld serverWorld = (ServerWorld) this.getWorld();
+                        ServerWorld serverWorld = (ServerWorld) this.getEntityWorld();
                         for (int i = 0; i < 20; i++) {
                             serverWorld.spawnParticles(ParticleTypes.FLAME, 
                                 impactPos.getX() + this.random.nextDouble() - 0.5,
@@ -62,7 +63,7 @@ public class InfernoPearlItem extends Item {
                         }
                         
                         // Set the area around impact on fire
-                        setAreaOnFire(this.getWorld(), impactPos);
+                        setAreaOnFire(this.getEntityWorld(), impactPos);
                         
                         GreekMythologyMod.LOGGER.info("INFERNO PEARL: Impact at {} - setting area on fire", impactPos);
                     }

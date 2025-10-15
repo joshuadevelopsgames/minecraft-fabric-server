@@ -34,7 +34,7 @@ public class EntityMixin {
             return;
         }
         
-        World world = entity.getWorld();
+        World world = entity.getEntityWorld();
         if (world.isClient()) {
             return;
         }

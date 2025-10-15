@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "greekmyth",
-  "version": "1.0.179",
+  "version": "2.0.6",
   "name": "Greek Mythology Mod",
   "description": "A comprehensive Greek mythology mod featuring gods, quests, and mythical creatures",
   "authors": [
@@ -35,6 +35,10 @@
     "another-mod": "*"
   }
 }
+
+
+
+
 
 
 

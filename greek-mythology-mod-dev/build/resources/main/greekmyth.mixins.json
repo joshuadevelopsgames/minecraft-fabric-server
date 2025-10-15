@@ -6,9 +6,7 @@
   "client": [
     "TitleScreenLogoReplacer",
     "TitleScreenLogoMixin",
-    "TitleScreenMixin",
-    "MultiplayerScreenMixin",
-    "SelectWorldScreenMixin"
+    "TitleScreenMixin"
   ],
   "server": [
     "ItemEntityMixin",

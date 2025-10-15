@@ -91,7 +91,7 @@ public class PoseidonTridentItem extends Item {
     @Override
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         // Apply Netherite sword-level damage (8.0 damage)
-        if (attacker.getWorld() instanceof ServerWorld serverWorld) {
+        if (attacker.getEntityWorld() instanceof ServerWorld serverWorld) {
             target.damage(serverWorld, serverWorld.getDamageSources().generic(), 8.0f);
         }
     }
@@ -102,12 +102,12 @@ public class PoseidonTridentItem extends Item {
         ItemStack stack = user.getStackInHand(hand);
         
         GreekMythologyMod.LOGGER.info("=== POSEIDON TRIDENT USE METHOD CALLED ===");
-        GreekMythologyMod.LOGGER.info("World isClient: {}", world.isClient);
+        GreekMythologyMod.LOGGER.info("World isClient: {}", world.isClient());
         GreekMythologyMod.LOGGER.info("Player: {}", user.getName().getString());
         GreekMythologyMod.LOGGER.info("Hand: {}", hand);
         GreekMythologyMod.LOGGER.info("Stack: {}", stack.toString());
         
-        if (world.isClient) {
+        if (world.isClient()) {
             GreekMythologyMod.LOGGER.info("Poseidon Trident used on CLIENT side");
             return ActionResult.SUCCESS;
         }
@@ -230,7 +230,7 @@ public class PoseidonTridentItem extends Item {
     }
 
     private void createTidalWaves(ServerWorld world, PlayerEntity user) {
-        Vec3d userPos = user.getPos();
+        Vec3d userPos = new Vec3d(user.getX(), user.getY(), user.getZ());
         
         // Create multiple expanding waves
         for (int wave = 1; wave <= 3; wave++) {
@@ -246,7 +246,7 @@ public class PoseidonTridentItem extends Item {
             world.getOtherEntities(user, waveBox, entity -> 
                 entity instanceof LivingEntity && entity != user).forEach(entity -> {
                 LivingEntity livingEntity = (LivingEntity) entity;
-                Vec3d entityPos = livingEntity.getPos();
+                Vec3d entityPos = new Vec3d(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ());
                 Vec3d direction = entityPos.subtract(userPos).normalize();
                 
                 // Apply push force
